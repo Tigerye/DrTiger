@@ -1,6 +1,7 @@
 import logging
 import sys
 from gensim.corpora import WikiCorpus
+from gensim.test.utils import datapath
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 '''
     extract data from wiki dumps(*articles.xml.bz2) by gensim.
@@ -18,7 +19,8 @@ if __name__ == '__main__':
     i = 0
  
     output = open(outp, 'w',encoding='utf8')
-    wiki = WikiCorpus(inp, lemmatize=False, dictionary={})
+    inpath = datapath(inp)
+    wiki = WikiCorpus(inpath, lemmatize=False, dictionary={})
     for text in wiki.get_texts():
         output.write(" ".join(text) + "\n")
         i = i + 1
