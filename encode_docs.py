@@ -5,7 +5,7 @@
 # $
 
 #in shell
-#bert-serving-start -model_dir /data/yechen/bert/chinese_L-12_H-768_A-12 -num_worker=8
+#bert-serving-start -model_dir /data/yechen/bert/chinese_L-12_H-768_A-12 -num_worker=8 -max_seq_len=128
 
 import logging
 from bert_serving.client import BertClient
