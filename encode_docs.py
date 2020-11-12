@@ -14,13 +14,17 @@ from bert_serving.client import BertClient
 if __name__ == '__main__':
     i = 0
     bc = BertClient()
-    with open('/data/yechen/bert/wiki.zh.txt') as fp:
-        for v in fp:
+    fout = open("test.txt",'w',encoding = 'utf-8')
+    with open('/data/yechen/bert/wiki.zh.txt') as fin:
+        for v in fin:
             i = i + 1
             doc = v.strip()
             vec = bc.encode([doc])[0]
             if (i <= 3):
                 print('doc %d: %s\n' % (i, doc))
                 print('vec %d: %s\n' % (i, vec))
+                fout.write(vec+"\n")
             else:
                 break
+            
+    fout.close()
