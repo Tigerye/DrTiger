@@ -22,7 +22,7 @@ if __name__ == '__main__':
     wiki = WikiCorpus(inp, lemmatize=False, dictionary={})
     converter = opencc.OpenCC('t2s.json')
     for text in wiki.get_texts():
-        output.write(" ".join(converter.convert(text)) + "\n")
+        output.write(" ".join(converter.convert(text.strip().decode('utf-8'))) + "\n")
         i = i + 1
         if (i % 10000 == 0):
             logging.info("Save "+str(i) + " articles")
