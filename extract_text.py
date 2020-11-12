@@ -7,7 +7,7 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logg
     @2019-3-26
 '''
 def help():
-    print("Usage: python wikipro.py zhwiki-20190320-pages-articles-multistream.xml.bz2 wiki.zh.txt")
+    print("Usage: python extract_text.py /data/yechen/bert/zhwiki-20201101-pages-articles-multistream-index.txt.bz2 /data/yechen/bert/wiki.zh.txt")
  
 if __name__ == '__main__':
     if len(sys.argv) < 3:
