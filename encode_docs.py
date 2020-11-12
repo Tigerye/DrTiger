@@ -18,7 +18,7 @@ if __name__ == '__main__':
         for v in fp:
             i = i + 1
             doc = v.strip()
-            vec = bc.encode(doc)
+            vec = bc.encode([doc])[0]
             if (i <= 3):
                 print('doc %d: %s\n' % (i, doc))
                 print('vec %d: %s\n' % (i, vec))
