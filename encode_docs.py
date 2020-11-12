@@ -1,5 +1,4 @@
 from bert_serving.client import BertClient
-from tkFileDialog import fp
 
 if __name__ == '__main__':
     i = 0
