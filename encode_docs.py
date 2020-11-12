@@ -23,7 +23,8 @@ if __name__ == '__main__':
             if (i <= 3):
                 print('doc %d: %s\n' % (i, doc))
                 print('vec %d: %s\n' % (i, vec))
-                fout.write(vec+"\n")
+                fout.write(vec)
+                fout.write('\n')
             else:
                 break
             
