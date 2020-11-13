@@ -27,4 +27,4 @@ if __name__ == '__main__':
         if (i % 10000 == 0):
             logging.info("Save "+str(i) + " articles")
     output.close()
-    logging.info("Finished saved "+str(i) + "articles")
+    logging.info("Finished saved "+str(i) + " articles")
