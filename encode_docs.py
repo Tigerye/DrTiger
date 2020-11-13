@@ -14,7 +14,7 @@ from bert_serving.client import BertClient
 if __name__ == '__main__':
     i = 0
     bc = BertClient()
-    fout = open("/data/yechen/bert/wiki.zh.vec.txt",'w',encoding = 'utf-8')
+    fout = open('/data/yechen/bert/wiki.zh.vec.txt','w',encoding = 'utf-8')
     with open('/data/yechen/bert/wiki.zh.txt') as fin:
         for v in fin:
             i = i + 1
