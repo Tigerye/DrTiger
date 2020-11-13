@@ -9,6 +9,7 @@
 
 import logging
 from bert_serving.client import BertClient
+logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 
 if __name__ == '__main__':
