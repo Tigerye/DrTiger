@@ -18,10 +18,10 @@ print('doc 1: %s' % lines[0])
 
 i = 0
 docs = []
-print('nlping docs...')
+print('nlp processing docs...')
 for line in lines:
     i =i+1
     docs.append(nlp(line))
     if (i % 10000 == 0):
         logging.info("nlp process "+str(i) + " docs")
-logging.info("Finished nlp process "+str(i) + " docs")
+logging.info("Finished nlp process "+str(len(docs)) + " docs")
