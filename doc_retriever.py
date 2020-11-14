@@ -21,7 +21,7 @@ print('Finished load %d tokenized docs' % len(corpus))
 print('tokonized doc 1: %s' % corpus[0])
 
 print('building bm25...')
-bm25 = BM25Okapi(corpus)
+bm25 = BM25Okapi([doc.split(" ") for doc in corpus])
 print('Finished build bm25 on corpus')
 
 topk = 3
