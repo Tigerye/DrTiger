@@ -2,3 +2,5 @@ python extract_text.py /data/yechen/bert/zhwiki-20201101-pages-articles-multistr
 
 python doc_tokenize.py
 
+python doc_retriever.py
+

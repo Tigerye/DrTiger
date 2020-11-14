@@ -6,23 +6,32 @@ import jieba
 import numpy as np
 from termcolor import colored
 from rank_bm25 import BM25Okapi
+import time
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 print('loading docs...')
+tic = time.perf_counter()
 with open('/data/yechen/bert/wiki.zh.txt') as fin1:
     docs = fin1.readlines()
-print('Finished load %d docs' % len(docs))
+toc = time.perf_counter()
 print('doc 1: %s' % docs[0])
+print(f"Finished load %d docs in {toc - tic:0.2f} seconds" % len(docs))
+
 
 print('loading tokenized docs...')
+tic = time.perf_counter()
 with open('/data/yechen/bert/wiki.zh.tokens.txt') as fin2:
     corpus = fin2.readlines()
-print('Finished load %d tokenized docs' % len(corpus))
+toc = time.perf_counter()
 print('tokonized doc 1: %s' % corpus[0])
+print(f"Finished load %d tokenized docs in {toc - tic:0.2f} seconds" % len(corpus))
+
 
 print('building bm25...')
+tic = time.perf_counter()
 bm25 = BM25Okapi([doc.split(" ") for doc in corpus])
-print('Finished build bm25 on corpus')
+toc = time.perf_counter()
+print(f"Finished build bm25 on corpus in {toc - tic:0.2f} seconds")
 
 topk = 3
 while True:
