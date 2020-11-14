@@ -12,7 +12,6 @@ print('Finished load %d docs' % len(lines))
 print('doc 1: %s' % lines[0])
 
 i = 0
-docs = []
 print('tokenizing docs...')
 with open('/data/yechen/bert/wiki.zh.tokens.txt','w',encoding = 'utf-8') as fout:
     for line in lines:
@@ -24,5 +23,5 @@ with open('/data/yechen/bert/wiki.zh.tokens.txt','w',encoding = 'utf-8') as fout
         fout.write(outline)
         fout.write('\n')
         if (i % 10000 == 0):
-            logging.info("Tokenize "+str(i) + " docs")
-logging.info("Finished tokenize "+str(len(docs)) + " docs")
+            logging.info("Tokenize "+str(i)+ " docs")
+logging.info("Finished tokenize "+str(i)+ " docs")
