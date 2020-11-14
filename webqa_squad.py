@@ -84,8 +84,8 @@ def get_data(ds):
                         'answers': [
                             {
                                 'text': ans,
-                                'answer_start': f
-                            } for f in finds
+                                'answer_start': finds[0]
+                            } 
                         ],
                         'is_impossible': False,
                     })
