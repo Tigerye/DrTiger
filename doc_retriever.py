@@ -15,7 +15,7 @@ with open('/data/yechen/bert/wiki.zh.txt') as fin1:
     docs = fin1.readlines()
 toc = time.perf_counter()
 print('doc 1: %s' % docs[0])
-print(f"Finished load %d docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
+print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
 
 
 print('loading tokenized docs...')
@@ -24,7 +24,7 @@ with open('/data/yechen/bert/wiki.zh.tokens.txt') as fin2:
     corpus = fin2.readlines()
 toc = time.perf_counter()
 print('tokonized doc 1: %s' % corpus[0])
-print(f"Finished load %d tokenized docs in [{toc - tic:0.2f}] seconds\n" % len(corpus))
+print(f"Finished load [%d] tokenized docs in [{toc - tic:0.2f}] seconds\n" % len(corpus))
 
 
 print('building bm25...')
