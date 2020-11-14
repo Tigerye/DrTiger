@@ -18,9 +18,9 @@ with open('/data/yechen/bert/wiki.zh.tokens.txt','w',encoding = 'utf-8') as fout
     for line in lines:
         i =i+1
         line = line.replace("\n"," ")
-        line = ' '.join(line.split())
         tokens = jieba.cut(line)
-        fout.write(" ".join(token for token in tokens))
+        tokens = ' '.join(tokens.split())
+        fout.write(' '.join(token for token in tokens))
         fout.write('\n')
         if (i % 10000 == 0):
             logging.info("Tokenize "+str(i) + " docs")

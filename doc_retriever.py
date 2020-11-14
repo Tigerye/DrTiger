@@ -1,27 +1,27 @@
 #in shell
 #bert-serving-start -model_dir /data/yechen/bert/chinese_L-12_H-768_A-12 -num_worker=8 -max_seq_len=128
 
-import numpy as np
+import logging
+import jieba
 from termcolor import colored
-from bert_serving.client import BertClient
-
-i = 0
-vecs = []
-docs = []
-print('loading vecs...')
-vecs = np.loadtxt('/data/yechen/bert/wiki.zh.vec.txt', delimiter=' ')
-docs = np.load
-print('Finished load %d doc vecs' % len(vecs))
-print('vec 1: %s' % vecs[0])
+from rank_bm25 import BM25Okapi
+logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 print('loading docs...')
-with open('/data/yechen/bert/wiki.zh.txt') as fin:
-    docs = fin.readlines()
-print('Finished load %d docs' % len(docs))
-print('doc 1: %s' % docs[0])
+with open('/data/yechen/bert/wiki.zh.txt') as fin1:
+    lines = fin1.readlines()
+print('Finished load %d docs' % len(lines))
+print('doc 1: %s' % lines[0])
 
-bc = BertClient()
-topk = 5
+print('loading tokenized docs...')
+with open('/data/yechen/bert/wiki.zh.tokens.txt') as fin2:
+    toklines = fin2.readlines()
+print('Finished load %d tokenized docs' % len(toklines))
+print('tokonized doc 1: %s' % toklines[0])
+
+print('building bm25...')
+corpus = []
+for line in toklines:
 
 while True:
     query = input(colored('your question: ', 'green'))
