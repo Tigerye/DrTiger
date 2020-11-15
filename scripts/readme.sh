@@ -33,19 +33,19 @@ python run_squad.py \
   python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/webqa_squad_eval.json $SQUAD_DIR/squad_base/predictions.json --na-prob-file $SQUAD_DIR/squad_base/null_odds.json
   
   {
-  "exact": 60.39729268695317,
-  "f1": 60.39729268695317,
+  "exact": 60.03961921531943,
+  "f1": 60.03961921531943,
   "total": 36346,
-  "HasAns_exact": 60.39729268695317,
-  "HasAns_f1": 60.39729268695317,
+  "HasAns_exact": 60.03961921531943,
+  "HasAns_f1": 60.03961921531943,
   "HasAns_total": 36346,
-  "best_exact": 60.39729268695317,
-  "best_exact_thresh": -0.00041866302490234375,
-  "best_f1": 60.39729268695317,
-  "best_f1_thresh": -0.00041866302490234375
+  "best_exact": 60.03961921531943,
+  "best_exact_thresh": -0.000835418701171875,
+  "best_f1": 60.03961921531943,
+  "best_f1_thresh": -0.000835418701171875
 }
 
-THRESH=-0.00041866302490234375
+THRESH=-0.000835418701171875
 BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
 SQUAD_DIR=/data/yechen/squad/WebQA.v1.0
 
