@@ -20,7 +20,7 @@ python run_squad.py \
   --train_batch_size=8 \
   --learning_rate=3e-5 \
   --num_train_epochs=2.0 \
-  --max_seq_length=1000 \
+  --max_seq_length=512 \
   --doc_stride=128 \
   --output_dir=/data/yechen/bert/drtiger/ \
   --version_2_with_negative=True \
