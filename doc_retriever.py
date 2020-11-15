@@ -79,6 +79,6 @@ while True:
         
     reader_data = get_data(query, reader_docs)
     json.dump(reader_data, open('/data/yechen/bert/drtiger/retrieved.json', 'w'), ensure_ascii=False)
-    print(f"Finished dump dr. tiger retrieved data for reader with [{len(reader_data)}] docs\n")
+    print(f"Finished dump dr. tiger retrieved data for reader with [{len(reader_docs)}] docs\n")
         
     
