@@ -75,7 +75,7 @@ while True:
     reader_docs = []
     for idx in topk_idx:
         reader_docs.append(docs[idx])
-        print('> %s\t%s' % (colored('%.2f' % scores[idx], 'pink'), colored(docs[idx], 'blue')))
+        print('> %s\t%s' % (colored('%.2f' % scores[idx], 'red'), colored(docs[idx], 'blue')))
         
     reader_data = get_data(query, reader_docs)
     json.dump(reader_data, open('/data/yechen/bert/drtiger/retrieved.json', 'w'), ensure_ascii=False)
