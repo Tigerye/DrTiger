@@ -90,8 +90,15 @@ while True:
     os.system(reader_cmd)
     print(f"done reader execute\n")
 
-    with open('/data/yechen/squad/WebQA.v1.0/squad_base/predictions.json','r') as f:
-        reader_pred = json.load(f)
+    with open('/data/yechen/squad/WebQA.v1.0/squad_base/nbest_predictions.json','r') as f:
+        reader_pred_nbest = json.load(f)
+        
+    reader_pred = []
+    for i in range(num_doc):
+        for a in reader_pred[str(i+1)]:
+            if a['text']:
+                reader_pred.append(a['text'])
+                break
     
     for i in range(num_doc):
         print('> %s\t%s\t%s' % (colored('score: %.2f' % reader_scores[i], 'red'), colored('answer: %s' % reader_pred[str(i+1)], 'blue'), colored('doc: %s' % reader_docs[i], 'yellow')))
