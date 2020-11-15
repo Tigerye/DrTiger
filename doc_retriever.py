@@ -66,7 +66,8 @@ def get_data(question, docs):
     return data
 
 
-topk = 3
+#topk = 3
+topk = 1
 while True:
     query = input(colored('your question: ', 'green'))
     tokquery = jieba.cut(query)
