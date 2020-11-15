@@ -95,7 +95,7 @@ while True:
         
     reader_pred = []
     for i in range(num_doc):
-        for a in reader_pred[str(i+1)]:
+        for a in reader_pred_nbest[str(i+1)]:
             if a['text']:
                 reader_pred.append(a['text'])
                 break
