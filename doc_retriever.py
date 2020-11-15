@@ -85,7 +85,7 @@ while True:
     json.dump(reader_data, open('/data/yechen/bert/drtiger/retrieved.json', 'w'), ensure_ascii=False)
     print(f"Finished dump dr. tiger retrieved data for reader with [{num_doc}] docs\n")
     
-    reader_cmd = 'python run_squad.py   --vocab_file=/data/yechen/bert/chinese_L-12_H-768_A-12/vocab.txt   --bert_config_file=/data/yechen/bert/chinese_L-12_H-768_A-12/bert_config.json   --init_checkpoint=/data/yechen/bert/chinese_L-12_H-768_A-12/bert_model.ckpt   --do_train=False   --train_file=/data/yechen/squad/WebQA.v1.0/webqa_squad_train.json   --do_predict=True   --predict_file=/data/yechen/bert/drtiger/retrieved.json   --train_batch_size=8   --learning_rate=3e-5   --num_train_epochs=2.0   --max_seq_length=384   --doc_stride=1000   --output_dir=/data/yechen/bert/drtiger/   --version_2_with_negative=True   --null_score_diff_threshold=-0.000835418701171875'
+    reader_cmd = 'python run_squad.py   --vocab_file=/data/yechen/bert/chinese_L-12_H-768_A-12/vocab.txt   --bert_config_file=/data/yechen/bert/chinese_L-12_H-768_A-12/bert_config.json   --init_checkpoint=/data/yechen/bert/chinese_L-12_H-768_A-12/bert_model.ckpt   --do_train=False   --train_file=/data/yechen/squad/WebQA.v1.0/webqa_squad_train.json   --do_predict=True   --predict_file=/data/yechen/bert/drtiger/retrieved.json   --train_batch_size=8   --learning_rate=3e-5   --num_train_epochs=2.0   --max_seq_length=1000   --doc_stride=128   --output_dir=/data/yechen/bert/drtiger/   --version_2_with_negative=True   --null_score_diff_threshold=-0.000835418701171875'
     print(f"os execute: [{reader_cmd}]\n")
     os.system(reader_cmd)
     print(f"done reader execute\n")
@@ -93,8 +93,8 @@ while True:
     with open('/data/yechen/bert/drtiger/predictions.json','r') as f:
         reader_pred = json.load(f)
     
-    for i in range(1,num_doc+1):
-        print('> %s\t%s\t%s' % (colored('%.2f' % reader_scores[i], 'red'), colored(reader_pred[str(i)], 'blue'), colored(reader_docs[i], 'blue')))
+    for i in range(num_doc):
+        print('> %s\t%s\t%s' % (colored('score: %.2f' % reader_scores[i], 'red'), colored('answer: %s' % reader_pred[str(i+1)], 'blue'), colored('doc: %s' % reader_docs[i], 'yellow')))
     
         
     
