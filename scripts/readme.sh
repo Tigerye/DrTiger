@@ -5,6 +5,27 @@ python doc_tokenize.py
 
 python doc_retriever.py
 
+THRESH=-0.000835418701171875
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/WebQA.v1.0
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/webqa_squad_train.json \
+  --do_predict=True \
+  --predict_file=/data/yechen/bert/drtiger/retrieved.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=1000 \
+  --output_dir=/data/yechen/bert/drtiger/ \
+  --version_2_with_negative=True \
+  --null_score_diff_threshold=$THRESH
+
 
 #reader
 python webqa_squad.py
@@ -65,5 +86,18 @@ python run_squad.py \
   --output_dir=$SQUAD_DIR/squad_base/ \
   --version_2_with_negative=True \
   --null_score_diff_threshold=$THRESH
+  
+ {
+  "exact": 60.03961921531943,
+  "f1": 60.03961921531943,
+  "total": 36346,
+  "HasAns_exact": 60.03961921531943,
+  "HasAns_f1": 60.03961921531943,
+  "HasAns_total": 36346,
+  "best_exact": 60.03961921531943,
+  "best_exact_thresh": -0.000835418701171875,
+  "best_f1": 60.03961921531943,
+  "best_f1_thresh": -0.000835418701171875
+}
   
   
