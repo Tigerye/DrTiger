@@ -71,11 +71,11 @@ while True:
     tokquery = jieba.cut(query)
     scores = bm25.get_scores(tokquery)
     topk_idx = np.argsort(scores)[::-1][:topk]
-    print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
+    print('top %d docs similar to "%s":' % (topk, colored(query, 'green_1')))
     reader_docs = []
     for idx in topk_idx:
         reader_docs.append(docs[idx])
-        print('> %s\t%s' % (colored('%.2f' % scores[idx], 'cyan'), colored(docs[idx], 'yellow')))
+        print('> %s\t%s' % (colored('%.2f' % scores[idx], 'hot_pink_1a'), colored(docs[idx], 'navy_blue')))
         
     reader_data = get_data(query, reader_docs)
     json.dump(reader_data, open('/data/yechen/bert/drtiger/retrieved.json', 'w'), ensure_ascii=False)
