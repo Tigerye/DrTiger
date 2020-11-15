@@ -22,7 +22,7 @@ python run_squad.py \
   --num_train_epochs=2.0 \
   --max_seq_length=512 \
   --doc_stride=128 \
-  --output_dir=/data/yechen/bert/drtiger/ \
+  --output_dir=$SQUAD_DIR/squad_base/ \
   --version_2_with_negative=True \
   --null_score_diff_threshold=$THRESH
 

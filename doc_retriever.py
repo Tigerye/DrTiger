@@ -90,7 +90,7 @@ while True:
     os.system(reader_cmd)
     print(f"done reader execute\n")
 
-    with open('/data/yechen/bert/drtiger/predictions.json','r') as f:
+    with open('/data/yechen/squad/WebQA.v1.0/squad_base/predictions.json','r') as f:
         reader_pred = json.load(f)
     
     for i in range(num_doc):
