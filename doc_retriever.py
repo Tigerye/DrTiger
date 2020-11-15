@@ -101,7 +101,7 @@ while True:
                 break
     
     for i in range(num_doc):
-        print('> %s\t%s\t%s' % (colored('score: %.2f' % reader_scores[i], 'red'), colored('answer: %s' % reader_pred[str(i+1)], 'blue'), colored('doc: %s' % reader_docs[i], 'yellow')))
+        print('> %s\t%s\t%s' % (colored('score: %.2f' % reader_scores[i], 'red'), colored('answer: %s' % reader_pred[i], 'blue'), colored('doc: %s' % reader_docs[i], 'yellow')))
     
         
     
