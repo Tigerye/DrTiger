@@ -4,7 +4,7 @@ import os
 parent = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(parent + '/../local/lib/python3.6/dist-packages/gensim/corpora/')
 
-from wikicorpus import *
+from gensim.corpora.wikicorpus import *
 
 def tokenize(content):
     # override original method in wikicorpus.py
