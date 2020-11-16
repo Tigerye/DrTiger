@@ -5,11 +5,11 @@ parent = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(parent + '/../local/lib/python3.6/dist-packages/gensim/corpora/')
 
 from gensim.corpora.wikicorpus import *
-
+    
 def tokenize(content):
-    # override original method in wikicorpus.py
-    return [token.encode('utf8') for token in utils.tokenize(content, lower=True, errors='ignore')
-            if len(token) <= 15 and not token.startswith('_')]
+    #override original method in wikicorpus.py
+    return [token.encode('utf8') for token in content.split() 
+           if len(token) <= 15 and not token.startswith('_')]
 
 def process_article(args):
    # override original method in wikicorpus.py
