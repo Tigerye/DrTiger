@@ -1,7 +1,7 @@
 import logging
 import sys
 #from gensim.corpora import WikiCorpus
-from wikicorpus_punc import WikiCorpus_Punc
+from wikicorpus_punc import WikiCorpus_Punc as WikiCorpus
 import opencc
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 '''
