@@ -7,7 +7,7 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logg
     @2019-3-26
 '''
 def help():
-    print("Usage: python extract_text_en.py /data/yechen/bert/wikidatawiki-20201101-pages-articles-multistream.xml.bz2 /data/yechen/bert/wiki.en.txt")
+    print("Usage: python extract_text_en.py /data/yechen/bert/enwiki-20201101-pages-articles-multistream.xml.bz2 /data/yechen/bert/wiki.en.txt")
  
 if __name__ == '__main__':
     if len(sys.argv) < 3:
