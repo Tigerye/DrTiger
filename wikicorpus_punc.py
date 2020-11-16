@@ -22,7 +22,7 @@ def process_article(args):
     return result, title, pageid
 
 
-class WikiCorpus(WikiCorpus):
+class WikiCorpus_Punc(WikiCorpus):
     def __init__(self, fname, processes=None, lemmatize=utils.has_pattern(), dictionary=None, filter_namespaces=('0',)):
         WikiCorpus.__init__(self, fname, processes, lemmatize, dictionary, filter_namespaces)
 
