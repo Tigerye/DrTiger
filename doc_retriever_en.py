@@ -13,7 +13,7 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logg
 
 print('loading docs...')
 tic = time.perf_counter()
-with open('/data/yechen/bert/wiki.zh.txt') as fin1:
+with open('/data/yechen/bert/wiki.en.txt') as fin1:
     docs = fin1.readlines()
 toc = time.perf_counter()
 print('doc 1: %s' % docs[0])
