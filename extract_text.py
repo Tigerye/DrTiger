@@ -24,7 +24,7 @@ if __name__ == '__main__':
     converter = opencc.OpenCC('t2s.json')
     for text in wiki.get_texts():
         #output.write(converter.convert(" ".join(text) + "\n"))
-        output.write(" ".join(text) + "\n")
+        output.write(' '.join(text) + "\n")
         i = i + 1
         if (i % 10000 == 0):
             logging.info("Save "+str(i) + " articles")
