@@ -1,7 +1,6 @@
 import logging
 import sys
-#from gensim.corpora import WikiCorpus
-from wikicorpus_punc import WikiCorpus_Punc as WikiCorpus
+from gensim.corpora import WikiCorpus
 import opencc
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 '''
@@ -23,8 +22,7 @@ if __name__ == '__main__':
     wiki = WikiCorpus(inp, lemmatize=False, dictionary={})
     converter = opencc.OpenCC('t2s.json')
     for text in wiki.get_texts():
-        #output.write(converter.convert(" ".join(text) + "\n"))
-        output.write(b' '.join(text).decode('utf-8') + '\n')
+        output.write(converter.convert(" ".join(text) + "\n"))
         i = i + 1
         if (i % 10000 == 0):
             logging.info("Save "+str(i) + " articles")
