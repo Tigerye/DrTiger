@@ -3,12 +3,8 @@
 
 import logging
 import pickle
-import numpy as np
-from termcolor import colored
 from rank_bm25 import BM25Okapi
 import time
-import json
-import os
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 print('loading docs...')
