@@ -3,6 +3,8 @@ python extract_text.py /data/yechen/bert/zhwiki-20201101-pages-articles-multistr
 
 python doc_tokenize.py
 
+python build_index.py
+
 python doc_retriever.py
 
 THRESH=-0.000835418701171875
@@ -169,6 +171,7 @@ python run_squad.py \
  #retriever
 python extract_text_en.py /data/yechen/bert/enwiki-20201101-pages-articles-multistream.xml.bz2 /data/yechen/bert/wiki.en.txt
 
+python build_index_en.py
 
 python doc_retriever_en.py
   

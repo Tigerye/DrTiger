@@ -27,7 +27,7 @@ print(f"Finished build bm25 on corpus with [{bm25.corpus_size}] documents and [{
 
 print('dumping bm25...')
 tic = time.perf_counter()
-with open("/data/yechen/bert/drtiger/bm25_en","rb") as fout:
+with open("/data/yechen/bert/drtiger/bm25_en","wb") as fout:
     pickle.dump(bm25, fout)
 toc = time.perf_counter()
 print(f"Finished dump bm25 index in [{toc - tic:0.2f}] seconds\n")
