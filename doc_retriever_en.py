@@ -9,6 +9,7 @@ from rank_bm25 import BM25Okapi
 import time
 import json
 import os
+import pickle
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 print('loading docs...')
@@ -19,11 +20,12 @@ toc = time.perf_counter()
 print('doc 1: %s' % docs[0])
 print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
 
-print('building bm25...')
+print('loading bm25...')
 tic = time.perf_counter()
-bm25 = BM25Okapi([doc.split(" ") for doc in docs])
+with open("/data/yechen/bert/drtiger/bm25_en","rb") as fin:
+    bm25 = pickle.load(fin)
 toc = time.perf_counter()
-print(f"Finished build bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
+print(f"Finished load bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
 
 def get_data(question, docs):
     data = {
