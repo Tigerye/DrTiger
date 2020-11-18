@@ -118,7 +118,7 @@ python run_squad.py \
   --train_batch_size=1 \
   --learning_rate=3e-5 \
   --num_train_epochs=2.0 \
-  --max_seq_length=256 \
+  --max_seq_length=384 \
   --doc_stride=128 \
   --output_dir=$SQUAD_DIR/squad_2.0_large/ \
   --version_2_with_negative=True
@@ -147,6 +147,7 @@ python run_squad.py \
 BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
 SQUAD_DIR=/data/yechen/squad
 THRESH=-2.835961937904358
+THRESH=-4.251452803611755
 
 python run_squad.py \
   --vocab_file=$BERT_LARGE_DIR/vocab.txt \
