@@ -59,7 +59,7 @@ def get_data(question, docs):
 
 
 #topk = 3
-topk = 3
+topk = 10
 while True:
     query = input(colored('your question: ', 'green'))
     tokquery = query.split(" ")
@@ -89,15 +89,24 @@ while True:
     with open('/data/yechen/squad/squad_2.0_large_1-256/nbest_predictions.json','r') as f:
         reader_pred_nbest = json.load(f)
         
+    
+    topa = 3
     reader_pred = []
+    reader_prob = []
+    reader_docids = []
+    
     for i in range(num_doc):
         for a in reader_pred_nbest[str(i+1)]:
             if a['text']:
-                reader_pred.append(a['text'])
+                reader_preds.append(a['text'])
+                reader_probs.append(a['probability'])
+                reader_docids.append(i)
                 break
     
-    for i in range(num_doc):
-        print('> %s\t%s\t%s' % (colored('score: %.2f' % reader_scores[i], 'red'), colored('answer: %s' % reader_pred[i], 'blue'), colored('doc: %s' % reader_docs[i], 'yellow')))
+    topa_idx = np.argsort(reader_probs)[::-1][:topa]
+    
+    for idx in topa_idx:
+        print('> %s\t%s\t%s\t%s' % (colored('retriever score: %.2f' % reader_scores[reader_docids[idx]], 'red'), colored('reader score: %.6f' % reader_probs[idx], 'red'), colored('answer: %s' % reader_preds[idx], 'blue'), colored('doc: %s' % reader_docs[reader_docids[idx]], 'yellow')))
     
         
     
