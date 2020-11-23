@@ -91,8 +91,8 @@ while True:
         
     
     topa = 3
-    reader_pred = []
-    reader_prob = []
+    reader_preds = []
+    reader_probs = []
     reader_docids = []
     
     for i in range(num_doc):
