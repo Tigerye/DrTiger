@@ -22,8 +22,6 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
                 if text:
                     output_text = output_text + " " + text
             output.write(output_text+"\n")
-        if (numart > 0):
-            break
         if (numart % 10000 == 0):
             logging.info("extracted "+str(numart) + " articles")
 output.close()
