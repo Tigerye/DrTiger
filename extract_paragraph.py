@@ -10,8 +10,10 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
         numart = numart+1
         article = json.loads(line)
         for section_text in zip(article['section_texts']):
-            numpar = numpar+1
-            output.write(''.join(section_text)+"\n")
+            para_texts = section_text.split("\\n\\n")
+            for para_text in para_texts:
+                numpar = numpar+1
+                output.write(''.join(section_text)+"\n")
         if (numart > 2):
             break
 output.close()
