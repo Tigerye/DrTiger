@@ -5,8 +5,8 @@ import logging
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 # iterate over the plain text data we just created
-output = open('/data/yechen/bert/wiki.en.sec.txt', 'w',encoding='utf8')
-with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistream1.xml-p1p41242.json.gz', 'rb') as f:
+output = open('/data/yechen/bert/wiki.en.section.txt', 'w',encoding='utf8')
+with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistream.json.gz', 'rb') as f:
     numart = 0
     numsec = 0
     for line in f:
