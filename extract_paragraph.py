@@ -9,7 +9,7 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
     for line in f:
         numart = numart+1
         article = json.loads(line)
-        for section_text in zip(article['section_texts']):
+        for section_text in article['section_texts']:
             para_texts = ''.join(section_text).strip('\n')
             for para_text in para_texts:
                 numpar = numpar+1
