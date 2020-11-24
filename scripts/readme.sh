@@ -175,5 +175,8 @@ python extract_text_en.py /data/yechen/bert/enwiki-20201101-pages-articles-multi
 python build_index_en.py
 
 python doc_retriever_en.py
+
+#en, xml to json
+python -m gensim.scripts.segment_wiki -i -f /data/yechen/bert/enwiki-20201101-pages-articles-multistream.xml.bz2 -o /data/yechen/bert/enwiki-20201101-pages-articles-multistream.json.gz
   
   
