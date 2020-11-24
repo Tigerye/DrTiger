@@ -20,7 +20,7 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
             for para_text in para_texts:
                 text = ''.join(para_text).replace("'''","").replace("''","").replace("===","").replace("\n+"," ").strip('=').strip('*').strip()
                 if text:
-                    output_text.join(" "+text)
+                    output_text = output_text + " " + text
             output.write(output_text+"\n")
         if (numart > 0):
             break
