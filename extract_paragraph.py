@@ -16,8 +16,9 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
             para_texts = section_text.replace("\n*","\n").strip('\n')
             paras = re.compile('\n+').split(para_texts)
             for para in paras:
-                numpar = numpar+1
-                output.write(''.join(para).replace("'''","").replace("''","").replace("===","").strip()+"\n")
+                if not para:
+                    numpar = numpar+1
+                    output.write(''.join(para).replace("'''","").replace("''","").replace("===","").strip()+"\n")
         if (numart > 0):
             break
 output.close()
