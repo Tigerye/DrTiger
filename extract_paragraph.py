@@ -16,7 +16,7 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
             section_text = section_text.replace("\n*","\n").strip('\n')
             para_texts = re.compile('\n+').split(section_text)
             for para_text in para_texts:
-                text = ''.join(para_text).replace("'''","").replace("''","").replace("===","").strip()
+                text = ''.join(para_text).replace("'''","").replace("''","").replace("===","").strip('=').strip('*').strip()
                 if text:
                     numpar = numpar+1
                     output.write(text+"\n")
