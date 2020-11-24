@@ -12,8 +12,8 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
     for line in f:
         numart = numart+1
         article = json.loads(line)
-        output_text = ''
         for section_text in article['section_texts']:
+            output_text = ''
             numsec = numsec+1
             section_text = section_text.replace("\n*","\n").strip('\n')
             para_texts = re.compile('\n+').split(section_text)
