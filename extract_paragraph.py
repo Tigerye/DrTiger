@@ -26,5 +26,5 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
         if (numart % 10000 == 0):
             logging.info("extracted "+str(numart) + " articles")
 output.close()
-print(f"extracted [{numart}] articles, [{numsec}] sections and [{numpar}] paragraphs.\n")
 logging.info("Finished extrqct "+str(numart) + " articles")
+print(f"extracted [{numart}] articles, [{numsec}] sections and [{numpar}] paragraphs.\n")
