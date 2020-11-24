@@ -11,7 +11,8 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
         article = json.loads(line)
         for section_text in zip(article['section_texts']):
             numpar = numpar+1
-            output.write(section_text + "\n")
+            output.write(section_text)
+            output.write("\n")
         if (numart > 2):
             break
 output.close()
