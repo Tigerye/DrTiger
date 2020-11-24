@@ -16,7 +16,7 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
             for para_text in para_texts:
                 numpar = numpar+1
                 output.write(''.join(para_text)+"\n")
-        if (numart > 2):
+        if (numart > 0):
             break
 output.close()
 print(f"extracted [{numart}] articles, [{numsec}] sections and [{numpar}] paragraphs.\n")
