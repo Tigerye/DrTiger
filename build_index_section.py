@@ -3,7 +3,8 @@
 
 import logging
 import pickle
-from rank_bm25 import BM25Okapi
+#from rank_bm25 import BM25Okapi as BM25
+from rank_bm25 import BM25Plus as BM25
 import time
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
@@ -17,7 +18,7 @@ print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
 
 print('building bm25...')
 tic = time.perf_counter()
-bm25 = BM25Okapi([doc.split(" ") for doc in docs])
+bm25 = BM25([doc.split(" ") for doc in docs])
 toc = time.perf_counter()
 print(f"Finished build bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
 
