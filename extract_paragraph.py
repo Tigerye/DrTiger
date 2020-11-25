@@ -17,6 +17,8 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
         numart = numart+1
         article = json.loads(line)
         section_titles = article['section_titles']
+        if not section_titles:
+            continue
         for section_text in article['section_texts']:
             if (section_titles[numsec] in exclude_sections):
                 continue
