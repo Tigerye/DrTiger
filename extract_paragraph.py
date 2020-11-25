@@ -17,6 +17,8 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
         article = json.loads(line)
         section_titles = article['section_titles']
         for section_text in article['section_texts']:
+            if (section_titles[numsec] == "External links"):
+                continue
             numsec = numsec+1
             section_text = section_text.replace("\n*","\n").strip('\n')
             para_texts = re.compile('\n+').split(section_text)
