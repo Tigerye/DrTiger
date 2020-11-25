@@ -8,7 +8,7 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logg
 #output = open('/data/yechen/bert/wiki.en.paragraph.txt', 'w',encoding='utf8')
 output = open('/data/yechen/bert/wiki.en.para.txt', 'w',encoding='utf8')
 #with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistream.json.gz', 'rb') as f:
-with utils.smart_open('enwiki-20201101-pages-articles-multistream1.xml-p1p41242.json.gz', 'rb') as f:
+with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistream1.xml-p1p41242.json.gz', 'rb') as f:
     numart = 0
     numsec = 0
     numpar = 0
