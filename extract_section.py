@@ -6,13 +6,17 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logg
 
 # iterate over the plain text data we just created
 output = open('/data/yechen/bert/wiki.en.section.txt', 'w',encoding='utf8')
+exclude_sections = {'See also', 'References', 'Further reading', 'External links', 'Sources', 'Bibliography'}
 with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistream.json.gz', 'rb') as f:
     numart = 0
     numsec = 0
     for line in f:
         numart = numart+1
         article = json.loads(line)
+        section_titles = article['section_titles']
         for section_text in article['section_texts']:
+            if (section_titles[numsec] in exclude_sections):
+                continue
             output_text = ''
             numsec = numsec+1
             section_text = section_text.replace("\n*","\n").strip('\n')
