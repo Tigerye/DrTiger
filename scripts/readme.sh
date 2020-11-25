@@ -178,5 +178,9 @@ python doc_retriever_en.py
 
 #en, xml to json
 python -m gensim.scripts.segment_wiki -i -f /data/yechen/bert/enwiki-20201101-pages-articles-multistream.xml.bz2 -o /data/yechen/bert/enwiki-20201101-pages-articles-multistream.json.gz
+
+python extract_paragraph.py
+
+python build_index_paragraph.py
   
   
