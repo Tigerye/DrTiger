@@ -19,8 +19,10 @@ with utils.smart_open('/data/yechen/bert/enwiki-20201101-pages-articles-multistr
         section_titles = article['section_titles']
         if not section_titles:
             continue
+        i = -1
         for section_text in article['section_texts']:
-            if (section_titles[numsec] in exclude_sections):
+            i = i+1
+            if (section_titles[i] in exclude_sections):
                 continue
             numsec = numsec+1
             section_text = section_text.replace("\n*","\n").strip('\n')
