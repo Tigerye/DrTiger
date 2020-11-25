@@ -22,6 +22,8 @@ bm25 = BM25([doc.split(" ") for doc in docs])
 toc = time.perf_counter()
 print(f"Finished build bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
 
+del docs
+
 print('dumping bm25...')
 tic = time.perf_counter()
 with open("/data/yechen/bert/drtiger/bm25_en_section","wb") as fout:
