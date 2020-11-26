@@ -2,8 +2,8 @@ import logging
 import sys
 import jieba
 import time
-#import pickle
-import hickle
+import pickle
+#import hickle
 #from rank_bm25 import BM25Okapi as BM25
 from rank_bm25 import BM25Plus as BM25
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     print('dumping bm25...')
     tic = time.perf_counter()
     with open(outfile,"wb") as fout:
-        #pickle.dump(bm25, fout)
-        hickle.dump(bm25, fout, mode='w')
+        pickle.dump(bm25, fout, protocol=2)
+        #hickle.dump(bm25, fout, mode='w')
     toc = time.perf_counter()
     print(f"Finished dump bm25 index in [{toc - tic:0.2f}] seconds\n")
