@@ -203,11 +203,40 @@ python doc_tokenize_zh.py /data/yechen/bert/wiki.zh.section.txt /data/yechen/ber
 
 python build_index_zh.py /data/yechen/bert/wiki.zh.section.tokens.txt /data/yechen/bert/drtiger/bm25_zh_section
 
+python doc_retriever_zh.py /data/yechen/bert/wiki.zh.section.txt /data/yechen/bert/drtiger/bm25_zh_section
+
 #zh paragraph
 python extract_paragraph_zh.py
 
 python doc_tokenize_zh.py /data/yechen/bert/wiki.zh.paragraph.txt /data/yechen/bert/wiki.zh.paragraph.tokens.txt
 
 python build_index_zh.py /data/yechen/bert/wiki.zh.paragraph.tokens.txt /data/yechen/bert/drtiger/bm25_zh_paragraph
+
+python doc_retriever_zh.py /data/yechen/bert/wiki.zh.paragraph.txt /data/yechen/bert/drtiger/bm25_zh_paragraph
+
+
+#en article
+python -m gensim.scripts.segment_wiki -i -f /data/yechen/bert/enwiki-20201101-pages-articles-multistream.xml.bz2 -o /data/yechen/bert/enwiki-20201101-pages-articles-multistream.json.gz
+
+python extract_article_en.py
+
+python build_index_en.py /data/yechen/bert/wiki.en.article.tokens.txt /data/yechen/bert/drtiger/bm25_en_article
+
+python doc_retriever_en.py /data/yechen/bert/wiki.en.article.txt /data/yechen/bert/drtiger/bm25_en_article
+
+#en section
+python extract_section_en.py
+
+python build_index_en.py /data/yechen/bert/wiki.en.section.txt /data/yechen/bert/drtiger/bm25_en_section
+
+python doc_retriever_en.py /data/yechen/bert/wiki.en.section.txt /data/yechen/bert/drtiger/bm25_en_section
+
+#en paragraph
+python extract_paragraph_en.py
+
+python build_index_en.py /data/yechen/bert/wiki.en.paragraph.txt /data/yechen/bert/drtiger/bm25_en_paragraph
+
+python doc_retriever_en.py /data/yechen/bert/wiki.en.paragraph.txt /data/yechen/bert/drtiger/bm25_en_paragraph
+
   
   
