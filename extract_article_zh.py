@@ -9,7 +9,7 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logg
 output = open('/data/yechen/bert/wiki.zh.article.txt', 'w',encoding='utf8')
 exclude_sections = {'参见', '參見', '参看', '参考', '註記', '参考书目', '参考文献', '參考文獻', '參考資料', '参考网址', '參考來源', '脚注', '外部連結', '外部链接', '扩展阅读', '延伸阅读', '延伸閱讀', '研究書目', '書目', '註釋及参考資料'}
 converter = opencc.OpenCC('t2s.json')
-with utils.smart_open('zhwiki-20201101-pages-articles-multistream.json.gz', 'rb') as f:
+with utils.smart_open('/data/yechen/bert/zhwiki-20201101-pages-articles-multistream.json.gz', 'rb') as f:
     numart = 0
     numsec = 0
     for line in f:
