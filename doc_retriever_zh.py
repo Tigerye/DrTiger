@@ -3,8 +3,8 @@ import sys
 import jieba
 import numpy as np
 from termcolor import colored
-#import pickle
-import hickle
+import pickle
+#import hickle
 #from rank_bm25 import BM25Okapi as BM25
 from rank_bm25 import BM25Plus as BM25
 import time
@@ -63,7 +63,8 @@ if __name__ == '__main__':
     print('loading bm25...')
     tic = time.perf_counter()
     with open(bm25file,"rb") as fin:
-        bm25 = hickle.load(fin)
+        bm25 = pickle.load(fin)
+        #bm25 = hickle.load(fin)
     toc = time.perf_counter()
     print(f"Finished load bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
     
