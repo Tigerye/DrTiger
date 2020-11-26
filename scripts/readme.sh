@@ -193,5 +193,11 @@ python extract_article_zh.py
 python doc_tokenize_zh.py /data/yechen/bert/wiki.zh.article.txt /data/yechen/bert/wiki.zh.article.tokens.txt
 
 #zh section
+python extract_section_zh.py
+
+python doc_tokenize_zh.py /data/yechen/bert/wiki.zh.section.txt /data/yechen/bert/wiki.zh.section.tokens.txt
+
+#zh paragraph
+
   
   
