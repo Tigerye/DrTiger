@@ -2,7 +2,8 @@
 #bert-serving-start -model_dir /data/yechen/bert/chinese_L-12_H-768_A-12 -num_worker=8 -max_seq_len=128
 
 import logging
-import pickle
+#import pickle
+import hickle
 #from rank_bm25 import BM25Okapi as BM25
 from rank_bm25 import BM25Plus as BM25
 import time
@@ -10,7 +11,7 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logg
 
 print('loading docs...')
 tic = time.perf_counter()
-with open('/data/yechen/bert/wiki.en.section.txt') as fin1:
+with open('/data/yechen/bert/wiki.en.txt') as fin1:
     docs = fin1.readlines()
 toc = time.perf_counter()
 print('doc 1: %s' % docs[0])
@@ -26,8 +27,9 @@ del docs
 
 print('dumping bm25...')
 tic = time.perf_counter()
-with open("/data/yechen/bert/drtiger/bm25_en_section","wb") as fout:
-    pickle.dump(bm25, fout)
+with open("/data/yechen/bert/drtiger/bm25_en_article","wb") as fout:
+    #pickle.dump(bm25, fout)
+    hickle.dump(bm25, fout, mode='w')
 toc = time.perf_counter()
 print(f"Finished dump bm25 index in [{toc - tic:0.2f}] seconds\n")
         

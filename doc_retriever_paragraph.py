@@ -2,7 +2,6 @@
 #bert-serving-start -model_dir /data/yechen/bert/chinese_L-12_H-768_A-12 -num_worker=8 -max_seq_len=128
 
 import logging
-import jieba
 import numpy as np
 from termcolor import colored
 #from rank_bm25 import BM25Okapi as BM25
@@ -10,7 +9,8 @@ from rank_bm25 import BM25Plus as BM25
 import time
 import json
 import os
-import pickle
+#import pickle
+import hickle
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 print('loading docs...')
@@ -24,7 +24,8 @@ print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
 print('loading bm25...')
 tic = time.perf_counter()
 with open("/data/yechen/bert/drtiger/bm25_en_section","rb") as fin:
-    bm25 = pickle.load(fin)
+    #bm25 = pickle.load(fin)
+    bm25 = hickle.load(fin)
 toc = time.perf_counter()
 print(f"Finished load bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
 

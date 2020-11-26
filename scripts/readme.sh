@@ -167,7 +167,7 @@ python run_squad.py \
   --null_score_diff_threshold=$THRESH
 
 
-  
+
   
  #retriever
 python extract_text_en.py /data/yechen/bert/enwiki-20201101-pages-articles-multistream.xml.bz2 /data/yechen/bert/wiki.en.txt
@@ -182,5 +182,12 @@ python -m gensim.scripts.segment_wiki -i -f /data/yechen/bert/enwiki-20201101-pa
 python extract_paragraph.py
 
 python build_index_paragraph.py
+
+
+
+#zh article
+python -m gensim.scripts.segment_wiki -i -f /data/yechen/bert/zhwiki-20201101-pages-articles-multistream.xml.bz2 -o /data/yechen/bert/zhwiki-20201101-pages-articles-multistream.json.gz
+
+python extract_article_zh.py
   
   
