@@ -3,6 +3,7 @@
 
 import logging
 import pickle
+import joblib
 #from rank_bm25 import BM25Okapi as BM25
 from rank_bm25 import BM25Plus as BM25
 import time
@@ -27,7 +28,8 @@ del docs
 print('dumping bm25...')
 tic = time.perf_counter()
 with open("/data/yechen/bert/drtiger/bm25_en_paragraph","wb") as fout:
-    pickle.dump(bm25, fout)
+    #pickle.dump(bm25, fout)
+    joblib.dump(bm25, fout)
 toc = time.perf_counter()
 print(f"Finished dump bm25 index in [{toc - tic:0.2f}] seconds\n")
         
