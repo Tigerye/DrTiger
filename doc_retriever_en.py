@@ -52,7 +52,7 @@ if __name__ == '__main__':
     logging.info("running %s" % ' '.join(sys.argv))
     docfile, bm25file = sys.argv[1:3]
     
-    exclude_pos = {'ADP', 'AUX', 'CCONJ', 'DET', 'INTJ', 'PUNCT', 'SCONJ'}
+    exclude_pos = {'ADP', 'AUX', 'CCONJ', 'DET', 'INTJ', 'PRON', 'PUNCT', 'SCONJ'}
     
     print('loading docs...')
     tic = time.perf_counter()
