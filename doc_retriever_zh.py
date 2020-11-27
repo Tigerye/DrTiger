@@ -83,8 +83,8 @@ if __name__ == '__main__':
         
         if not tokquery:
             continue
+        print(f"your query is: [{query}] and cleaned tokenized query is: [{' '.join(tokquery)}].\n")
         
-        print(f"your query is: [{query}] documents, and cleaned tokenized query is: [{' '.join(tokquery)}].\n")
         scores = bm25.get_scores(tokquery)
         topk_idx = np.argsort(scores)[::-1][:topk]
         print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
@@ -123,6 +123,7 @@ if __name__ == '__main__':
     
         topa_idx = np.argsort(reader_probs)[::-1][:topa]
     
+        print(f"your query is: [{query}]：\n")
         for idx in topa_idx:
             print('> %s\t%s\t%s\t%s' % (colored('retriever score: %.2f' % reader_scores[reader_docids[idx]], 'red'), colored('reader score: %.6e' % reader_probs[idx], 'red'), colored('answer: %s' % reader_preds[idx], 'blue'), colored('doc: %s' % reader_docs[reader_docids[idx]], 'yellow')))
     

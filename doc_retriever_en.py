@@ -1,5 +1,6 @@
 import logging
 import sys
+import stanza
 import numpy as np
 from termcolor import colored
 import pickle
@@ -51,6 +52,8 @@ if __name__ == '__main__':
     logging.info("running %s" % ' '.join(sys.argv))
     docfile, bm25file = sys.argv[1:3]
     
+    exclude_pos = {'ADP', 'AUX', 'CCONJ', 'DET', 'INTJ', 'PUNCT', 'SCONJ'}
+    
     print('loading docs...')
     tic = time.perf_counter()
     with open(docfile) as fin1:
@@ -67,10 +70,28 @@ if __name__ == '__main__':
     toc = time.perf_counter()
     print(f"Finished load bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
     
-    topk = 10
+    print('preparing nlp...')
+    tic = time.perf_counter()
+    stanza.download('en', processors='tokenize,pos', verbose=False)
+    nlp = stanza.Pipeline('en', processors='tokenize,pos', verbose=False)
+    toc = time.perf_counter()
+    print(f"Finished prepare nlp in [{toc - tic:0.2f}] seconds\n")
+    
+    topk = 100
     while True:
         query = input(colored('your question: ', 'green'))
-        tokquery = query.split()
+        #tokquery = query.split()
+        tokquery = []
+        doc = nlp(query)
+        for sentence in doc.sentences:
+            for word in sentence.words:
+                if (word.text) and (word.pos not in exclude_pos):
+                    tokquery.append(word.text)
+                    
+        if not tokquery:
+            continue
+        print(f"your query is: [{query}] and cleaned tokenized query is: [{' '.join(tokquery)}].\n")
+         
         scores = bm25.get_scores(tokquery)
         topk_idx = np.argsort(scores)[::-1][:topk]
         print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
@@ -109,6 +130,7 @@ if __name__ == '__main__':
     
         topa_idx = np.argsort(reader_probs)[::-1][:topa]
     
+        print(f"your query is: [{query}]：\n")
         for idx in topa_idx:
             print('> %s\t%s\t%s\t%s' % (colored('retriever score: %.2f' % reader_scores[reader_docids[idx]], 'red'), colored('reader score: %.6e' % reader_probs[idx], 'red'), colored('answer: %s' % reader_preds[idx], 'blue'), colored('doc: %s' % reader_docs[reader_docids[idx]], 'yellow')))
     
