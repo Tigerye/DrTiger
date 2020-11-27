@@ -72,7 +72,7 @@ if __name__ == '__main__':
     toc = time.perf_counter()
     print(f"Finished load bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
     
-    topk = 100
+    topk = 30
     while True:
         query = input(colored('your question: ', 'green'))
         #tokquery = jieba.cut(query)
