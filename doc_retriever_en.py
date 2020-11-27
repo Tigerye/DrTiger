@@ -130,7 +130,7 @@ if __name__ == '__main__':
     
         topa_idx = np.argsort(reader_probs)[::-1][:topa]
     
-        print(colored('your query: \"%s\"' % query, 'magenta'))
+        print(colored('your query: \"%s\"' % query, 'magenta'), '; ', colored('retriever query: \"%s\"' % ' '.join(tokquery), 'blue'))
         for idx in topa_idx:
             print('> %s\t%s\t%s\t%s' % (colored('retriever score: %.2f' % reader_scores[reader_docids[idx]], 'blue'), colored('reader score: %.6e' % reader_probs[idx], 'blue'), colored('answer: %s' % reader_preds[idx], 'red'), colored('doc: %s' % reader_docs[reader_docids[idx]], 'yellow')))
     
