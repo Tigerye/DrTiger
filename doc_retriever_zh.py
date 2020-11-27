@@ -11,7 +11,6 @@ from rank_bm25 import BM25Plus as BM25
 import time
 import json
 import os
-from doc_retriever import tokquery
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 def help():
