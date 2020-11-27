@@ -220,7 +220,7 @@ python -m gensim.scripts.segment_wiki -i -f /data/yechen/bert/enwiki-20201101-pa
 
 python extract_article_en.py
 
-python build_index_en.py /data/yechen/bert/wiki.en.article.tokens.txt /data/yechen/bert/drtiger/bm25_en_article
+python build_index_en.py /data/yechen/bert/wiki.en.article.txt /data/yechen/bert/drtiger/bm25_en_article
 
 python doc_retriever_en.py /data/yechen/bert/wiki.en.article.txt /data/yechen/bert/drtiger/bm25_en_article
 

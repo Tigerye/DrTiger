@@ -125,7 +125,7 @@ if __name__ == '__main__':
     
         print(colored('your query: \"%s\"' % query, 'magenta'), '; ', colored('retriever query: \"%s\"' % ' '.join(tokquery), 'blue'))
         for idx in topa_idx:
-            print('> %s\t%s\t%s\t%s' % (colored('answer: %s' % reader_preds[idx], 'red'), colored('retriever score: %.2f' % reader_scores[reader_docids[idx]], 'blue'), colored('reader score: %.6e' % reader_probs[idx], 'blue'), colored('doc: %s' % reader_docs[reader_docids[idx]], 'yellow')))
+            print('> %s\t%s\t%s\t%s' % (colored('answer: %s' % reader_preds[idx], 'blue'), colored('retriever score: %.2f' % reader_scores[reader_docids[idx]], 'red'), colored('reader score: %.6e' % reader_probs[idx], 'red'), colored('doc: %s' % reader_docs[reader_docids[idx]], 'yellow')))
     
         
     
