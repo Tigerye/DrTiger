@@ -78,7 +78,7 @@ if __name__ == '__main__':
         tokquery = []
         words = pseg.cut(query)
         for word, flag in words:
-            if (flag) and (word) and（flag[0] not in exclude_pos):
+            if (flag) and (word) and (flag[0] not in exclude_pos):
                 tokquery.append(word)
         
         if not tokquery:
