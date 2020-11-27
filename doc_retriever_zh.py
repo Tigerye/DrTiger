@@ -10,6 +10,7 @@ from rank_bm25 import BM25Plus as BM25
 import time
 import json
 import os
+from doc_retriever import tokquery
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 def help():
@@ -52,6 +53,8 @@ if __name__ == '__main__':
     logging.info("running %s" % ' '.join(sys.argv))
     docfile, bm25file = sys.argv[1:3]
     
+    exclude_pos = {'p', 'r', 'u', 'x', 'y'}
+    
     print('loading docs...')
     tic = time.perf_counter()
     with open(docfile) as fin1:
@@ -71,7 +74,17 @@ if __name__ == '__main__':
     topk = 10
     while True:
         query = input(colored('your question: ', 'green'))
-        tokquery = jieba.cut(query)
+        #tokquery = jieba.cut(query)
+        tokquery = []
+        words = pseg.cut(query)
+        for word, flag in words:
+            if (flag) and (word) and（flag[0] not in exclude_pos):
+                tokquery.append(word)
+        
+        if not tokquery:
+            continue
+        
+        print(f"your query is: [{query}] documents, and cleaned tokenized query is: [{' '.join(tokquery)}].\n")
         scores = bm25.get_scores(tokquery)
         topk_idx = np.argsort(scores)[::-1][:topk]
         print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
