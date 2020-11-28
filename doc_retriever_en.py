@@ -93,7 +93,7 @@ if __name__ == '__main__':
         for sentence in doc.sentences:
             for word in sentence.words:
                 if (word.text) and (word.pos not in exclude_pos):
-                    tokquery.append(word.text)
+                    tokquery.append(word.text.lower())
                     
         if not tokquery:
             continue

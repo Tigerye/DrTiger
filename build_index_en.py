@@ -21,7 +21,7 @@ if __name__ == '__main__':
     tic = time.perf_counter()
     with open(infile) as fin:
         docs = fin.readlines()
-        #lower docs for uncased bert and uncased search
+        #lower docs for uncased bert, bm25 and uncased search
         docs = [doc.lower() for doc in docs]
     toc = time.perf_counter()
     print('tokonized doc 1: %s' % docs[0])
