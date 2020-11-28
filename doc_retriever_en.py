@@ -70,6 +70,11 @@ if __name__ == '__main__':
     toc = time.perf_counter()
     print(f"Finished load bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
     
+    proxy_cmd = 'proxy'
+    print(f"os execute: [{proxy_cmd}]\n")
+    os.system(proxy_cmd)
+    print(f"done proxy cmd execute\n")
+    
     print('preparing nlp...')
     tic = time.perf_counter()
     stanza.download('en', processors='tokenize,pos', verbose=False)
@@ -110,7 +115,7 @@ if __name__ == '__main__':
         reader_cmd = 'python run_squad.py   --vocab_file=/data/yechen/bert/uncased_L-24_H-1024_A-16/vocab.txt   --bert_config_file=/data/yechen/bert/uncased_L-24_H-1024_A-16/bert_config.json   --init_checkpoint=/data/yechen/bert/uncased_L-24_H-1024_A-16/bert_model.ckpt   --do_train=False   --train_file=/data/yechen/squad/train-v2.0.json   --do_predict=True   --predict_file=/data/yechen/bert/drtiger/retrieved_en.json   --train_batch_size=8   --learning_rate=3e-5   --num_train_epochs=2.0   --max_seq_length=512   --doc_stride=128   --output_dir=/data/yechen/squad/squad_2.0_large_1-256/   --version_2_with_negative=True   --null_score_diff_threshold=-4.251452803611755'
         print(f"os execute: [{reader_cmd}]\n")
         os.system(reader_cmd)
-        print(f"done reader execute\n")
+        print(f"done reader cmd execute\n")
 
         with open('/data/yechen/squad/squad_2.0_large_1-256/nbest_predictions.json','r') as f:
             reader_pred_nbest = json.load(f)
