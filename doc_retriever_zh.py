@@ -131,7 +131,7 @@ if __name__ == '__main__':
     
         print(colored('===============================================','blue'))
         print(colored('your query: \"%s\"' % query, 'magenta'))
-        print(colored('dr.tiger answer: [%s, %s, %s]' % (reader_preds[topa_idx[0]], reader_preds[topa_idx[1]], reader_preds[topa_idx[2]]) 'magenta'))
+        print(colored('dr.tiger answer: [%s, %s, %s]' % (reader_preds[topa_idx[0]], reader_preds[topa_idx[1]], reader_preds[topa_idx[2]]), 'magenta'))
         print(colored('===============================================','blue'))
         
     
