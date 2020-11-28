@@ -70,9 +70,11 @@ if __name__ == '__main__':
     toc = time.perf_counter()
     print(f"Finished load bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
     
-    proxy_cmd = 'proxy'
-    print(f"os execute: [{proxy_cmd}]\n")
-    os.system(proxy_cmd)
+    proxy_cmd1 = 'export http_proxy=http://52.82.11.229:10001'
+    proxy_cmd2 = 'export https_proxy=http://52.82.11.229:10001'
+    proxy_cmd3 = 'curl cip.cc'
+    print(f"os execute: [{proxy_cmd1+'; '+proxy_cmd2+'; '+proxy_cmd3}]\n")
+    os.system(proxy_cmd1+'; '+proxy_cmd2+'; '+proxy_cmd3)
     print(f"done proxy cmd execute\n")
     
     print('preparing nlp...')
