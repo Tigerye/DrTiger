@@ -84,7 +84,7 @@ if __name__ == '__main__':
     toc = time.perf_counter()
     print(f"Finished prepare nlp in [{toc - tic:0.2f}] seconds\n")
     
-    topk = 30
+    topk = 100
     while True:
         query = input(colored('your question: ', 'green'))
         #tokquery = query.split()
