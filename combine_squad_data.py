@@ -23,13 +23,15 @@ if __name__ == '__main__':
     i = 0
     with open(infile1) as f:
         d = json.load(f)
-    data['data'].append(d["data"])
-    i += len(d["data"])
+    for doc in d["data"]:
+        data['data'].append(doc)
+        i+=1
     
     with open(infile2) as f:
         d = json.load(f)
-    data['data'].append(d["data"])
-    i += len(d["data"])
+    for doc in d["data"]:
+        data['data'].append(doc)
+        i+=1
     
     with open(outfile, 'w') as f:
         json.dump(data, f)
