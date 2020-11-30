@@ -29,7 +29,7 @@ if __name__ == '__main__':
     
     print('building bm25...')
     tic = time.perf_counter()
-    bm25 = BM25([doc.split(" ") for doc in docs])
+    bm25 = BM25([doc.strip().split(" ") for doc in docs])
     toc = time.perf_counter()
     print(f"Finished build bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
     
