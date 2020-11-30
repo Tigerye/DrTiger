@@ -24,7 +24,7 @@ for doc in newsqa["data"]:
         for question in doc["questions"]:
             j = j+1
             q_text = question["q"]
-            if (not question["consensus"]["s"]):
+            if ('s' not in question["consensus"]):
                 continue
             a_start = question["consensus"]["s"]
             a_end = question["consensus"]["e"]
