@@ -8,6 +8,8 @@ python build_index.py
 python doc_retriever.py
 
 THRESH=-0.000835418701171875
+
+
 BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
 SQUAD_DIR=/data/yechen/squad/WebQA.v1.0
 
@@ -19,6 +21,26 @@ python run_squad.py \
   --train_file=$SQUAD_DIR/webqa_squad_train.json \
   --do_predict=True \
   --predict_file=/data/yechen/bert/drtiger/retrieved.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=512 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_base/ \
+  --version_2_with_negative=True \
+  --null_score_diff_threshold=$THRESH
+ 
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12_wikizh
+SQUAD_DIR=/data/yechen/squad/WebQA.v1.0
+
+ python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/webqa_squad_train.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/webqa_squad_eval.json \
   --train_batch_size=8 \
   --learning_rate=3e-5 \
   --num_train_epochs=2.0 \
@@ -100,6 +122,43 @@ python run_squad.py \
   "best_exact_thresh": -0.000835418701171875,
   "best_f1": 60.03961921531943,
   "best_f1_thresh": -0.000835418701171875
+}
+
+#zh self pre-train
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12_wikizh
+SQUAD_DIR=/data/yechen/squad/WebQA.v1.0
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/webqa_squad_train.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/webqa_squad_eval.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_base_wikizh/ \
+  --version_2_with_negative=True
+  
+SQUAD_DIR=/data/yechen/squad/WebQA.v1.0
+  
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/webqa_squad_eval.json $SQUAD_DIR/squad_base_wikizh/predictions.json --na-prob-file $SQUAD_DIR/squad_base_wikizh/null_odds.json
+
+{
+  "exact": 61.302481703626256,
+  "f1": 61.302481703626256,
+  "total": 36346,
+  "HasAns_exact": 61.302481703626256,
+  "HasAns_f1": 61.302481703626256,
+  "HasAns_total": 36346,
+  "best_exact": 61.302481703626256,
+  "best_exact_thresh": -0.0071294307708740234,
+  "best_f1": 61.302481703626256,
+  "best_f1_thresh": -0.0071294307708740234
 }
 
 
