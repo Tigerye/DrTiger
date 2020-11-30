@@ -1,12 +1,20 @@
 import json
 
 infile='/data/yechen/squad/newsqa/combined-newsqa-data-v1.json'
-outfile='/data/yechen/squad/newsqa/newsqa_to_squad_train.json'
+outfile_train='/data/yechen/squad/newsqa/newsqa_to_squad_train.json'
+outfile_dev='/data/yechen/squad/newsqa/newsqa_to_squad_dev.json'
 
 with open(infile) as f:
     newsqa = json.load(f)
 
-data = {
+data_train = {
+        "version": "v2.0",
+        "data": [
+
+        ]
+    }
+
+data_dev = {
         "version": "v2.0",
         "data": [
 
@@ -25,6 +33,7 @@ for doc in newsqa["data"]:
             j = j+1
             q_text = question["q"]
             if ('s' not in question["consensus"]):
+                j = j-1
                 continue
             a_start = question["consensus"]["s"]
             a_end = question["consensus"]["e"]
@@ -50,11 +59,16 @@ for doc in newsqa["data"]:
                 }]
             }
         
-        data['data'].append(d)
+        if (d_type=="train"):
+            data_train['data'].append(d)
+        else:
+            data_train['data'].append(d)
         
         if (i % 1000 ==0):
-            print(f"converted [{i}] docs\n")
+            print(f"converted [{i}] docs")
         
-with open(outfile, 'w') as f:
-    json.dump(data, f)
-print(f"Finished convert [{i}] docs and [{j}] questions\n")
+with open(outfile_train, 'w') as f:
+    json.dump(data_train, f)
+with open(outfile_dev, 'w') as f:
+    json.dump(data_dev, f)
+print(f"Finished convert [{i}] docs and [{j}] questions")
