@@ -313,7 +313,7 @@ python run_squad.py \
   --train_batch_size=1 \
   --learning_rate=3e-5 \
   --num_train_epochs=2.0 \
-  --max_seq_length=384 \
+  --max_seq_length=256 \
   --doc_stride=128 \
   --output_dir=$SQUAD_DIR/squad_2.0_large_newsqa_and_squad/ \
   --version_2_with_negative=True
