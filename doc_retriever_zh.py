@@ -59,6 +59,7 @@ if __name__ == '__main__':
     tic = time.perf_counter()
     with open(docfile) as fin1:
         docs = fin1.readlines()
+        docs = [doc.strip() for doc in docs]
     toc = time.perf_counter()
     print('doc 1: %s' % docs[0])
     print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
