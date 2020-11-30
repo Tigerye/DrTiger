@@ -32,24 +32,29 @@ for doc in newsqa["data"]:
         for question in doc["questions"]:
             j = j+1
             q_text = question["q"]
-            if ('s' not in question["consensus"]):
-                j = j-1
-                continue
-            a_start = question["consensus"]["s"]
-            a_end = question["consensus"]["e"]
-            a_text = d_text[a_start:a_end-1]
-            
-            qas.append({
-                'question': q_text,
-                'id': str(j),
-                'answers': [
-                    {
-                        "text": a_text,
-                        "answer_start": a_start
-                        }
-                    ],
-                'is_impossible': True,
-                })
+            if ('s' in question["consensus"]):
+                a_start = question["consensus"]["s"]
+                a_end = question["consensus"]["e"]
+                a_text = d_text[a_start:a_end-1]
+                
+                qas.append({
+                    'question': q_text,
+                    'id': str(j),
+                    'answers': [
+                        {
+                            "text": a_text,
+                            "answer_start": a_start
+                            }
+                        ],
+                    'is_impossible': False,
+                    })
+            else:
+                qas.append({
+                    'question': q_text,
+                    'id': str(j),
+                    'answers': [],
+                    'is_impossible': True,
+                    })
         
         d = {
             'title': "doc"+str(i),
@@ -62,7 +67,7 @@ for doc in newsqa["data"]:
         if (d_type=="train"):
             data_train['data'].append(d)
         else:
-            data_train['data'].append(d)
+            data_dev['data'].append(d)
         
         if (i % 1000 ==0):
             print(f"converted [{i}] docs")
