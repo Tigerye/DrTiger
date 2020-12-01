@@ -1,11 +1,17 @@
 import json
+import sys
 import requests
+import logging
+logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 # infile = '/data/yechen/squad/dev-v2.0.json'
 # outfile = '/data/yechen/squad/dev-v2.0-zh.json'
 
 infile = '/data/yechen/squad/data/combined-squad-train-v2.0.json'
 outfile = '/data/yechen/squad/data/combined-squad-train-v2.0-zh.json'
+
+def help():
+    print("Usage: python squad_en_to_zh.py /data/yechen/squad/dev-v2.0.json /data/yechen/squad/dev-v2.0-zh.json")
 
 def trans(query):
     From = 'en'
@@ -22,24 +28,33 @@ def trans(query):
         return result['translation'][0], error_code
     else: 
         return 'None', error_code
-
-data = {
+    
+if __name__ == '__main__':
+    if len(sys.argv) < 3:
+        help()
+        sys.exit(1)
+    logging.info("running %s" % ' '.join(sys.argv))
+    infile, outfile = sys.argv[1:3]
+    
+    data = {
         "version": "v2.0",
         "data": [
+            
+            ]
+        }
+    
+    with open(infile) as f:
+        data_en = json.load(f)
 
-        ]
-    }
-with open(infile) as f:
-    data_en = json.load(f)
+    i = 0
+    j = 0
+    k = 0
+    jb = 0
+    kb = 0
+    l = 0
+    lb = 0
 
-i = 0
-j = 0
-k = 0
-jb = 0
-kb = 0
-l = 0
-lb = 0
-for doc in data_en["data"]:
+    for doc in data_en["data"]:
         i = i+1
         doc_title = doc["title"]
         
@@ -100,12 +115,10 @@ for doc in data_en["data"]:
             'paragraphs': para
             })
         
-#         if (i > 0):
-#             break
             
         if (i % 1000 ==0):
             print(f"translated [{i}] docs")
         
-with open(outfile, 'w') as f:
-    json.dump(data, f)
-print(f"Finished translate [{i}] docs, [{j}] paragraphs ([{jb}] bad), [{k}] questions ([{kb}] bad) and [{l}] answers ([{lb}] bad)")
+    with open(outfile, 'w') as f:
+        json.dump(data, f)
+    print(f"Finished translate [{i}] docs, [{j}] paragraphs ([{jb}] bad), [{k}] questions ([{kb}] bad) and [{l}] answers ([{lb}] bad)")
