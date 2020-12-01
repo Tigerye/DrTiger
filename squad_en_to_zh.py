@@ -1,8 +1,11 @@
 import json
 import requests
 
-infile = '/data/yechen/squad/dev-v2.0.json'
-outfile = '/data/yechen/squad/dev-v2.0-zh.json'
+# infile = '/data/yechen/squad/dev-v2.0.json'
+# outfile = '/data/yechen/squad/dev-v2.0-zh.json'
+
+infile = '/data/yechen/squad/data/combined-squad-train-v2.0.json'
+outfile = '/data/yechen/squad/data/combined-squad-train-v2.0-zh.json'
 
 def trans(query):
     From = 'en'
@@ -93,8 +96,8 @@ for doc in data_en["data"]:
             'paragraphs': para
             })
         
-        if (i > 0):
-            break
+#         if (i > 0):
+#             break
             
         if (i % 1000 ==0):
             print(f"translated [{i}] docs")
