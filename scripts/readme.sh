@@ -319,7 +319,10 @@ python run_squad.py \
   --version_2_with_negative=True
   
   
-  #small bert, 745k question, en model
+#small bert, 745k question, en model
+python combine_squad_data.py (for dev)
+python combine_squad_data.py (for train)
+
 BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
 SQUAD_DIR=/data/yechen/squad
 
