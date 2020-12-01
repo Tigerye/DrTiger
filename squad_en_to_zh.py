@@ -57,6 +57,7 @@ for doc in data_en["data"]:
                 }]
             }
         
+        data['data'].append(d)
         
         if (i % 1000 ==0):
             print(f"translated [{i}] docs")
