@@ -12,9 +12,10 @@ def trans(query):
         'from' : From,
         'to' : To
         }
-    information = requests.post('https://aidemo.youdao.com/trans',data)
-    print(information.json())
-    return information.json()['translation']
+    information = requests.post('https://aidemo.youdao.com/trans', data)
+    result = information.json()
+    if (result['errorCode']==0):
+        return result['translation'][0]
 
 
 data = {
