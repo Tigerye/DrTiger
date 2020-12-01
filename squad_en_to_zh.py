@@ -101,4 +101,4 @@ for doc in data_en["data"]:
         
 with open(outfile, 'w') as f:
     json.dump(data, f)
-print(f"Finished convert [{i}] docs, [{j}] paragraphs ([{jb}] bad) and [{k}] questions ([{kb}] bad)")
+print(f"Finished translate [{i}] docs, [{j}] paragraphs ([{jb}] bad) and [{k}] questions ([{kb}] bad)")
