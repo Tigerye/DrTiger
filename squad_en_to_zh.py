@@ -48,14 +48,16 @@ for doc in data_en["data"]:
                     'answers': ans,
                     'is_impossible': ques_imp,
                     })
+            
+            d = {
+                'title': doc_title,
+                'paragraphs': [{
+                    'context': para_text,
+                    'qas': qas
+                    }]
+                }
         
-        d = {
-            'title': doc_title,
-            'paragraphs': [{
-                'context': para_text,
-                'qas': qas
-                }]
-            }
+        
         
         data['data'].append(d)
         
