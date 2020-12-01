@@ -18,7 +18,6 @@ def trans(query):
         print(result['translation'][0])
         return result['translation'][0]
     else: 
-        print(result['errorCode'])
         return result
 
 data = {
@@ -35,6 +34,8 @@ f_version = data_en["version"]
 i = 0
 j = 0
 k = 0
+jb = 0
+kb = 0
 for doc in data_en["data"]:
         i = i+1
         doc_title = doc["title"]
@@ -43,7 +44,9 @@ for doc in data_en["data"]:
         for paragraph in doc["paragraphs"]:
             j = j+1
             para_text = trans(paragraph["context"])
-            print(para_text)
+            if (para_text.startswith('\{\'errorCode\'\:')):
+                jb+=1
+                continue
             
             qas = []
             for question in paragraph["qas"]:
@@ -87,4 +90,4 @@ for doc in data_en["data"]:
         
 with open(outfile, 'w') as f:
     json.dump(data, f)
-print(f"Finished convert [{i}] docs, [{j}] paragraphs and [{k}] questions")
+print(f"Finished convert [{i}] docs, [{j}] paragraphs ([{jb}] bad) and [{k}] questions")
