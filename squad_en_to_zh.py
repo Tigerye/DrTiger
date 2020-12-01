@@ -1,7 +1,20 @@
 import json
+import requests
 
 infile = '/data/yechen/squad/dev-v2.0.json'
 outfile = '/data/yechen/squad/dev-v2.0-zh.json'
+
+def trans(query):
+    From = 'en'
+    To = 'zh'
+    data = {
+        'q' : query,
+        'from' : From,
+        'to' : To
+        }
+    information = requests.post('https://aidemo.youdao.com/trans',data)
+    return information.json()['web'][0]['value']
+
 
 data = {
         "version": "v2.0",
@@ -24,7 +37,7 @@ for doc in data_en["data"]:
         para = []
         for paragraph in doc["paragraphs"]:
             j = j+1
-            para_text = paragraph["context"]
+            para_text = trans(paragraph["context"])
             
             qas = []
             for question in paragraph["qas"]:
@@ -55,14 +68,10 @@ for doc in data_en["data"]:
                 'context': para_text
                 })
         
-        d = {
+        data['data'].append({
             'title': doc_title,
             'paragraphs': para
-            }
-        
-        
-        
-        data['data'].append(d)
+            })
         
         if (i % 1000 ==0):
             print(f"translated [{i}] docs")
