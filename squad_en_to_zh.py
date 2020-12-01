@@ -21,6 +21,7 @@ for doc in data_en["data"]:
         i = i+1
         doc_title = doc["title"]
         
+        para = []
         for paragraph in doc["paragraphs"]:
             j = j+1
             para_text = paragraph["context"]
@@ -49,13 +50,15 @@ for doc in data_en["data"]:
                     'is_impossible': ques_imp,
                     })
             
-            d = {
-                'title': doc_title,
-                'paragraphs': [{
-                    'context': para_text,
-                    'qas': qas
-                    }]
-                }
+            para.append({
+                'context': para_text,
+                'qas': qas
+                })
+        
+        d = {
+            'title': doc_title,
+            'paragraphs': para
+            }
         
         
         
