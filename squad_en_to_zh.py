@@ -17,7 +17,9 @@ def trans(query):
     if (result['errorCode']=='0'):
         print(result['translation'][0])
         return result['translation'][0]
-
+    else: 
+        print(result['errorCode'])
+        return result
 
 data = {
         "version": "v2.0",
