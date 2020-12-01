@@ -14,7 +14,7 @@ def trans(query):
         }
     information = requests.post('https://aidemo.youdao.com/trans',data)
     print(information.json())
-    return information.json()['translation]']
+    return information.json()['translation']
 
 
 data = {
