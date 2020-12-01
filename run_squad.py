@@ -272,7 +272,12 @@ def read_squad_examples(input_file, is_training):
             answer_offset = answer["answer_start"]
             answer_length = len(orig_answer_text)
             start_position = char_to_word_offset[answer_offset]
-            end_position = char_to_word_offset[answer_offset + answer_length - 1]
+            try:
+                end_position = char_to_word_offset[answer_offset + answer_length - 1]
+            except IndexError:
+                print('para: '+paragraph_text)
+                print('ans: '+orig_answer_text)
+                print*('start: '+str(start_position))
             # Only add answers where the text can be exactly recovered from the
             # document. If this CAN'T happen it's likely due to weird Unicode
             # stuff so we will just skip the example.
