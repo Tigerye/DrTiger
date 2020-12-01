@@ -276,8 +276,10 @@ def read_squad_examples(input_file, is_training):
                 end_position = char_to_word_offset[answer_offset + answer_length - 1]
             except IndexError:
                 print('para: '+paragraph_text)
+                print('ques: '+question_text)
                 print('ans: '+orig_answer_text)
-                print*('start: '+str(start_position))
+                print('start: '+str(start_position))
+                continue
             # Only add answers where the text can be exactly recovered from the
             # document. If this CAN'T happen it's likely due to weird Unicode
             # stuff so we will just skip the example.
@@ -289,9 +291,9 @@ def read_squad_examples(input_file, is_training):
             cleaned_answer_text = " ".join(
                 tokenization.whitespace_tokenize(orig_answer_text))
             if actual_text.find(cleaned_answer_text) == -1:
-              tf.logging.warning("Could not find answer: '%s' vs. '%s'",
-                                 actual_text, cleaned_answer_text)
-              continue
+                tf.logging.warning("Could not find answer: '%s' vs. '%s'",
+                                   actual_text, cleaned_answer_text)
+                continue
           else:
             start_position = -1
             end_position = -1
