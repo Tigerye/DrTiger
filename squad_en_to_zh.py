@@ -38,6 +38,7 @@ for doc in data_en["data"]:
         for paragraph in doc["paragraphs"]:
             j = j+1
             para_text = trans(paragraph["context"])
+            print(para_text)
             
             qas = []
             for question in paragraph["qas"]:
@@ -73,6 +74,9 @@ for doc in data_en["data"]:
             'paragraphs': para
             })
         
+        if (i > 0):
+            break
+            
         if (i % 1000 ==0):
             print(f"translated [{i}] docs")
         
