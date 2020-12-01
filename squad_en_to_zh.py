@@ -15,6 +15,7 @@ def trans(query):
     information = requests.post('https://aidemo.youdao.com/trans', data)
     result = information.json()
     if (result['errorCode']==0):
+        print(result['translation'][0])
         return result['translation'][0]
 
 
