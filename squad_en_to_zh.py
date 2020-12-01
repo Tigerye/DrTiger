@@ -7,8 +7,8 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logg
 # infile = '/data/yechen/squad/dev-v2.0.json'
 # outfile = '/data/yechen/squad/dev-v2.0-zh.json'
 
-infile = '/data/yechen/squad/data/combined-squad-train-v2.0.json'
-outfile = '/data/yechen/squad/data/combined-squad-train-v2.0-zh.json'
+# infile = '/data/yechen/squad/data/combined-squad-train-v2.0.json'
+# outfile = '/data/yechen/squad/data/combined-squad-train-v2.0-zh.json'
 
 def help():
     print("Usage: python squad_en_to_zh.py /data/yechen/squad/dev-v2.0.json /data/yechen/squad/dev-v2.0-zh.json")
