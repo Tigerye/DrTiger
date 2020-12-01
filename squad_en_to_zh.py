@@ -14,11 +14,11 @@ def trans(query):
         }
     information = requests.post('https://aidemo.youdao.com/trans', data)
     result = information.json()
-    if (result['errorCode']=='0'):
-        print(result['translation'][0])
-        return result['translation'][0]
+    error_code = result['errorCode']
+    if (error_code=='0'):
+        return result['translation'][0], error_code
     else: 
-        return result
+        return 'None', error_code
 
 data = {
         "version": "v2.0",
@@ -43,8 +43,8 @@ for doc in data_en["data"]:
         para = []
         for paragraph in doc["paragraphs"]:
             j = j+1
-            para_text = trans(paragraph["context"])
-            if (para_text.startswith('\{\'errorCode\'\:')):
+            para_text, error_code = trans(paragraph["context"])
+            if (error_code!='0'):
                 jb+=1
                 continue
             
