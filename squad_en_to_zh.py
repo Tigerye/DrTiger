@@ -68,8 +68,8 @@ for doc in data_en["data"]:
                             "text": ans_text,
                             "answer_start": ans_start
                             })
-                    else:
-                        ques_imp = True
+                if (not ans):
+                    ques_imp = True
                         
                 
                 qas.append({
