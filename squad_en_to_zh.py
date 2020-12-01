@@ -37,6 +37,8 @@ j = 0
 k = 0
 jb = 0
 kb = 0
+l = 0
+lb = 0
 for doc in data_en["data"]:
         i = i+1
         doc_title = doc["title"]
@@ -47,8 +49,8 @@ for doc in data_en["data"]:
             para_text, error_code = trans(paragraph["context"])
             if (error_code!='0'):
                 #error logging
-                print("[error_code]: ", error_code, "; [para_text]: ", paragraph["context"])
                 jb+=1
+                print(f"[error_code]: {error_code}; [error/total paragraphs]: {jb}/{j}")
                 continue
             
             qas = []
@@ -56,8 +58,8 @@ for doc in data_en["data"]:
                 k = k+1
                 ques_text, error_code = trans(question["question"])
                 if (error_code!='0'):
-                    print("[error_code]: ", error_code, "; [ques_text]: ", question["question"])
                     kb+=1
+                    print(f"[error_code]: {error_code}; [error/total questions]: {kb}/{k}.")
                     continue
                 
                 ques_id = question["id"]
@@ -65,9 +67,11 @@ for doc in data_en["data"]:
                 ans = []
                 ques_imp = question["is_impossible"]
                 for answer in question["answers"]:
+                    l = l+1
                     ans_text, error_code = trans(answer["text"])
                     if (error_code!='0'):
-                        print("[error_code]: ", error_code, "; [ans_text]: ", answer["text"])
+                        lb+=1
+                        print(f"[error_code]: {error_code}; [error/total answers]: {lb}/{l}.")
                         continue
                     ans_start = para_text.find(ans_text)
                     if (ans_start!=-1):
@@ -104,4 +108,4 @@ for doc in data_en["data"]:
         
 with open(outfile, 'w') as f:
     json.dump(data, f)
-print(f"Finished translate [{i}] docs, [{j}] paragraphs ([{jb}] bad) and [{k}] questions ([{kb}] bad)")
+print(f"Finished translate [{i}] docs, [{j}] paragraphs ([{jb}] bad), [{k}] questions ([{kb}] bad) and [{l}] answers ([{lb}] bad)")
