@@ -13,6 +13,7 @@ def trans(query):
         'to' : To
         }
     information = requests.post('https://aidemo.youdao.com/trans',data)
+    print(information.json())
     return information.json()['web'][0]['value']
 
 
