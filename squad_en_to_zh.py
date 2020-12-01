@@ -51,8 +51,8 @@ for doc in data_en["data"]:
                     })
             
             para.append({
-                'context': para_text,
-                'qas': qas
+                'qas': qas,
+                'context': para_text
                 })
         
         d = {
