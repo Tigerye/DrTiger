@@ -43,6 +43,8 @@ for doc in data_en["data"]:
             j = j+1
             para_text, error_code = trans(paragraph["context"])
             if (error_code!='0'):
+                #error logging
+                print("errorCode: ", error_code, "; para_text: ", paragraph["context"])
                 jb+=1
                 continue
             
@@ -51,6 +53,7 @@ for doc in data_en["data"]:
                 k = k+1
                 ques_text, error_code = trans(question["question"])
                 if (error_code!='0'):
+                    print("errorCode: ", error_code, "; ques_text: ", question["question"])
                     kb+=1
                     continue
                 
@@ -61,6 +64,7 @@ for doc in data_en["data"]:
                 for answer in question["answers"]:
                     ans_text, error_code = trans(answer["text"])
                     if (error_code!='0'):
+                        print("errorCode: ", error_code, "; ans_text: ", answer["text"])
                         continue
                     ans_start = para_text.find(ans_text)
                     if (ans_start!=-1):
