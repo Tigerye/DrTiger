@@ -28,8 +28,6 @@ data = {
     }
 with open(infile) as f:
     data_en = json.load(f)
-    
-f_version = data_en["version"]
 
 i = 0
 j = 0
@@ -51,19 +49,28 @@ for doc in data_en["data"]:
             qas = []
             for question in paragraph["qas"]:
                 k = k+1
-                ques_text = question["question"]
+                ques_text, error_code = trans(question["question"])
+                if (error_code!='0'):
+                    kb+=1
+                    continue
+                
                 ques_id = question["id"]
                 
                 ans = []
                 ques_imp = question["is_impossible"]
                 for answer in question["answers"]:
-                    ans_text = answer["text"]
-                    ans_start = answer["answer_start"]
-                    
-                    ans.append({
-                        "text": ans_text,
-                        "answer_start": ans_start
-                        })
+                    ans_text, error_code = trans(answer["text"])
+                    if (error_code!='0'):
+                        continue
+                    ans_start = para_text.find(ans_text)
+                    if (ans_start!=-1):
+                        ans.append({
+                            "text": ans_text,
+                            "answer_start": ans_start
+                            })
+                    else:
+                        ques_imp = True
+                        
                 
                 qas.append({
                     'question': ques_text,
