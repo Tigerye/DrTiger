@@ -7,7 +7,7 @@ from nltk import tokenize
 import logging
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
-from netease_trans import netease_trans
+# from netease_trans import netease_trans
 
 # infile = '/data/yechen/squad/dev-v2.0.json'
 # outfile = '/data/yechen/squad/dev-v2.0-zh.json'
@@ -26,9 +26,9 @@ def trans(query):
         'from' : From,
         'to' : To
         }
-#     information = requests.post('https://aidemo.youdao.com/trans', data)
-#     result = information.json()
-    result = json.loads(netease_trans(query).decode('utf-8'))
+    information = requests.post('https://aidemo.youdao.com/trans', data)
+    result = information.json()
+#     result = json.loads(netease_trans(query).decode('utf-8'))
     error_code = result['errorCode']
     if (error_code=='0'):
         return result['translation'][0], error_code
@@ -41,9 +41,9 @@ def trans(query):
                 'from' : From,
                 'to' : To
                 }
-#             info = requests.post('https://aidemo.youdao.com/trans', d)
-#             res= info.json()
-            res= json.loads(netease_trans(q).decode('utf-8'))
+            info = requests.post('https://aidemo.youdao.com/trans', d)
+            res= info.json()
+#             res= json.loads(netease_trans(q).decode('utf-8'))
             
             
             error_code = res['errorCode']
@@ -147,9 +147,9 @@ if __name__ == '__main__':
             'paragraphs': para
             })
         
-        #debug
-        if (i>0):
-            break
+#         #debug
+#         if (i>0):
+#             break
             
         if (i % 1000 ==0):
             print(f"translated [{i}] docs")
