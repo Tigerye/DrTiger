@@ -54,7 +54,7 @@ def trans(q):
     if contentType == "audio/mp3":
         millis = int(round(time.time() * 1000))
         filePath = "path_to_media" + str(millis) + ".mp3"
-        fo = open(filePath, 'wb', encoding="utf-8")
+        fo = open(filePath, 'wb')
         fo.write(response.content)
         fo.close()
     else:
