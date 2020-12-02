@@ -129,4 +129,4 @@ if __name__ == '__main__':
         
     with open(outfile, 'w') as f:
         json.dump(data, f)
-    print(f"Finished translate [{i}] docs, [{j}] paragraphs ([{jb}] bad), [{k}] questions ([{kb}] bad trans, {m}] no match after trans) and [{l}] answers ([{lb}] bad)")
+    print(f"Finished translate [{i}] docs, [{j}] paragraphs ([{jb}] bad), [{k}] questions ([{kb}] bad trans, 【{m}] no answer after trans) and [{l}] answers ([{lb}] bad)")
