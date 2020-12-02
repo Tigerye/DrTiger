@@ -1,10 +1,13 @@
 import json
 import sys
 import requests
+import nltk
+nltk.download('punkt')
+from nltk import tokenize
 import logging
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
-from netease_trans import trans
+#from netease_trans import trans
 
 # infile = '/data/yechen/squad/dev-v2.0.json'
 # outfile = '/data/yechen/squad/dev-v2.0-zh.json'
@@ -15,21 +18,39 @@ from netease_trans import trans
 def help():
     print("Usage: python squad_en_to_zh.py /data/yechen/squad/dev-v2.0.json /data/yechen/squad/dev-v2.0-zh.json")
 
-# def trans(query):
-#     From = 'en'
-#     To = 'zh'
-#     data = {
-#         'q' : query,
-#         'from' : From,
-#         'to' : To
-#         }
-#     information = requests.post('https://aidemo.youdao.com/trans', data)
-#     result = information.json()
-#     error_code = result['errorCode']
-#     if (error_code=='0'):
-#         return result['translation'][0], error_code
-#     else: 
-#         return 'None', error_code
+def trans(query):
+    From = 'en'
+    To = 'zh'
+    data = {
+        'q' : query,
+        'from' : From,
+        'to' : To
+        }
+    information = requests.post('https://aidemo.youdao.com/trans', data)
+    result = information.json()
+    error_code = result['errorCode']
+    if (error_code=='0'):
+        return result['translation'][0], error_code
+    elif (error_code=='103'):
+        qs = tokenize.sent_tokenize(query)
+        ress = []
+        for q in qs:
+            d = {
+                'q' : q,
+                'from' : From,
+                'to' : To
+                }
+            info = requests.post('https://aidemo.youdao.com/trans', d)
+            res= info.json()
+            error_code = res['errorCode']
+            if (error_code=='0'):
+                ress.append(res['translation'][0])
+        if (ress):
+            return ''.join(ress), '0'
+        else:
+            return '', error_code
+    else:
+        return '', error_code
     
 if __name__ == '__main__':
     if len(sys.argv) < 3:
