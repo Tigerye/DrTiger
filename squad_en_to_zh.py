@@ -4,6 +4,8 @@ import requests
 import logging
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
+from netease_trans import trans
+
 # infile = '/data/yechen/squad/dev-v2.0.json'
 # outfile = '/data/yechen/squad/dev-v2.0-zh.json'
 
@@ -13,21 +15,21 @@ logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logg
 def help():
     print("Usage: python squad_en_to_zh.py /data/yechen/squad/dev-v2.0.json /data/yechen/squad/dev-v2.0-zh.json")
 
-def trans(query):
-    From = 'en'
-    To = 'zh'
-    data = {
-        'q' : query,
-        'from' : From,
-        'to' : To
-        }
-    information = requests.post('https://aidemo.youdao.com/trans', data)
-    result = information.json()
-    error_code = result['errorCode']
-    if (error_code=='0'):
-        return result['translation'][0], error_code
-    else: 
-        return 'None', error_code
+# def trans(query):
+#     From = 'en'
+#     To = 'zh'
+#     data = {
+#         'q' : query,
+#         'from' : From,
+#         'to' : To
+#         }
+#     information = requests.post('https://aidemo.youdao.com/trans', data)
+#     result = information.json()
+#     error_code = result['errorCode']
+#     if (error_code=='0'):
+#         return result['translation'][0], error_code
+#     else: 
+#         return 'None', error_code
     
 if __name__ == '__main__':
     if len(sys.argv) < 3:
