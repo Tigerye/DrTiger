@@ -58,4 +58,4 @@ def trans(q):
         fo.write(response.content)
         fo.close()
     else:
-        print(response..read().decode('utf-8'))
+        print(response.read().decode('utf-8'))
