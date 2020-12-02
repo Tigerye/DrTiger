@@ -32,7 +32,7 @@ def do_request(data):
     return requests.post(YOUDAO_URL, data=data, headers=headers)
 
 
-def trans(q):
+def netease_trans(q):
 
     data = {}
     data['from'] = 'en'
