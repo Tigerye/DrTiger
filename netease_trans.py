@@ -50,12 +50,4 @@ def trans(q):
     #data['vocabId'] = "您的用户词表ID"
 
     response = do_request(data)
-    contentType = response.headers['Content-Type']
-    if contentType == "audio/mp3":
-        millis = int(round(time.time() * 1000))
-        filePath = "path_to_media" + str(millis) + ".mp3"
-        fo = open(filePath, 'wb')
-        fo.write(response.content)
-        fo.close()
-    else:
-        print(response.content)
+    return response.content
