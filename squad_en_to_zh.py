@@ -143,9 +143,9 @@ if __name__ == '__main__':
             'paragraphs': para
             })
         
-        #debug
-        if (i>0):
-            break
+#         #debug
+#         if (i>0):
+#             break
             
         if (i % 1000 ==0):
             print(f"translated [{i}] docs")
