@@ -334,7 +334,7 @@ python run_squad.py \
   --train_file=$SQUAD_DIR/data/combined-squad-train-v2.0.json \
   --do_predict=True \
   --predict_file=$SQUAD_DIR/data/combined-squad-dev-v2.0.json \
-  --train_batch_size=8 \
+  --train_batch_size=4 \
   --learning_rate=3e-5 \
   --num_train_epochs=2.0 \
   --max_seq_length=512 \
