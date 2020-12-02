@@ -53,6 +53,7 @@ if __name__ == '__main__':
     kb = 0
     l = 0
     lb = 0
+    m = 0
 
     for doc in data_en["data"]:
         i = i+1
@@ -95,7 +96,11 @@ if __name__ == '__main__':
                             "answer_start": ans_start
                             })
                 if (not ans):
+                    if (ques_imp==False):
+                        m+=1
+                        print(f"[error_code]: no_answer_after_trans; [error/total questions]: {m}/{k}.")
                     ques_imp = True
+                    
                         
                 
                 qas.append({
@@ -115,6 +120,9 @@ if __name__ == '__main__':
             'paragraphs': para
             })
         
+        #debug
+        if (i>0):
+            break
             
         if (i % 1000 ==0):
             print(f"translated [{i}] docs")
