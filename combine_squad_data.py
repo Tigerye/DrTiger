@@ -16,12 +16,12 @@ data_dir = '/data/yechen/squad/data/'
 #            data_dir+'mctest_to_squad_mc160.train.json'
 #            }
 
-infiles = {data_dir+'train-v2.0.json',
-           data_dir+'newsqa_to_squad_train.json'
+infiles = {data_dir+'dev-v2.0.json',
+           data_dir+'newsqa_to_squad_dev.json'
            }
 
 # outfile = data_dir+'combined-squad-train-v2.0.json'
-outfile = data_dir+'squad-and-newsqa-train-v2.0.json'
+outfile = data_dir+'squad-and-newsqa-dev-v2.0.json'
 
 # infiles = {data_dir+'dev-v2.0.json',
 #            data_dir+'newsqa_to_squad_dev.json',
