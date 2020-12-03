@@ -318,6 +318,24 @@ python run_squad.py \
   --output_dir=$SQUAD_DIR/squad_2.0_large_newsqa_and_squad/ \
   --version_2_with_negative=True
   
+python /data/yechen/squad/evaluate-v2.0.py /data/yechen/squad/squad-and-newsqa-dev-v2.0.json /data/yechen/squad/squad_2.0_large_newsqa_and_squad/predictions.json --na-prob-file /data/yechen/squad/squad_2.0_large_newsqa_and_squad/null_odds.json
+{
+  "exact": 4.359684457871769,
+  "f1": 7.013416219729383,
+  "total": 23832,
+  "HasAns_exact": 0.2609710871506078,
+  "HasAns_f1": 4.6043359211998665,
+  "HasAns_total": 14561,
+  "NoAns_exact": 10.797109265451407,
+  "NoAns_f1": 10.797109265451407,
+  "NoAns_total": 9271,
+  "best_exact": 38.90147700570661,
+  "best_exact_thresh": 0.0,
+  "best_f1": 38.90147700570661,
+  "best_f1_thresh": 0.0
+}
+
+  
 BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
 SQUAD_DIR=/data/yechen/squad
 
@@ -355,6 +373,24 @@ python run_squad.py \
   --doc_stride=128 \
   --output_dir=$SQUAD_DIR/squad_2.0_large_newsqa_and_squad/ \
   --version_2_with_negative=True
+  
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0.json /data/yechen/squad/squad_2.0_large_newsqa_and_squad/predictions.json --na-prob-file /data/yechen/squad/squad_2.0_large_newsqa_and_squad/null_odds.json
+{
+  "exact": 6.417923018613661,
+  "f1": 8.140470948076743,
+  "total": 11873,
+  "HasAns_exact": 0.43859649122807015,
+  "HasAns_f1": 3.888632180586259,
+  "HasAns_total": 5928,
+  "NoAns_exact": 12.380151387720774,
+  "NoAns_f1": 12.380151387720774,
+  "NoAns_total": 5945,
+  "best_exact": 50.07159100480081,
+  "best_exact_thresh": 0.0,
+  "best_f1": 50.07159100480081,
+  "best_f1_thresh": 0.0
+}
+  
 
 
 BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
