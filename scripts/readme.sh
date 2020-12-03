@@ -318,6 +318,139 @@ python run_squad.py \
   --output_dir=$SQUAD_DIR/squad_2.0_large_newsqa_and_squad/ \
   --version_2_with_negative=True
   
+BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/squad-and-newsqa-dev-v2.0.json \
+  --train_batch_size=1 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=256 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_newsqa_and_squad/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0.json \
+  --train_batch_size=1 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=256 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_newsqa_and_squad/ \
+  --version_2_with_negative=True
+
+
+BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/squad-and-newsqa-dev-v2.0.json \
+  --train_batch_size=1 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=256 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0.json \
+  --train_batch_size=1 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=256 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large/ \
+  --version_2_with_negative=True
+
+SQUAD_DIR=/data/yechen/squad
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0.json $SQUAD_DIR/squad_2.0_large/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large/null_odds.json
+
+{
+  "exact": 76.79609197338499,
+  "f1": 80.0462693905031,
+  "total": 11873,
+  "HasAns_exact": 76.92307692307692,
+  "HasAns_f1": 83.43275244153884,
+  "HasAns_total": 5928,
+  "NoAns_exact": 76.66947014297729,
+  "NoAns_f1": 76.66947014297729,
+  "NoAns_total": 5945,
+  "best_exact": 77.94154805019792,
+  "best_exact_thresh": -3.531118869781494,
+  "best_f1": 80.82359781180813,
+  "best_f1_thresh": -2.896860361099243
+}
+  
+BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/squad-and-newsqa-dev-v2.0.json \
+  --train_batch_size=1 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=256 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_1-256/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0.json \
+  --train_batch_size=1 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=256 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_1-256/ \
+  --version_2_with_negative=True
   
 #small bert, 745k question, en model
 python combine_squad_data.py (for dev)

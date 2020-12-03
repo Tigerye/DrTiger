@@ -33,7 +33,7 @@ flags = tf.flags
 
 FLAGS = flags.FLAGS
 
-# # Required parameters
+## Required parameters
 flags.DEFINE_string(
     "bert_config_file", None,
     "The config json file corresponding to the pre-trained BERT model. "
@@ -909,13 +909,17 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
       all_predictions[example.qas_id] = nbest_json[0]["text"]
     else:
       # predict "" iff the null score - the score of best non-null > threshold
-      score_diff = score_null - best_non_null_entry.start_logit - (
-          best_non_null_entry.end_logit)
-      scores_diff_json[example.qas_id] = score_diff
-      if score_diff > FLAGS.null_score_diff_threshold:
-        all_predictions[example.qas_id] = ""
+      if not best_non_null_entry:
+          all_predictions[example.qas_id] = ""
+          scores_diff_json[example.qas_id] = score_null
       else:
-        all_predictions[example.qas_id] = best_non_null_entry.text
+          score_diff = score_null - best_non_null_entry.start_logit - (
+              best_non_null_entry.end_logit)
+          scores_diff_json[example.qas_id] = score_diff
+          if score_diff > FLAGS.null_score_diff_threshold:
+              all_predictions[example.qas_id] = ""
+          else:
+              all_predictions[example.qas_id] = best_non_null_entry.text
 
     all_nbest_json[example.qas_id] = nbest_json
 
