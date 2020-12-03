@@ -66,7 +66,7 @@ for doc in newsqa["data"]:
                 
             else:
                 qas.append({
-                    'question': q_text,
+                    'question': q_text_new,
                     'id': str(j),
                     'answers': [],
                     'is_impossible': True,
