@@ -909,6 +909,7 @@ nohup python squad_en_to_zh.py /data/yechen/squad/data/qangaroo_to_squad_wikihop
 nohup python squad_en_to_zh.py /data/yechen/squad/data/qangaroo_to_squad_wikihop_dev.json /data/yechen/squad/data/qangaroo_to_squad_wikihop_dev_zh.json > log-qangroo-wiki-dev.txt &
 
 nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_web_train.json /data/yechen/squad/data/triviaqa_to_squad_web_train_zh.json > log-triviaqa-web-train.txt &
+nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/triviaqa_to_squad_web_train.json /data/yechen/squad/data/triviaqa_to_squad_web_train_zh.json > log-triviaqa-web-train-relay.txt &
 
 nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_web_dev.json /data/yechen/squad/data/triviaqa_to_squad_web_dev_zh.json > log-triviaqa-web-dev.txt &
 
