@@ -4,7 +4,7 @@
  
 nohup python squad_en_to_zh.py /data/yechen/squad/data/train-v2.0.json /data/yechen/squad/data/train-v2.0_zh.json > log-tran-train.txt &
 
-#nohup python squad_en_to_zh.py /data/yechen/squad/data/dev-v2.0.json /data/yechen/squad/data/dev-v2.0_zh.json > log-tran-dev.txt &
+nohup python squad_en_to_zh.py /data/yechen/squad/data/dev-v2.0.json /data/yechen/squad/data/dev-v2.0_zh.json > log-tran-dev.txt &
 
 #nohup python squad_en_to_zh.py /data/yechen/squad/data/mctest_to_squad_mc160.train.json /data/yechen/squad/data/mctest_to_squad_mc160.train_zh.json > log-mc160-train.txt &
 
@@ -33,3 +33,10 @@ nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_web_dev
 nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_wikipedia_train.json /data/yechen/squad/data/triviaqa_to_squad_wikipedia_train_zh.json > log-triviaqa-wikipedia-train.txt &
 
 nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_wikipedia_dev.json /data/yechen/squad/data/triviaqa_to_squad_wikipedia_dev_zh.json > log-triviaqa-wikipedia-dev.txt &
+
+
+
+
+nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/combined-squad-train-v2.0.json /data/yechen/squad/data/combined-squad-train-v2.0_zh.json > log-tran-train-relay.txt &
+
+nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/combined-squad-dev-v2.0.json /data/yechen/squad/data/combined-squad-dev-v2.0_zh.json > log-tran-dev-relay.txt &
