@@ -65,20 +65,20 @@ if __name__ == '__main__':
     infile, outfile = sys.argv[1:3]
     outfile_part = outfile+'.part'
     
-    #get breakpoint
-    bp = 0
-    if os.path.exists(outfile_part):
-        with open(outfile_part) as f:
-            data_part = json.load(f)
-        bp = len(data_part['data'])
-        print(f"break_point file exists: {outfile_part}, get break_point: {bp}")
-    
     data = {
         "version": "v2.0",
         "data": [
             
             ]
         }
+     
+    #get breakpoint
+    bp = 0
+    if os.path.exists(outfile_part):
+        with open(outfile_part) as f:
+            data = json.load(f)
+        bp = len(data['data'])
+        print(f"break_point file exists: {outfile_part}, get break_point: {bp}")
     
     with open(infile) as f:
         data_en = json.load(f)
