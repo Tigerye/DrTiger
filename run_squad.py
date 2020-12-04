@@ -270,15 +270,23 @@ def read_squad_examples(input_file, is_training):
             answer = qa["answers"][0]
             orig_answer_text = answer["text"]
             answer_offset = answer["answer_start"]
+            
+            #for python encode
+            answer_offset_derive = paragraph_text.find(orig_answer_text)
+            if answer_offset_derive == -1:
+                tf.logging.warning("Could not find answer: '%s' in. '%s'", 
+                                   orig_answer_text, paragraph_text)
+                continue
+            elif answer_offset_derive != answer_offset:
+                answer_offset = answer_offset_derive
+                
             answer_length = len(orig_answer_text)
-            start_position = char_to_word_offset[answer_offset]
             try:
+                start_position = char_to_word_offset[answer_offset]
                 end_position = char_to_word_offset[answer_offset + answer_length - 1]
             except IndexError:
-                print('para: '+paragraph_text)
-                print('ques: '+question_text)
-                print('ans: '+orig_answer_text)
-                print('start: '+str(start_position))
+                tf.logging.warning("Answer index error: [paragraph]: '%s'; [question]: '%s', [answer]: '%s', [answer_start]: '%s'", 
+                                   paragraph_text, question_text, orig_answer_text, str(start_position))
                 continue
             # Only add answers where the text can be exactly recovered from the
             # document. If this CAN'T happen it's likely due to weird Unicode

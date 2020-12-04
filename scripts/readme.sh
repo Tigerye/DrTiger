@@ -494,6 +494,7 @@ python combine_squad_data.py (for train)
 
 BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
 SQUAD_DIR=/data/yechen/squad
+THRESH=11.664867222309113
 
 python run_squad.py \
   --vocab_file=$BERT_BASE_DIR/vocab.txt \
@@ -509,9 +510,124 @@ python run_squad.py \
   --max_seq_length=512 \
   --doc_stride=128 \
   --output_dir=$SQUAD_DIR/squad_2.0_base_745kq/ \
+  --version_2_with_negative=True \
+  --null_score_diff_threshold=$THRESH
+  
+  
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/data/combined-squad-dev-v2.0.json $SQUAD_DIR/squad_2.0_base_745kq/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_745kq/null_odds.json
+  
+{
+  "exact": 57.54448124470461,
+  "f1": 62.63432912098324,
+  "total": 38949,
+  "HasAns_exact": 54.120199315277446,
+  "HasAns_f1": 60.8401235528665,
+  "HasAns_total": 29501,
+  "NoAns_exact": 68.23666384419982,
+  "NoAns_f1": 68.23666384419982,
+  "NoAns_total": 9448,
+  "best_exact": 57.55731854476367,
+  "best_exact_thresh": 11.664867222309113,
+  "best_f1": 62.6471664210426,
+  "best_f1_thresh": 11.664867222309113
+}
+
+after thres
+
+{
+  "exact": 57.526509024621944,
+  "f1": 62.96074212872548,
+  "total": 38949,
+  "HasAns_exact": 55.547269584081896,
+  "HasAns_f1": 62.72187197626081,
+  "HasAns_total": 29501,
+  "NoAns_exact": 63.70660457239627,
+  "NoAns_f1": 63.70660457239627,
+  "NoAns_total": 9448,
+  "best_exact": 57.58299314488177,
+  "best_exact_thresh": 1.4170150756835938,
+  "best_f1": 63.28129637743142,
+  "best_f1_thresh": 2.7002601623535156
+}
+
+BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad
+THRESH=11.664867222309113
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/data/combined-squad-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=512 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_base_745kq/ \
   --version_2_with_negative=True
   
+SQUAD_DIR=/data/yechen/squad
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0.json $SQUAD_DIR/squad_2.0_base_745kq/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_745kq/null_odds.json
+
+{
+  "exact": 65.50998062831634,
+  "f1": 68.74654082735313,
+  "total": 11873,
+  "HasAns_exact": 67.0715249662618,
+  "HasAns_f1": 73.55392699783432,
+  "HasAns_total": 5928,
+  "NoAns_exact": 63.952901597981494,
+  "NoAns_f1": 63.952901597981494,
+  "NoAns_total": 5945,
+  "best_exact": 67.21974227238272,
+  "best_exact_thresh": -2.7909293174743652,
+  "best_f1": 69.63479751619361,
+  "best_f1_thresh": -2.617643117904663
+}
+
+BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad
+THRESH=-2.617643117904663
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/data/combined-squad-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=512 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_base_745kq/ \
+  --version_2_with_negative=True \
+  --null_score_diff_threshold=$THRESH
   
+SQUAD_DIR=/data/yechen/squad
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0.json $SQUAD_DIR/squad_2.0_base_745kq/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_745kq/null_odds.json
+  
+{
+  "exact": 67.21974227238272,
+  "f1": 69.63479751619354,
+  "total": 11873,
+  "HasAns_exact": 59.59851551956815,
+  "HasAns_f1": 64.43555177290219,
+  "HasAns_total": 5928,
+  "NoAns_exact": 74.81917577796467,
+  "NoAns_f1": 74.81917577796467,
+  "NoAns_total": 5945,
+  "best_exact": 67.21974227238272,
+  "best_exact_thresh": -2.7909293174743652,
+  "best_f1": 69.63479751619361,
+  "best_f1_thresh": -2.617643117904663
+}
   
 BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
 SQUAD_DIR=/data/yechen/squad
@@ -552,6 +668,7 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/data/squad-and-newsqa-dev-
 
 BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
 SQUAD_DIR=/data/yechen/squad
+THRESH=-1.4673495292663574
 
 python run_squad.py \
   --vocab_file=$BERT_BASE_DIR/vocab.txt \
@@ -567,8 +684,158 @@ python run_squad.py \
   --max_seq_length=512 \
   --doc_stride=128 \
   --output_dir=$SQUAD_DIR/squad_2.0_base_newsqa_and_squad/ \
+  --version_2_with_negative=True \
+  --null_score_diff_threshold=$THRESH
+  
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0.json $SQUAD_DIR/squad_2.0_base_newsqa_and_squad/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_newsqa_and_squad/null_odds.json
+
+{
+  "exact": 68.05356691653331,
+  "f1": 70.97923018603579,
+  "total": 11873,
+  "HasAns_exact": 66.07624831309042,
+  "HasAns_f1": 71.93596491207855,
+  "HasAns_total": 5928,
+  "NoAns_exact": 70.02523128679563,
+  "NoAns_f1": 70.02523128679563,
+  "NoAns_total": 5945,
+  "best_exact": 69.08953086835677,
+  "best_exact_thresh": -2.3545119762420654,
+  "best_f1": 71.56993117108308,
+  "best_f1_thresh": -1.4673495292663574
+}
+after thres
+{
+  "exact": 68.98846121452034,
+  "f1": 71.56993117108335,
+  "total": 11873,
+  "HasAns_exact": 62.41565452091768,
+  "HasAns_f1": 67.58599743493102,
+  "HasAns_total": 5928,
+  "NoAns_exact": 75.54247266610597,
+  "NoAns_f1": 75.54247266610597,
+  "NoAns_total": 5945,
+  "best_exact": 69.08953086835677,
+  "best_exact_thresh": -2.3545119762420654,
+  "best_f1": 71.56993117108308,
+  "best_f1_thresh": -1.4673495292663574
+}
+
+
+BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/data/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/squad-and-newsqa-dev-v2.0.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=512 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large/ \
   --version_2_with_negative=True
   
+
+SQUAD_DIR=/data/yechen/squad
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/squad-and-newsqa-dev-v2.0.json $SQUAD_DIR/squad_2.0_large/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large/null_odds.json
+
+{
+  "exact": 58.249412554548506,
+  "f1": 64.88222782203086,
+  "total": 23832,
+  "HasAns_exact": 52.084334867110776,
+  "HasAns_f1": 62.94026876276904,
+  "HasAns_total": 14561,
+  "NoAns_exact": 67.93226189192104,
+  "NoAns_f1": 67.93226189192104,
+  "NoAns_total": 9271,
+  "best_exact": 59.105404498153746,
+  "best_exact_thresh": -3.453949451446533,
+  "best_f1": 64.9955146530021,
+  "best_f1_thresh": -0.9217531681060791
+}
+
+on dev 2.0
+
+{
+  "exact": 76.96454139644571,
+  "f1": 80.22681146823321,
+  "total": 11873,
+  "HasAns_exact": 76.90620782726046,
+  "HasAns_f1": 83.44010333372664,
+  "HasAns_total": 5928,
+  "NoAns_exact": 77.02270815811606,
+  "NoAns_f1": 77.02270815811606,
+  "NoAns_total": 5945,
+  "best_exact": 78.09315253095258,
+  "best_exact_thresh": -3.926717519760132,
+  "best_f1": 80.95729558668336,
+  "best_f1_thresh": -2.832317590713501
+}
+
+BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/data/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/data/squad-and-newsqa-dev-v2.0.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=512 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_1-256/ \
+  --version_2_with_negative=True
+  
+SQUAD_DIR=/data/yechen/squad
+ 
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/data/squad-and-newsqa-dev-v2.0.json $SQUAD_DIR/squad_2.0_large_1-256/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_1-256/null_odds.json
+
+{
+  "exact": 54.45619335347432,
+  "f1": 58.83589526760696,
+  "total": 23832,
+  "HasAns_exact": 40.86257811963464,
+  "HasAns_f1": 48.030839641345864,
+  "HasAns_total": 14561,
+  "NoAns_exact": 75.80627763995254,
+  "NoAns_f1": 75.80627763995254,
+  "NoAns_total": 9271,
+  "best_exact": 54.87160120845922,
+  "best_exact_thresh": -3.6163704469799995,
+  "best_f1": 58.88624773487726,
+  "best_f1_thresh": 19.28821849822998
+}
+
+on dev 2.0
+
+{
+  "exact": 71.22041607007496,
+  "f1": 74.40745167349645,
+  "total": 11873,
+  "HasAns_exact": 70.27665317139001,
+  "HasAns_f1": 76.65986398775678,
+  "HasAns_total": 5928,
+  "NoAns_exact": 72.16148023549201,
+  "NoAns_f1": 72.16148023549201,
+  "NoAns_total": 5945,
+  "best_exact": 72.50905415648951,
+  "best_exact_thresh": -5.825696803629398,
+  "best_f1": 75.08104368167005,
+  "best_f1_thresh": -4.04068648815155
+}
+
 #en to zh
 proxy
  
