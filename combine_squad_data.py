@@ -15,7 +15,7 @@ data_dir = '/data/yechen/squad/data/'
 #            data_dir+'qangaroo_to_squad_medhop_train.json',
 #            data_dir+'mctest_to_squad_mc500.train.json',
 #            data_dir+'mctest_to_squad_mc160.train.json'
-           }
+#            }
 
 # infiles = {data_dir+'dev-v2.0.json',
 #            data_dir+'newsqa_to_squad_dev.json'
