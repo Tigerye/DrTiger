@@ -78,7 +78,7 @@ if __name__ == '__main__':
         with open(outfile_part) as f:
             data = json.load(f)
         bp = len(data['data'])
-        print(f"break_point file exists: {outfile_part}, get break_point: {bp}")
+        print(f"part file exists: {outfile_part}, get break_point: {bp}")
     
     with open(infile) as f:
         data_en = json.load(f)
