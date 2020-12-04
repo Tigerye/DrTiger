@@ -512,6 +512,63 @@ python run_squad.py \
   --version_2_with_negative=True
   
   
+  
+BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/data/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/data/squad-and-newsqa-dev-v2.0.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=512 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_base_newsqa_and_squad/ \
+  --version_2_with_negative=True
+  
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/data/squad-and-newsqa-dev-v2.0.json $SQUAD_DIR/squad_2.0_base_newsqa_and_squad/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_newsqa_and_squad/null_odds.json
+ 
+{
+  "exact": 59.63830144343739,
+  "f1": 65.25936427299347,
+  "total": 23832,
+  "HasAns_exact": 52.345305954261384,
+  "HasAns_f1": 61.54530384959967,
+  "HasAns_total": 14561,
+  "NoAns_exact": 71.09265451407614,
+  "NoAns_f1": 71.09265451407614,
+  "NoAns_total": 9271,
+  "best_exact": 60.229942933870426,
+  "best_exact_thresh": -1.464531421661377,
+  "best_f1": 65.31330664162775,
+  "best_f1_thresh": -0.15530109405517578
+}
+
+BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/data/squad-and-newsqa-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=512 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_base_newsqa_and_squad/ \
+  --version_2_with_negative=True
+  
 #en to zh
 proxy
  
