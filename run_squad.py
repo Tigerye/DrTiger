@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from fileinput import filename
 """Run BERT on SQuAD 1.1 and SQuAD 2.0."""
 
 from __future__ import absolute_import
@@ -1205,28 +1206,40 @@ def main(_):
   if FLAGS.do_train:
     # We write to a temporary file to avoid storing very large constant tensors
     # in memory.
-    train_writer = FeatureWriter(
-        filename=os.path.join(FLAGS.output_dir, "train.tf_record"),
-        is_training=True)
-    convert_examples_to_features(
-        examples=train_examples,
-        tokenizer=tokenizer,
-        max_seq_length=FLAGS.max_seq_length,
-        doc_stride=FLAGS.doc_stride,
-        max_query_length=FLAGS.max_query_length,
-        is_training=True,
-        output_fn=train_writer.process_feature)
-    train_writer.close()
+    #not write tmp tf file again if not mannually delete
+    filename = os.path.join(FLAGS.output_dir, "train.tf_record")
+    num_features = 0
+    if os.path.exists(filename):
+        for example in tf.python_io.tf_record_iterator(filename):
+            num_features += 1
+        tf.logging.info("detected tf_record file, with %d examples", num_features)
+    else:
+        train_writer = FeatureWriter(
+            #filename=os.path.join(FLAGS.output_dir, "train.tf_record"),
+            filename=filename,
+            is_training=True)
+        convert_examples_to_features(
+            examples=train_examples,
+            tokenizer=tokenizer,
+            max_seq_length=FLAGS.max_seq_length,
+            doc_stride=FLAGS.doc_stride,
+            max_query_length=FLAGS.max_query_length,
+            is_training=True,
+            output_fn=train_writer.process_feature)
+        train_writer.close()    
+    
 
     tf.logging.info("***** Running training *****")
     tf.logging.info("  Num orig examples = %d", len(train_examples))
-    tf.logging.info("  Num split examples = %d", train_writer.num_features)
+    #tf.logging.info("  Num split examples = %d", train_writer.num_features)
+    tf.logging.info("  Num split examples = %d", num_features)
     tf.logging.info("  Batch size = %d", FLAGS.train_batch_size)
     tf.logging.info("  Num steps = %d", num_train_steps)
     del train_examples
 
     train_input_fn = input_fn_builder(
-        input_file=train_writer.filename,
+        #input_file=train_writer.filename,
+        input_file=filename,
         seq_length=FLAGS.max_seq_length,
         is_training=True,
         drop_remainder=True)
