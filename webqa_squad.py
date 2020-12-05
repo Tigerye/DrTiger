@@ -70,7 +70,7 @@ def get_data(ds):
                     'question': question,
                     'id': ke,
                     'answers': [
-                    ],
+                        ],
                     'is_impossible': True,
                 })
             else:
@@ -90,6 +90,13 @@ def get_data(ds):
                         'is_impossible': False,
                     })
                 else:
+                    qas.append({
+                        'question': question,
+                        'id': ke,
+                        'answers': [
+                            ],
+                        'is_impossible': True,
+                    })
                     print(answers, ve['evidence'])
             
             d = {
