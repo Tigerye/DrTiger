@@ -1249,17 +1249,16 @@ def main(_):
         input_file=FLAGS.predict_file, is_training=False)
 
     eval_filename = os.path.join(FLAGS.output_dir, "eval.tf_record")
-    eval_num_features = 0
+    eval_features = []
     if os.path.exists(eval_filename):
-        for example in tf.python_io.tf_record_iterator(eval_filename):
-            eval_num_features += 1
-        tf.logging.info("detected eval tf_record file, with %d examples", eval_num_features)
+        for feature in tf.python_io.tf_record_iterator(eval_filename):
+            eval_features.append(feature)
+        tf.logging.info("detected eval tf_record file, with %d examples", len(eval_features))
     else:
         eval_writer = FeatureWriter(
 #             filename=os.path.join(FLAGS.output_dir, "eval.tf_record"),
             filename=eval_filename,
             is_training=False)
-        eval_features = []
         
         def append_feature(feature):
             eval_features.append(feature)
@@ -1274,12 +1273,10 @@ def main(_):
             is_training=False,
             output_fn=append_feature)
         eval_writer.close()
-        eval_num_features=len(eval_features)
 
     tf.logging.info("***** Running predictions *****")
     tf.logging.info("  Num orig examples = %d", len(eval_examples))
-#     tf.logging.info("  Num split examples = %d", len(eval_features))
-    tf.logging.info("  Num split examples = %d", eval_num_features)
+    tf.logging.info("  Num split examples = %d", len(eval_features))
     tf.logging.info("  Batch size = %d", FLAGS.predict_batch_size)
 
     all_results = []
