@@ -2,7 +2,7 @@
 
 #proxy
  
-nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/train-v2.0.json /data/yechen/squad/data/train-v2.0_zh.json > log-tran-train_relay.txt &
+$nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/train-v2.0.json /data/yechen/squad/data/train-v2.0_zh.json > log-tran-train_relay.txt &
 
 #nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/dev-v2.0.json /data/yechen/squad/data/dev-v2.0_zh.json > log-tran-dev_relay.txt &
 
