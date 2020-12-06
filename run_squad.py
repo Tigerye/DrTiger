@@ -1251,8 +1251,23 @@ def main(_):
     eval_filename = os.path.join(FLAGS.output_dir, "eval.tf_record")
     eval_features = []
     if os.path.exists(eval_filename):
-        for feature in tf.python_io.tf_record_iterator(eval_filename):
-            eval_features.append(feature)
+        seq_length = FLAGS.max_seq_length
+        features = {"unique_ids": tf.FixedLenFeature([], tf.int64),
+                    "example_index": tf.FixedLenFeature([], tf.int64),
+                    "doc_span_index": tf.FixedLenFeature([], tf.int64),
+                    "tokens": tf.RaggedFeature(tf.string),
+                    "token_to_orig_map": tf.RaggedFeature(tf.int64),
+                    "token_is_max_context": tf.RaggedFeature(tf.bool),
+                    "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
+                    "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
+                    "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
+                    "start_position": tf.FixedLenFeature([], tf.int64),
+                    "end_position": tf.FixedLenFeature([], tf.int64),
+                    "is_impossible": tf.FixedLenFeature([], tf.bool)
+                    }
+        for example in tf.python_io.tf_record_iterator(eval_filename):
+            example = tf.parse_single_example(example, features=features)
+            eval_features.append(example)
         tf.logging.info("detected eval tf_record file, with %d examples", len(eval_features))
     else:
         eval_writer = FeatureWriter(
