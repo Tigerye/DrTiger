@@ -1251,23 +1251,35 @@ def main(_):
     eval_filename = os.path.join(FLAGS.output_dir, "eval.tf_record")
     eval_features = []
     if os.path.exists(eval_filename):
-        seq_length = FLAGS.max_seq_length
-        features = {"unique_ids": tf.FixedLenFeature([], tf.int64),
-                    "example_index": tf.FixedLenFeature([], tf.int64),
-                    "doc_span_index": tf.FixedLenFeature([], tf.int64),
-                    "tokens": tf.VarLenFeature(tf.string),
-                    "token_to_orig_map": tf.VarLenFeature(tf.int64),
-                    "token_is_max_context": tf.VarLenFeature(tf.int64),
-                    "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
-                    "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
-                    "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
-                    "start_position": tf.FixedLenFeature([], tf.int64),
-                    "end_position": tf.FixedLenFeature([], tf.int64),
-                    "is_impossible": tf.FixedLenFeature([], tf.int64)
-                    }
-        for example in tf.python_io.tf_record_iterator(eval_filename):
-            feature = tf.parse_single_example(example, features=features)
+#         seq_length = FLAGS.max_seq_length
+#         features = {"unique_ids": tf.FixedLenFeature([], tf.int64),
+#                     "example_index": tf.FixedLenFeature([], tf.int64),
+#                     "doc_span_index": tf.FixedLenFeature([], tf.int64),
+#                     "tokens": tf.VarLenFeature(tf.string),
+#                     "token_to_orig_map": tf.VarLenFeature(tf.int64),
+#                     "token_is_max_context": tf.VarLenFeature(tf.int64),
+#                     "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
+#                     "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
+#                     "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
+#                     "start_position": tf.FixedLenFeature([], tf.int64),
+#                     "end_position": tf.FixedLenFeature([], tf.int64),
+#                     "is_impossible": tf.FixedLenFeature([], tf.int64)
+#                     }
+
+        def append_feature_nowrite(feature):
             eval_features.append(feature)
+        convert_examples_to_features(
+            examples=eval_examples,
+            tokenizer=tokenizer,
+            max_seq_length=FLAGS.max_seq_length,
+            doc_stride=FLAGS.doc_stride,
+            max_query_length=FLAGS.max_query_length,
+            is_training=False,
+            output_fn=append_feature_nowrite)
+        
+#         for example in tf.python_io.tf_record_iterator(eval_filename):
+#             feature = tf.parse_single_example(example, features=features)
+#             eval_features.append(feature)
         tf.logging.info("detected eval tf_record file, with %d examples", len(eval_features))
     else:
         eval_writer = FeatureWriter(
