@@ -1266,8 +1266,8 @@ def main(_):
                     "is_impossible": tf.FixedLenFeature([], tf.int64)
                     }
         for example in tf.python_io.tf_record_iterator(eval_filename):
-            example = tf.parse_single_example(example, features=features)
-            eval_features.append(example)
+            feature = tf.parse_single_example(example, features=features)
+            eval_features.append(feature)
         tf.logging.info("detected eval tf_record file, with %d examples", len(eval_features))
     else:
         eval_writer = FeatureWriter(
