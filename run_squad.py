@@ -1257,13 +1257,13 @@ def main(_):
                     "doc_span_index": tf.FixedLenFeature([], tf.int64),
                     "tokens": tf.VarLenFeature(tf.string),
                     "token_to_orig_map": tf.VarLenFeature(tf.int64),
-                    "token_is_max_context": tf.VarLenFeature(tf.bool),
+                    "token_is_max_context": tf.VarLenFeature(tf.int64),
                     "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
                     "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
                     "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
                     "start_position": tf.FixedLenFeature([], tf.int64),
                     "end_position": tf.FixedLenFeature([], tf.int64),
-                    "is_impossible": tf.FixedLenFeature([], tf.bool)
+                    "is_impossible": tf.FixedLenFeature([], tf.int64)
                     }
         for example in tf.python_io.tf_record_iterator(eval_filename):
             example = tf.parse_single_example(example, features=features)
