@@ -858,6 +858,46 @@ python run_squad.py \
   --output_dir=$SQUAD_DIR/squad_2.0_base_8data/ \
   --version_2_with_negative=True
   
+SQUAD_DIR=/data/yechen/squad
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/data/combined-squad-dev-v2.0.json $SQUAD_DIR/squad_2.0_base_8data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_8data/null_odds.json
+
+{
+  "exact": 56.298939693461016,
+  "f1": 61.51059875143678,
+  "total": 38951,
+  "HasAns_exact": 53.499644103989425,
+  "HasAns_f1": 60.380277665564314,
+  "HasAns_total": 29503,
+  "NoAns_exact": 65.04022015241321,
+  "NoAns_f1": 65.04022015241321,
+  "NoAns_total": 9448,
+  "best_exact": 56.36312289800005,
+  "best_exact_thresh": -0.6623964309692383,
+  "best_f1": 61.528570048708204,
+  "best_f1_thresh": 13.134628355503082
+}
+
+
+BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/data/combined-squad-train-v2.0.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=512 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_base_8data/ \
+  --version_2_with_negative=True
+  
   
 BERT_LARGE_DIR=/data/yechen/bert/uncased_L-24_H-1024_A-16
 SQUAD_DIR=/data/yechen/squad

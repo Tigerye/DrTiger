@@ -12,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from fileinput import filename
 """Run BERT on SQuAD 1.1 and SQuAD 2.0."""
 
 from __future__ import absolute_import
@@ -1249,24 +1248,32 @@ def main(_):
     eval_examples = read_squad_examples(
         input_file=FLAGS.predict_file, is_training=False)
 
-    eval_writer = FeatureWriter(
-        filename=os.path.join(FLAGS.output_dir, "eval.tf_record"),
-        is_training=False)
-    eval_features = []
-
-    def append_feature(feature):
-      eval_features.append(feature)
-      eval_writer.process_feature(feature)
-
-    convert_examples_to_features(
-        examples=eval_examples,
-        tokenizer=tokenizer,
-        max_seq_length=FLAGS.max_seq_length,
-        doc_stride=FLAGS.doc_stride,
-        max_query_length=FLAGS.max_query_length,
-        is_training=False,
-        output_fn=append_feature)
-    eval_writer.close()
+    eval_filename = os.path.join(FLAGS.output_dir, "eval.tf_record")
+    eval_num_features = 0
+    if os.path.exists(eval_filename):
+        for example in tf.python_io.tf_record_iterator(eval_filename):
+            eval_num_features += 1
+        tf.logging.info("detected eval tf_record file, with %d examples", eval_num_features)
+    else:
+        eval_writer = FeatureWriter(
+#             filename=os.path.join(FLAGS.output_dir, "eval.tf_record"),
+            filename=eval_filename,
+            is_training=False)
+        eval_features = []
+        
+        def append_feature(feature):
+            eval_features.append(feature)
+            eval_writer.process_feature(feature)
+      
+        convert_examples_to_features(
+            examples=eval_examples,
+            tokenizer=tokenizer,
+            max_seq_length=FLAGS.max_seq_length,
+            doc_stride=FLAGS.doc_stride,
+            max_query_length=FLAGS.max_query_length,
+            is_training=False,
+            output_fn=append_feature)
+        eval_writer.close() 
 
     tf.logging.info("***** Running predictions *****")
     tf.logging.info("  Num orig examples = %d", len(eval_examples))
@@ -1276,7 +1283,8 @@ def main(_):
     all_results = []
 
     predict_input_fn = input_fn_builder(
-        input_file=eval_writer.filename,
+#         input_file=eval_writer.filename,
+        input_file=eval_filename,
         seq_length=FLAGS.max_seq_length,
         is_training=False,
         drop_remainder=False)
