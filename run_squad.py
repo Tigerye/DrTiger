@@ -1225,8 +1225,8 @@ def main(_):
             max_query_length=FLAGS.max_query_length,
             is_training=True,
             output_fn=train_writer.process_feature)
-        train_writer.close()    
-    
+        train_writer.close()
+        num_features=train_writer.num_features
 
     tf.logging.info("***** Running training *****")
     tf.logging.info("  Num orig examples = %d", len(train_examples))
@@ -1273,11 +1273,13 @@ def main(_):
             max_query_length=FLAGS.max_query_length,
             is_training=False,
             output_fn=append_feature)
-        eval_writer.close() 
+        eval_writer.close()
+        eval_num_features=len(eval_features)
 
     tf.logging.info("***** Running predictions *****")
     tf.logging.info("  Num orig examples = %d", len(eval_examples))
-    tf.logging.info("  Num split examples = %d", len(eval_features))
+#     tf.logging.info("  Num split examples = %d", len(eval_features))
+    tf.logging.info("  Num split examples = %d", eval_num_features)
     tf.logging.info("  Batch size = %d", FLAGS.predict_batch_size)
 
     all_results = []
