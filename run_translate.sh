@@ -37,5 +37,5 @@ nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/triviaqa_to_squad_w
 
 nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/combined-squad-train-v2.0.json /data/yechen/squad/data/combined-squad-train-v2.0_zh.json > log-tran-combo-train-relay.txt &
 
-nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/combined-squad-dev-v2.0.json /data/yechen/squad/data/combined-squad-dev-v2.0_zh.json > log-tran-combo-dev-relay.txt &
+#nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/combined-squad-dev-v2.0.json /data/yechen/squad/data/combined-squad-dev-v2.0_zh.json > log-tran-combo-dev-relay.txt &
 
