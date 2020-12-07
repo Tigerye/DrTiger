@@ -979,9 +979,27 @@ python run_squad.py \
   --output_dir=$SQUAD_DIR/squad_2.0_large_8data/ \
   --version_2_with_negative=True
   
-  nohup python run_squad.py   --vocab_file=$BERT_LARGE_DIR/vocab.txt   --bert_config_file=$BERT_LARGE_DIR/bert_config.json   --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt   --do_train=False   --train_file=$SQUAD_DIR/data/combined-squad-train-v2.0.json   --do_predict=True   --predict_file=$SQUAD_DIR/data/combined-squad-dev-v2.0.json   --train_batch_size=1   --learning_rate=3e-5   --num_train_epochs=2.0   --max_seq_length=256   --doc_stride=128   --output_dir=$SQUAD_DIR/squad_2.0_large_8data/   --version_2_with_negative=True > log-squad.txt &
+nohup python run_squad.py   --vocab_file=$BERT_LARGE_DIR/vocab.txt   --bert_config_file=$BERT_LARGE_DIR/bert_config.json   --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt   --do_train=False   --train_file=$SQUAD_DIR/data/combined-squad-train-v2.0.json   --do_predict=True   --predict_file=$SQUAD_DIR/data/combined-squad-dev-v2.0.json   --train_batch_size=1   --learning_rate=3e-5   --num_train_epochs=2.0   --max_seq_length=256   --doc_stride=128   --output_dir=$SQUAD_DIR/squad_2.0_large_8data/   --version_2_with_negative=True > log-squad.txt &
   
 
+BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/data/combined-squad-train-v2.0-6data.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/data/combined-squad-dev-v2.0-6data.json \
+  --train_batch_size=6 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=512 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_base_6data/ \
+  --version_2_with_negative=True
 
 
 #en to zh
