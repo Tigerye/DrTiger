@@ -30,6 +30,7 @@ nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/triviaqa_to_squad_w
 
 nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/triviaqa_to_squad_web_dev.json /data/yechen/squad/data/triviaqa_to_squad_web_dev_zh.json > log-triviaqa-web-dev_relay.txt &
 
+nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/triviaqa_to_squad_wikipedia_train.json /data/yechen/squad/data/triviaqa_to_squad_wikipedia_train_zh.json > log-triviaqa-wikipedia-train_relay.txt &
 
 #nohup python squad_en_to_zh_relay.py /data/yechen/squad/data/triviaqa_to_squad_wikipedia_dev.json /data/yechen/squad/data/triviaqa_to_squad_wikipedia_dev_zh.json > log-triviaqa-wikipedia-dev_relay.txt &
 
