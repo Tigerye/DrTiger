@@ -1217,6 +1217,7 @@ def main(_):
             #filename=os.path.join(FLAGS.output_dir, "train.tf_record"),
             filename=filename,
             is_training=True)
+        
         convert_examples_to_features(
             examples=train_examples,
             tokenizer=tokenizer,
@@ -1225,6 +1226,7 @@ def main(_):
             max_query_length=FLAGS.max_query_length,
             is_training=True,
             output_fn=train_writer.process_feature)
+        
         train_writer.close()
         num_features=train_writer.num_features
 
@@ -1264,6 +1266,15 @@ def main(_):
 #                     "start_position": tf.FixedLenFeature([], tf.int64),
 #                     "end_position": tf.FixedLenFeature([], tf.int64),
 #                     "is_impossible": tf.FixedLenFeature([], tf.int64)
+#                     }
+
+#         features = {"unique_ids": tf.FixedLenFeature([1], tf.int64),
+#                     "input_ids": tf.FixedLenFeature([512], tf.int64),
+#                     "input_mask": tf.FixedLenFeature([512], tf.int64),
+#                     "segment_ids": tf.FixedLenFeature([512], tf.int64),
+#                     "start_position": tf.FixedLenFeature([1], tf.int64),
+#                     "end_position": tf.FixedLenFeature([1], tf.int64),
+#                     "is_impossible": tf.FixedLenFeature([1], tf.int64)
 #                     }
 
         def append_feature_nowrite(feature):
