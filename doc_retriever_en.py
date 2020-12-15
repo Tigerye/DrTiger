@@ -13,7 +13,7 @@ import os
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s', level=logging.INFO)
 
 def help():
-    print("Usage: python doc_retriever_en.py /data/yechen/bert/wiki.en.article.txt /data/yechen/bert/drtiger/bm25_en_article")
+    print("Usage: python doc_retriever_en.py /data/yechen/bert/wiki.en.section.txt /data/yechen/bert/drtiger/bm25_en_section")
 
 def get_data(question, docs):
     data = {
@@ -115,7 +115,7 @@ if __name__ == '__main__':
         json.dump(reader_data, open('/data/yechen/bert/drtiger/retrieved_en.json', 'w'), ensure_ascii=False)
         print(f"Finished dump dr. tiger retrieved data for reader with [{num_doc}] docs\n")
     
-        reader_cmd = 'python run_squad.py   --vocab_file=/data/yechen/bert/uncased_L-24_H-1024_A-16/vocab.txt   --bert_config_file=/data/yechen/bert/uncased_L-24_H-1024_A-16/bert_config.json   --init_checkpoint=/data/yechen/bert/uncased_L-24_H-1024_A-16/bert_model.ckpt   --do_train=False   --train_file=/data/yechen/squad/train-v2.0.json   --do_predict=True   --predict_file=/data/yechen/bert/drtiger/retrieved_en.json   --train_batch_size=8   --learning_rate=3e-5   --num_train_epochs=2.0   --max_seq_length=512   --doc_stride=128   --output_dir=/data/yechen/squad/squad_2.0_large_1-256/   --version_2_with_negative=True   --null_score_diff_threshold=-4.251452803611755'
+        reader_cmd = 'python /home/yechen/Workspace/bert/run_squad.py   --vocab_file=/data/yechen/bert/uncased_L-24_H-1024_A-16/vocab.txt   --bert_config_file=/data/yechen/bert/uncased_L-24_H-1024_A-16/bert_config.json   --init_checkpoint=/data/yechen/bert/uncased_L-24_H-1024_A-16/bert_model.ckpt   --do_train=False   --train_file=/data/yechen/squad/train-v2.0.json   --do_predict=True   --predict_file=/data/yechen/bert/drtiger/retrieved_en.json   --train_batch_size=8   --learning_rate=3e-5   --num_train_epochs=2.0   --max_seq_length=512   --doc_stride=128   --output_dir=/data/yechen/squad/squad_2.0_large_1-256/   --version_2_with_negative=True   --null_score_diff_threshold=-4.251452803611755'
         print(f"os execute: [{reader_cmd}]\n")
         os.system(reader_cmd)
         print(f"done reader cmd execute\n")
