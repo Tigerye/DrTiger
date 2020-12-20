@@ -49,16 +49,16 @@ data_dir = '/data/yechen/squad/data/'
 #            }
 # outfile = data_dir+'combined-squad-dev-v2.0-6data.json'
 
-infiles = {data_dir+'train-v2.0.json',
-           data_dir+'newsqa_to_squad_train.json',
-           data_dir+'triviaqa_to_squad_wikipedia_train.json',
-           data_dir+'triviaqa_to_squad_web_train.json',
-           data_dir+'qangaroo_to_squad_wikihop_train.json',
-           data_dir+'mctest_to_squad_mc500.train.json',
-           data_dir+'mctest_to_squad_mc160.train.json'
-           }
-    
-outfile = data_dir+'combined-squad-train-v2.0-7data.json'
+# infiles = {data_dir+'train-v2.0.json',
+#            data_dir+'newsqa_to_squad_train.json',
+#            data_dir+'triviaqa_to_squad_wikipedia_train.json',
+#            data_dir+'triviaqa_to_squad_web_train.json',
+#            data_dir+'qangaroo_to_squad_wikihop_train.json',
+#            data_dir+'mctest_to_squad_mc500.train.json',
+#            data_dir+'mctest_to_squad_mc160.train.json'
+#            }
+#     
+# outfile = data_dir+'combined-squad-train-v2.0-7data.json'
 
 # infiles = {data_dir+'dev-v2.0.json',
 #            data_dir+'newsqa_to_squad_dev.json',
@@ -69,6 +69,28 @@ outfile = data_dir+'combined-squad-train-v2.0-7data.json'
 #            data_dir+'mctest_to_squad_mc160.dev.json'
 #            }
 # outfile = data_dir+'combined-squad-dev-v2.0-7data.json'
+
+infiles = {'/data/yechen/squad/WebQA.v1.0/webqa_squad_train.json',
+           data_dir+'train-v2.0_zh.json',
+           data_dir+'newsqa_to_squad_train_zh.json',
+           data_dir+'triviaqa_to_squad_wikipedia_train_zh.json',
+           data_dir+'triviaqa_to_squad_web_train_zh.json',
+           data_dir+'mctest_to_squad_mc500.train_zh.json',
+           data_dir+'mctest_to_squad_mc160.train_zh.json'
+           }
+    
+outfile = data_dir+'combined-squad-train-v2.0-7data-zh.json'
+   
+# infiles = {data_dir+'dev-v2.0.json',
+#            data_dir+'newsqa_to_squad_dev.json',
+#            data_dir+'triviaqa_to_squad_wikipedia_dev.json',
+#            data_dir+'triviaqa_to_squad_web_dev.json',
+#            data_dir+'qangaroo_to_squad_wikihop_dev.json',
+#            data_dir+'qangaroo_to_squad_medhop_dev.json',
+#            data_dir+'mctest_to_squad_mc500.dev.json',
+#            data_dir+'mctest_to_squad_mc160.dev.json'
+#            }
+# outfile = data_dir+'combined-squad-dev-v2.0.json'
 
 if __name__ == '__main__':
     logging.info("running %s" % ' '.join(sys.argv))
