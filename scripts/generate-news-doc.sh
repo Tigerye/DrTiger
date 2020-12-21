@@ -21,6 +21,11 @@ then
 	echo "【$year，$source】$content" >> $outfile
 fi
 
+if [ `expr $numfile % 1000` -eq 0 ]
+then
+    echo "processed $numfile files with $numgood big enough."
+fi
+
 done < /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020/news-2020-zh.list
 
 echo "done process $numfile files with $numgood big enough."
