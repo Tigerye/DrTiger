@@ -1608,6 +1608,108 @@ python run_squad.py \
   --doc_stride=128 \
   --output_dir=$SQUAD_DIR/squad_2.0_base_zh_7data/ \
   --version_2_with_negative=True
+  
+  
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/train-v2.0_zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0_zh.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_base_zh_squaddata/ \
+  --version_2_with_negative=True
+  
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_base_zh_squaddata/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_zh_squaddata/null_odds.json
+
+{
+  "exact": 70.17602964709846,
+  "f1": 70.19287458940452,
+  "total": 11873,
+  "HasAns_exact": 30.703166935050994,
+  "HasAns_f1": 30.756843800322063,
+  "HasAns_total": 3726,
+  "NoAns_exact": 88.2287958757825,
+  "NoAns_f1": 88.2287958757825,
+  "NoAns_total": 8147,
+  "best_exact": 71.66680704118589,
+  "best_exact_thresh": -2.2278084754943848,
+  "best_f1": 71.67242202195457,
+  "best_f1_thresh": -2.2278084754943848
+}
+
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/WebQA.v1.0
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=/data/yechen/squad/data/train-v2.0_zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/webqa_squad_eval.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=/data/yechen/squad/data/squad_2.0_base_zh_squaddata/ \
+  --version_2_with_negative=True
+
+
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py /data/yechen/squad/WebQA.v1.0/webqa_squad_eval.json $SQUAD_DIR/squad_2.0_base_zh_squaddata/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_zh_squaddata/null_odds.json
+
+{
+  "exact": 62.97327301950258,
+  "f1": 62.97327301950258,
+  "total": 60351,
+  "HasAns_exact": 52.24233753370385,
+  "HasAns_f1": 52.24233753370385,
+  "HasAns_total": 36346,
+  "NoAns_exact": 79.22099562591127,
+  "NoAns_f1": 79.22099562591127,
+  "NoAns_total": 24005,
+  "best_exact": 62.97161604613014,
+  "best_exact_thresh": -0.003658771514892578,
+  "best_f1": 62.97161604613014,
+  "best_f1_thresh": -0.003658771514892578
+}
+
+
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_base_zh_2data/ \
+  --version_2_with_negative=True
 
 
 #en to zh
@@ -1645,6 +1747,15 @@ nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_web_dev
 nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_wikipedia_train.json /data/yechen/squad/data/triviaqa_to_squad_wikipedia_train_zh.json > log-triviaqa-wikipedia-train.txt &
 
 nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_wikipedia_dev.json /data/yechen/squad/data/triviaqa_to_squad_wikipedia_dev_zh.json > log-triviaqa-wikipedia-dev.txt &
+
+
+
+#news index zh
+
+cd /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020
+find . -type f -name news.txt -exec wc -c \{\} \; > news-2020-zh.list
+
+
 
 
 
