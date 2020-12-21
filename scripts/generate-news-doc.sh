@@ -16,8 +16,8 @@ then
 	IFS='/' read -r -a array <<< "$line"
 	year=${array[9]}
 	source=${array[10]}
-	line1=`head -1 $filename`
-	content=`echo $line1 | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g'`
+	oneline=`cat $filename | awk '{print}' ORS=''`
+	content=`echo $oneline | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g'`
 	echo "【$year，$source】$content" >> $outfile
 fi
 

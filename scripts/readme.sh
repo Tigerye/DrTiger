@@ -1774,7 +1774,7 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DI
 }
 
 BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
-SQUAD_DIR=/data/yechen/squad/WebQA.v1.0
+SQUAD_DIR=/data/yechen/squad/data
 
 python run_squad.py \
   --vocab_file=$BERT_BASE_DIR/vocab.txt \
@@ -1783,7 +1783,7 @@ python run_squad.py \
   --do_train=False \
   --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
   --do_predict=True \
-  --predict_file=$SQUAD_DIR/webqa_squad_eval.json \
+  --predict_file=/data/yechen/squad/WebQA.v1.0/webqa_squad_eval.json \
   --train_batch_size=8 \
   --learning_rate=3e-5 \
   --num_train_epochs=2.0 \
