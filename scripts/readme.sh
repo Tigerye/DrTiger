@@ -1797,6 +1797,21 @@ SQUAD_DIR=/data/yechen/squad/data
 
 python /data/yechen/squad/evaluate-v2.0.py /data/yechen/squad/WebQA.v1.0/webqa_squad_eval.json $SQUAD_DIR/squad_2.0_base_zh_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_zh_2data/null_odds.json
 
+{
+  "exact": 72.51578267137248,
+  "f1": 72.51578267137248,
+  "total": 60351,
+  "HasAns_exact": 61.36851372915864,
+  "HasAns_f1": 61.36851372915864,
+  "HasAns_total": 36346,
+  "NoAns_exact": 89.39387627577588,
+  "NoAns_f1": 89.39387627577588,
+  "NoAns_total": 24005,
+  "best_exact": 72.51578267137248,
+  "best_exact_thresh": -0.009885787963867188,
+  "best_f1": 72.51578267137248,
+  "best_f1_thresh": -0.009885787963867188
+}
 
 
 #en to zh
