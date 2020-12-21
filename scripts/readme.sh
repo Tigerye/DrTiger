@@ -1753,7 +1753,7 @@ nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_wikiped
 #news index zh
 
 cd /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020
-find . -type f -name news.txt -exec wc -c \{\} \; > news-2020-zh.list
+find /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020 -type f -name news.txt -exec wc -c \{\} \; > news-2020-zh.list
 
 
 
