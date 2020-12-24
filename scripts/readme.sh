@@ -1878,7 +1878,7 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-2d
 
 BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
 SQUAD_DIR=/data/yechen/squad/data
-THRESH=-0.009885787963867188
+THRESH=-1.9015254974365234
 
 python run_squad.py \
   --vocab_file=$BERT_BASE_DIR/vocab.txt \
@@ -1942,6 +1942,21 @@ SQUAD_DIR=/data/yechen/squad/data
 
 python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_base_zh_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_zh_2data/null_odds.json
 
+{
+  "exact": 71.5320475027373,
+  "f1": 71.537662483506,
+  "total": 11873,
+  "HasAns_exact": 22.517444981213096,
+  "HasAns_f1": 22.535337269636784,
+  "HasAns_total": 3726,
+  "NoAns_exact": 93.9486927703449,
+  "NoAns_f1": 93.9486927703449,
+  "NoAns_total": 8147,
+  "best_exact": 71.5320475027373,
+  "best_exact_thresh": -1.9015254974365234,
+  "best_f1": 71.537662483506,
+  "best_f1_thresh": -1.9015254974365234
+}
 
 BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
 SQUAD_DIR=/data/yechen/squad/data
