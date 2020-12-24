@@ -274,6 +274,15 @@ python build_index_zh.py /data/yechen/bert/wiki.zh.paragraph.tokens.txt /data/ye
 python doc_retriever_zh.py /data/yechen/bert/wiki.zh.paragraph.txt /data/yechen/bert/drtiger/bm25_zh_paragraph
 
 
+#more index
+./scripts/generate-news-doc.sh /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020/news-2020-zh-36kr.list /data/yechen/bert/news-2020-zh-36kr.txt
+
+python doc_tokenize_zh.py /data/yechen/bert/news-2020-zh-36kr.txt /data/yechen/bert/news-2020-zh-36kr.tokens.txt
+
+python build_index_zh.py /data/yechen/bert/news-2020-zh-36kr.tokens.txt /data/yechen/bert/drtiger/bm25_zh_news-2020-36kr
+
+python doc_retriever_zh.py /data/yechen/bert/news-2020-zh-36kr.txt /data/yechen/bert/drtiger/bm25_zh_news-2020-36kr
+
 #en article
 python -m gensim.scripts.segment_wiki -i -f /data/yechen/bert/enwiki-20201101-pages-articles-multistream.xml.bz2 -o /data/yechen/bert/enwiki-20201101-pages-articles-multistream.json.gz
 
