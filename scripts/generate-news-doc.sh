@@ -1,6 +1,9 @@
 #!/bin/bash
 
-outfile=/mnt/disk2/data1/news/datap/out-txt-v2/cn/2020/news-2020-zh.txt
+#usage: ./generate-news-doc.sh /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020/news-2020-zh.list /data/yechen/bert/news-2020-zh.txt
+
+#outfile=/mnt/disk2/data1/news/datap/out-txt-v2/cn/2020/news-2020-zh.txt
+outfile=$2
 numfile=0
 numgood=0
 while read line
@@ -25,6 +28,7 @@ then
     echo "processed $numfile files with $numgood big enough."
 fi
 
-done < /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020/news-2020-zh.list
+#done < /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020/news-2020-zh.list
+done < $1
 
 echo "done process $numfile files with $numgood big enough."
