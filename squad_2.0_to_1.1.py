@@ -25,6 +25,7 @@ if __name__ == '__main__':
         
     i = 0 #doc
     j = 0 #paragraph
+    jt = 0
     k = 0 #question
     kt = 0
 
@@ -42,6 +43,9 @@ if __name__ == '__main__':
                     continue    
                 qas.append(question)
             
+            if (not qas):
+                jt = jt+1
+                continue
             para.append({
                 'qas': qas,
                 'context': paragraph['context']
@@ -61,4 +65,4 @@ if __name__ == '__main__':
         
     with open(outfile, 'w') as f:
         json.dump(data, f)
-    print(f"Finished convert [{i}] docs, [{j}] paragraphs, [{k}] questions ([{kt}] no answers).")
+    print(f"Finished convert [{i}] docs, [{j}] paragraphs ([{jt}] no qas), [{k}] questions ([{kt}] no answers).")
