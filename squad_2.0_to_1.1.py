@@ -65,7 +65,7 @@ if __name__ == '__main__':
 #             break
             
         if (i % 1000 ==0):
-            print(f"translated [{i}] docs")
+            print(f"converted [{i}] docs")
         
     with open(outfile, 'w') as f:
         json.dump(data, f)
