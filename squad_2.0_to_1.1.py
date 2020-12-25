@@ -24,6 +24,7 @@ if __name__ == '__main__':
         data_in = json.load(f)
         
     i = 0 #doc
+    it = 0
     j = 0 #paragraph
     jt = 0
     k = 0 #question
@@ -51,6 +52,9 @@ if __name__ == '__main__':
                 'context': paragraph['context']
                 })
         
+        if (not para):
+            it = it+1
+            continue
         data['data'].append({
             'title':doc["title"],
             'paragraphs': para
