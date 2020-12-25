@@ -69,4 +69,4 @@ if __name__ == '__main__':
         
     with open(outfile, 'w') as f:
         json.dump(data, f)
-    print(f"Finished convert [{i}] docs, [{j}] paragraphs ([{jt}] no qas), [{k}] questions ([{kt}] no answers).")
+    print(f"Finished convert [{i}] docs ([{it}] no paragraph), [{j}] paragraphs ([{jt}] no qas), [{k}] questions ([{kt}] no answers).")
