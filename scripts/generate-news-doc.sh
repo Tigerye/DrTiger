@@ -19,7 +19,7 @@ then
 	IFS='/' read -r -a array <<< "$line"
 	year=${array[9]}
 	source=${array[10]}
-	content=`cat $filename | sed 's/\xC2\xA0//g' | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g' | awk '{if(length($0)!=0){print}}' ORS=''`
+	content=`cat $filename | sed 's/\xC2\xA0//g' | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g' | sed 's/[]\r\n]//g' |awk '{if(length($0)!=0){print}}' ORS=''`
 	echo "【$year，$source】$content" >> $outfile
 fi
 

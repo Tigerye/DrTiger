@@ -2008,6 +2008,102 @@ python /data/yechen/squad/evaluate-v2.0.py /data/yechen/squad/WebQA.v1.0/webqa_s
 }
 
 
+#v1.1
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/combined-squad-train-v1.1-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v1.1-2data-zh.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_1.1_base_zh_2data/
+  
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v1.1.py $SQUAD_DIR/combined-squad-dev-v1.1-2data-zh.json $SQUAD_DIR/squad_1.1_base_zh_2data/predictions.json
+
+{"exact_match": 80.32291874625673, "f1": 80.34221734211755}
+
+
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v1.1-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v1.1_zh.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_1.1_base_zh_2data/
+  
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v1.1.py $SQUAD_DIR/dev-v1.1_zh.json $SQUAD_DIR/squad_1.1_base_zh_2data/predictions.json
+
+{"exact_match": 57.43424584004294, "f1": 57.64179638575775}
+
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v1.1-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/../WebQA.v1.0/webqa_squad_eval_v1.1.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_1.1_base_zh_2data/
+
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+{"exact_match": 82.66934463214659, "f1": 82.66934463214659}
+
+
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad.py \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/combined-squad-train-v1.1-7data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v1.1-7data-zh.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_1.1_base_zh_7data/
+  
+  
+
 #en to zh
 proxy
  
@@ -2049,7 +2145,16 @@ nohup python squad_en_to_zh.py /data/yechen/squad/data/triviaqa_to_squad_wikiped
 #news index zh
 
 cd /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020
-find /mnt/disk2/data1/news/datap/out-txt-v2/cn/2020 -type f -name news.txt -exec wc -c \{\} \; > news-2020-zh.list
+find /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2020 -type f -name news.txt -exec wc -c \{\} \; > news-2020-zh.list
+./scripts/generate-news-doc.sh /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2020/news-2020-zh.list /data/yechen/bert/news.zh.2020.txt
+
+cd /mnt/disk2/data1/news/datap/out-txt-v2/cn/2019
+find /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2019 -type f -name news.txt -exec wc -c \{\} \; > news-2019-zh.list
+./scripts/generate-news-doc.sh /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2019/news-2019-zh.list /data/yechen/bert/news.zh.2019.txt
+
+cd /mnt/disk2/data1/news/datap/out-txt-v2/cn/2018
+find /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2018 -type f -name news.txt -exec wc -c \{\} \; > news-2018-zh.list
+./scripts/generate-news-doc.sh /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2019/news-2018-zh.list /data/yechen/bert/news.zh.2018.txt
 
 
 
