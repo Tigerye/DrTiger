@@ -2239,7 +2239,7 @@ find /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2018 -type f -name news.txt 
 
 python doc_tokenize_zh.py /data/yechen/bert/news.zh.2018.txt /data/yechen/bert/news.zh.2018.tokens.txt
 
-python build_index_zh.py /data/yechen/bert/news.zh.2017.tokens.txt /data/yechen/bert/drtiger/bm25_zh_news-2017
+python build_index_zh.py /data/yechen/bert/news.zh.2018.tokens.txt /data/yechen/bert/drtiger/bm25_zh_news-2018
 
 python doc_retriever_zh.py /data/yechen/bert/news.zh.2017.txt /data/yechen/bert/drtiger/bm25_zh_news-2017
 
