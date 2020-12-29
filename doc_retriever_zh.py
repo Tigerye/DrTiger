@@ -102,12 +102,12 @@ if __name__ == '__main__':
             continue
         print(f"your query is: [{query}] and cleaned tokenized query is: [{' '.join(tokquery)}].\n")
         
+        reader_docs = []
+        reader_scores = []
         for docidx, bm25 in enumerate(bm25s):
             scores = bm25.get_scores(tokquery)
             topk_idx = np.argsort(scores)[::-1][:topk]
             print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
-            reader_docs = []
-            reader_scores = []
             for idx in topk_idx:
                 reader_docs.append(docs[docs_offset[docidx]+idx])
                 reader_scores.append(scores[idx])
