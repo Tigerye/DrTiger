@@ -112,6 +112,10 @@ if __name__ == '__main__':
                 reader_docs.append(docs[docs_offset[docidx]+idx])
                 reader_scores.append(scores[idx])
         
+        
+        del bm25s
+        del docs
+        
         num_doc = len(reader_docs)
         
         reader_data = get_data(query, reader_docs)
