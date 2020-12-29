@@ -18,16 +18,16 @@ if __name__ == '__main__':
     
     print('loading docs...')
     with open(infile, 'rb') as fin:
-        lines = fin.readlines()
+        lines = [line.decode('utf-8','ignore') for line in fin.readlines()]
     print('Finished load %d docs' % len(lines))
     print('doc 1: %s' % lines[0])
     
     print('tokenizing docs...')
     i = 0
     with open(outfile,'w',encoding = 'utf-8') as fout:
-        for line in lines:
+        for line in docs:
             i =i+1
-            line = line.replace(b'\n',b' ')
+            line = line.replace('\n',' ')
             tokens = jieba.cut(line)
             outline = ' '.join(token for token in tokens)
             outline = ' '.join(outline.split())
