@@ -25,7 +25,7 @@ if __name__ == '__main__':
     print('tokenizing docs...')
     i = 0
     with open(outfile,'w',encoding = 'utf-8') as fout:
-        for line in docs:
+        for line in lines:
             i =i+1
             line = line.replace('\n',' ')
             tokens = jieba.cut(line)
