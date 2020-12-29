@@ -102,7 +102,7 @@ if __name__ == '__main__':
             continue
         print(f"your query is: [{query}] and cleaned tokenized query is: [{' '.join(tokquery)}].\n")
         
-        for docidx, bm25 in enuerate(bm25s):
+        for docidx, bm25 in enumerate(bm25s):
             scores = bm25.get_scores(tokquery)
             topk_idx = np.argsort(scores)[::-1][:topk]
             print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
