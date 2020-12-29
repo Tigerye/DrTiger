@@ -18,7 +18,7 @@ if __name__ == '__main__':
     
     print('loading docs...')
     with open(infile, 'rb') as fin:
-        lines = [line.decode('utf-8','ignore') for line in fin.readlines()]
+        lines = [line.decode('utf-8','ignore').strip() for line in fin.readlines()]
     print('Finished load %d docs' % len(lines))
     print('doc 1: %s' % lines[0])
     
