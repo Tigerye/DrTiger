@@ -51,7 +51,8 @@ if __name__ == '__main__':
         help()
         sys.exit(1)
     logging.info("running %s" % ' '.join(sys.argv))
-    docfile, bm25file = sys.argv[1:3]
+    docfile = sys.argv[1]
+    bm25files = sys.argv[2:len(sys.argv)]
     
     exclude_pos = {'p', 'r', 'u', 'x', 'y'}
     
@@ -63,13 +64,18 @@ if __name__ == '__main__':
     print('doc 1: %s' % docs[0])
     print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
 
-    print('loading bm25...')
-    tic = time.perf_counter()
-    with open(bm25file,"rb") as fin:
-        bm25 = pickle.load(fin)
-        #bm25 = hickle.load(fin)
-    toc = time.perf_counter()
-    print(f"Finished load bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
+    print('loading bm25 indexes...')
+    bm25s=[]
+    for bm25file in bm25files:
+        print('loading bm25: ', bm25file, '...')
+        tic = time.perf_counter()
+        with open(bm25file,"rb") as fin:
+            bm25 = pickle.load(fin)
+            bm25s.append(bm25)
+            #bm25 = hickle.load(fin)
+        toc = time.perf_counter()
+        print(f"loaded bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
+    print(f"Finished load [{len(bm25s)}] bm25 indexes.\n")
     
     topk = 5
     while True:
@@ -85,14 +91,15 @@ if __name__ == '__main__':
             continue
         print(f"your query is: [{query}] and cleaned tokenized query is: [{' '.join(tokquery)}].\n")
         
-        scores = bm25.get_scores(tokquery)
-        topk_idx = np.argsort(scores)[::-1][:topk]
-        print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
-        reader_docs = []
-        reader_scores = []
-        for idx in topk_idx:
-            reader_docs.append(docs[idx])
-            reader_scores.append(scores[idx])
+        for bm25 in bm25s:
+            scores = bm25.get_scores(tokquery)
+            topk_idx = np.argsort(scores)[::-1][:topk]
+            print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
+            reader_docs = []
+            reader_scores = []
+            for idx in topk_idx:
+                reader_docs.append(docs[idx])
+                reader_scores.append(scores[idx])
         
         num_doc = len(reader_docs)
         

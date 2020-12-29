@@ -2255,6 +2255,10 @@ python doc_retriever_zh.py /data/yechen/bert/news.zh.2017.txt /data/yechen/bert/
 
 
 
+python doc_retriever_zh.py /data/yechen/bert/news.zh.2017.txt /data/yechen/bert/drtiger/bm25_zh_section /data/yechen/bert/drtiger/bm25_zh_news-2017
+
+
+
 
 
 
