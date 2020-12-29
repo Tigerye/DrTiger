@@ -107,7 +107,7 @@ if __name__ == '__main__':
         for docidx, bm25 in enumerate(bm25s):
             scores = bm25.get_scores(tokquery)
             topk_idx = np.argsort(scores)[::-1][:topk]
-            print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
+#             print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
             for idx in topk_idx:
                 reader_docs.append(docs[docs_offset[docidx]+idx])
                 reader_scores.append(scores[idx])
