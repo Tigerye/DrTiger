@@ -54,7 +54,7 @@ if __name__ == '__main__':
     logging.info("running %s" % ' '.join(sys.argv))
     docfiles=[]
     bm25files=[]
-    for i in range((numarg-1)/2):
+    for i in range(int((numarg-1)/2)):
         docfiles.append(sys.argv[2*i+1])
         bm25files.append(sys.argv[2*i+2])
     
