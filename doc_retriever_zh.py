@@ -60,7 +60,7 @@ if __name__ == '__main__':
     with open(docfile, 'rb') as fin1:
         docs = [line.decode('utf-8','ignore').strip() for line in fin1.readlines()]
     toc = time.perf_counter()
-    print('doc 1: %s' % docs[0].decode('utf-8'))
+    print('doc 1: %s' % docs[0])
     print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
 
     print('loading bm25...')
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         reader_docs = []
         reader_scores = []
         for idx in topk_idx:
-            reader_docs.append(docs[idx].decode('utf-8'))
+            reader_docs.append(docs[idx])
             reader_scores.append(scores[idx])
         
         num_doc = len(reader_docs)
