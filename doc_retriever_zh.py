@@ -47,27 +47,38 @@ def get_data(question, docs):
     return data
     
 if __name__ == '__main__':
-    if len(sys.argv) < 3:
+    numarg=len(sys.argv)
+    if numarg < 3 or numarg % 2 != 1:
         help()
         sys.exit(1)
     logging.info("running %s" % ' '.join(sys.argv))
-    docfile = sys.argv[1]
-    bm25files = sys.argv[2:len(sys.argv)]
+    docfiles=[]
+    bm25files=[]
+    for i in range((numarg-1)/2):
+        docfiles.append(sys.argv[2*i+1])
+        bm25files.append(sys.argv[2*i+2])
     
     exclude_pos = {'p', 'r', 'u', 'x', 'y'}
     
     print('loading docs...')
-    tic = time.perf_counter()
-    with open(docfile, 'rb') as fin1:
-        docs = [line.decode('utf-8','ignore').strip() for line in fin1.readlines()]
-    toc = time.perf_counter()
-    print('doc 1: %s' % docs[0])
+    docs=[]
+    docs_offset=[0]
+    for docfile in docfiles:
+        print('loading docs:', docfile, '...')
+        tic = time.perf_counter()
+        with open(docfile, 'rb') as fin1:
+            docs_part = [line.decode('utf-8','ignore').strip() for line in fin1.readlines()]
+            docs.extend(docs_part)
+            docs_offset.append(len(docs_part))
+            toc = time.perf_counter()
+            print('doc 1: %s' % docs_part[0])
+            print(f"loaded [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs_part))
     print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
 
     print('loading bm25 indexes...')
     bm25s=[]
     for bm25file in bm25files:
-        print('loading bm25: ', bm25file, '...')
+        print('loading bm25:', bm25file, '...')
         tic = time.perf_counter()
         with open(bm25file,"rb") as fin:
             bm25 = pickle.load(fin)
@@ -91,14 +102,14 @@ if __name__ == '__main__':
             continue
         print(f"your query is: [{query}] and cleaned tokenized query is: [{' '.join(tokquery)}].\n")
         
-        for bm25 in bm25s:
+        for docidx, bm25 in enuerate(bm25s):
             scores = bm25.get_scores(tokquery)
             topk_idx = np.argsort(scores)[::-1][:topk]
             print('top %d docs similar to "%s":' % (topk, colored(query, 'green')))
             reader_docs = []
             reader_scores = []
             for idx in topk_idx:
-                reader_docs.append(docs[idx])
+                reader_docs.append(docs[docs_offset[docidx]+idx])
                 reader_scores.append(scores[idx])
         
         num_doc = len(reader_docs)
