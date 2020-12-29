@@ -109,8 +109,10 @@ if __name__ == '__main__':
             topk_idx = np.argsort(scores)[::-1][:topk]
             print('retrieved top [%d] docs from [%s] similar to "%s":' % (topk, colored(docfiles[docidx], 'red'), colored(query, 'green')))
             for idx in topk_idx:
-                reader_docs.append(docs[docs_offset[docidx]+idx])
-                reader_scores.append(scores[idx])
+                retr_doc=docs[docs_offset[docidx]+idx]
+                if retr_doc:
+                    reader_docs.append(retr_doc)
+                    reader_scores.append(scores[idx])
         
         
         del bm25s
