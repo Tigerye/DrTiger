@@ -27,7 +27,7 @@ if __name__ == '__main__':
     with open(outfile,'w',encoding = 'utf-8') as fout:
         for line in lines:
             i =i+1
-            line = line.replace("\n"," ")
+            line = line.replace(b'\n',' ')
             tokens = jieba.cut(line)
             outline = ' '.join(token for token in tokens)
             outline = ' '.join(outline.split())
