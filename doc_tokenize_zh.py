@@ -17,7 +17,7 @@ if __name__ == '__main__':
     infile, outfile = sys.argv[1:3]
     
     print('loading docs...')
-    with open(infile) as fin:
+    with open(infile, 'rb') as fin:
         lines = fin.readlines()
     print('Finished load %d docs' % len(lines))
     print('doc 1: %s' % lines[0])
