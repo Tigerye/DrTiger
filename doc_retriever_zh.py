@@ -67,12 +67,13 @@ if __name__ == '__main__':
         print('loading docs:', docfile, '...')
         tic = time.perf_counter()
         with open(docfile, 'rb') as fin1:
-            docs_part = [line.decode('utf-8','ignore').strip() for line in fin1.readlines() if line.decode('utf-8','ignore').strip()]
+            lines = fin1.readlines()
+            docs_part = [line.decode('utf-8','ignore').strip() for line in lines if line.decode('utf-8','ignore').strip()]
             docs.extend(docs_part)
             docs_offset.append(len(docs_part))
             toc = time.perf_counter()
             print('doc 1: %s' % docs_part[0])
-            print(f"loaded [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs_part))
+            print(f"read [{len(lines)}] lines, loaded [{len(docs_part)}] docs, in [{toc - tic:0.2f}] seconds\n")
     print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % len(docs))
 
     print('loading bm25 indexes...')
