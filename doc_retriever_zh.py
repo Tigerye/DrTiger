@@ -115,9 +115,9 @@ if __name__ == '__main__':
                     reader_scores.append(scores[idx])
         
         
-        print("clearing big mem docs and bm25s...")
-        del bm25s
-        del docs
+#         print("clearing big mem docs and bm25s...")
+#         del bm25s
+#         del docs
         
         num_doc = len(reader_docs)
         
