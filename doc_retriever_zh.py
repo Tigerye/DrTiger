@@ -114,7 +114,7 @@ if __name__ == '__main__':
                     reader_docs.append(retr_doc)
                     reader_scores.append(scores[idx])
                 else:
-                    print("empty doc:", docidx, idx)
+                    print("empty doc:", docfiles[docidx], idx)
         
         
 #         print("clearing big mem docs and bm25s...")
