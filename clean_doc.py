@@ -23,7 +23,7 @@ if __name__ == '__main__':
                 line_cln=line.decode('utf-8','ignore').strip()
                 if not line_cln:
                     j+=1
-                    print("bad line:", line_cln)
+                    print("bad line:", line)
                 else:
                     docs.append(line_cln)
             if (i % 10000 == 0):
