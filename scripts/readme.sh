@@ -258,11 +258,13 @@ python doc_retriever_zh.py /data/yechen/bert/wiki.zh.article.txt /data/yechen/be
 #zh section
 python extract_section_zh.py
 
-python doc_tokenize_zh.py /data/yechen/bert/wiki.zh.section.txt /data/yechen/bert/wiki.zh.section.tokens.txt
+python clean_doc.py /data/yechen/bert/wiki.zh.section.txt /data/yechen/bert/wiki.zh.section.cln.txt
 
-python build_index_zh.py /data/yechen/bert/wiki.zh.section.tokens.txt /data/yechen/bert/drtiger/bm25_zh_section
+python doc_tokenize_zh.py /data/yechen/bert/wiki.zh.section.cln.txt /data/yechen/bert/wiki.zh.section.cln.tokens.txt
 
-python doc_retriever_zh.py /data/yechen/bert/wiki.zh.section.txt /data/yechen/bert/drtiger/bm25_zh_section
+python build_index_zh.py /data/yechen/bert/wiki.zh.section.cln.tokens.txt /data/yechen/bert/drtiger/bm25_zh_section
+
+python doc_retriever_zh.py /data/yechen/bert/wiki.zh.section.cln.txt /data/yechen/bert/drtiger/bm25_zh_section
 
 #zh paragraph
 python extract_paragraph_zh.py
@@ -2261,7 +2263,7 @@ python doc_retriever_zh.py /data/yechen/bert/news.zh.2017.txt /data/yechen/bert/
 
 
 
-python doc_retriever_zh.py /data/yechen/bert/wiki.zh.section.txt /data/yechen/bert/drtiger/bm25_zh_section /data/yechen/bert/news.zh.2017.txt /data/yechen/bert/drtiger/bm25_zh_news-2017 /data/yechen/bert/news.zh.2018.txt /data/yechen/bert/drtiger/bm25_zh_news-2018
+python doc_retriever_zh.py /data/yechen/bert/wiki.zh.section.cln.txt /data/yechen/bert/drtiger/bm25_zh_section /data/yechen/bert/news.zh.2017.txt /data/yechen/bert/drtiger/bm25_zh_news-2017 /data/yechen/bert/news.zh.2018.txt /data/yechen/bert/drtiger/bm25_zh_news-2018
 
 
 

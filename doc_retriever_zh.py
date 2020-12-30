@@ -89,7 +89,7 @@ if __name__ == '__main__':
         print(f"loaded bm25 on corpus with [{bm25.corpus_size}] documents and [{len(bm25.idf)}] vocabulary in [{toc - tic:0.2f}] seconds\n")
     print(f"Finished load [{len(bm25s)}] bm25 indexes.\n")
     
-    topk = 100
+    topk = 10
     while True:
         query = input(colored('your question: ', 'green'))
         #tokquery = jieba.cut(query)
