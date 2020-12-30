@@ -67,7 +67,7 @@ if __name__ == '__main__':
         print('loading docs:', docfile, '...')
         tic = time.perf_counter()
         with open(docfile, 'rb') as fin1:
-            docs_part = [line.decode('utf-8','ignore').strip() for line in fin1.readlines()]
+            docs_part = [line.decode('utf-8','ignore').strip() for line in fin1.readlines() if line.decode('utf-8','ignore').strip()]
             docs.extend(docs_part)
             docs_offset.append(len(docs_part))
             toc = time.perf_counter()
