@@ -25,20 +25,20 @@ if __name__ == '__main__':
     partn = 5000000
     numpart = n//partn+1
     print('splitting into', numpart, 'parts','...')
-    i=0
     
+    i=0
     for p in range(numpart):
         print('writing part',p,'...')
         outfile=infile+'.part-'+str(p+1)+'/'+str(numpart)
         
         with open(outfile,'w',encoding = 'utf-8') as fout:
-        for line in docs[partn*p:min(partn*(p+1),n)]:
-            i =i+1
-            fout.write(line)
-            fout.write('\n')
+            for line in docs[partn*p:min(partn*(p+1),n)]:
+                i =i+1
+                fout.write(line)
+                fout.write('\n')
             
-            if (i % 10000 == 0):
-                logging.info("wrote "+str(i)+ " lines.")
+                if (i % 10000 == 0):
+                    logging.info("wrote "+str(i)+ " lines.")
     
     logging.info("Finished split "+str(numpart)+ " parts.")
     

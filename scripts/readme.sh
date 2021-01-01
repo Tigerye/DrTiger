@@ -2243,6 +2243,9 @@ find /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2019 -type f -name news.txt 
 
 python doc_tokenize_zh.py /data/yechen/bert/news.zh.2019.txt /data/yechen/bert/news.zh.2019.tokens.txt
 
+python doc_split.py /data/yechen/bert/news.zh.2019.txt
+python doc_split.py /data/yechen/bert/news.zh.2019.tokens.txt
+
 python build_index_zh.py /data/yechen/bert/news.zh.2019.tokens.txt /data/yechen/bert/drtiger/bm25_zh_news-2019
 
 python doc_retriever_zh.py /data/yechen/bert/news.zh.2019.txt /data/yechen/bert/drtiger/bm25_zh_news-2019
