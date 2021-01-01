@@ -15,11 +15,11 @@ if __name__ == '__main__':
     
     print('loading docs...')
     tic = time.perf_counter()
-    with open(infile) as fin:
-        docs = fin.readlines()
-        n = len(docs)
+    with open(infile, 'rb') as fin:
+        lines = [line.decode('utf-8','ignore').strip() for line in fin.readlines()]
+        n = len(lines)
     toc = time.perf_counter()
-    print('doc 1: %s' % docs[0])
+    print('doc 1: %s' % lines[0])
     print(f"Finished load [%d] docs in [{toc - tic:0.2f}] seconds\n" % n)
     
     partn = 5000000
@@ -32,7 +32,7 @@ if __name__ == '__main__':
         outfile=infile+'.part-'+str(p+1)+'/'+str(numpart)
         
         with open(outfile,'w',encoding = 'utf-8') as fout:
-            for line in docs[partn*p:min(partn*(p+1),n)]:
+            for line in lines[partn*p:min(partn*(p+1),n)]:
                 i =i+1
                 fout.write(line)
                 fout.write('\n')
