@@ -28,8 +28,8 @@ if __name__ == '__main__':
     
     i=0
     for p in range(numpart):
-        print('writing part',p,'...')
-        outfile=infile+'.part-'+str(p+1)+'/'+str(numpart)
+        print('writing part',p+1,'...')
+        outfile=infile+'.part'+str(p+1)+'-'+str(numpart)
         
         with open(outfile,'w',encoding = 'utf-8') as fout:
             for line in lines[partn*p:min(partn*(p+1),n)]:
