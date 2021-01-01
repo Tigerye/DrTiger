@@ -2231,6 +2231,12 @@ cd /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2020
 find /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2020 -type f -name news.txt -exec wc -c \{\} \; > news-2020-zh.list
 ./scripts/generate-news-doc.sh /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2020/news-2020-zh.list /data/yechen/bert/news.zh.2020.txt
 
+python doc_tokenize_zh.py /data/yechen/bert/news.zh.2020.txt /data/yechen/bert/news.zh.2020.tokens.txt
+
+python build_index_zh.py /data/yechen/bert/news.zh.2019.tokens.txt /data/yechen/bert/drtiger/bm25_zh_news-2019
+
+python doc_retriever_zh.py /data/yechen/bert/news.zh.2019.txt /data/yechen/bert/drtiger/bm25_zh_news-2019
+
 cd /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2019
 find /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2019 -type f -name news.txt -exec wc -c \{\} \; > news-2019-zh.list
 ./scripts/generate-news-doc.sh /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2019/news-2019-zh.list /data/yechen/bert/news.zh.2019.txt
