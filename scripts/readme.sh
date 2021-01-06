@@ -2233,6 +2233,22 @@ find /data/mnt/disk2/data1/news/datap/out-txt-v2/cn/2020 -type f -name news.txt 
 
 python doc_tokenize_zh.py /data/yechen/bert/news.zh.2020.txt /data/yechen/bert/news.zh.2020.tokens.txt
 
+python doc_split.py /data/yechen/bert/news.zh.2020.txt
+python doc_split.py /data/yechen/bert/news.zh.2020.tokens.txt
+
+for i in news.zh.2020.txt.part*; do outfile=`echo $i | sed 's/\.txt/.cln.txt/g'`; cat $i | sed 's/[[:blank:]]\+/ /g' > $outfile &;  done
+
+
+cat news.zh.2020.txt.part1-4 | sed 's/[[:blank:]]\+/ /g' | sed 's/\xe2\x80\x8b/ /g' > news.zh.2020.cln.txt.part1-4
+
+python build_index_zh.py /data/yechen/bert/news.zh.2020.tokens.txt.part1-4 /data/yechen/bert/drtiger/bm25_zh_news-2020.part1-4
+python build_index_zh.py /data/yechen/bert/news.zh.2020.tokens.txt.part2-4 /data/yechen/bert/drtiger/bm25_zh_news-2020.part2-4
+python build_index_zh.py /data/yechen/bert/news.zh.2020.tokens.txt.part3-4 /data/yechen/bert/drtiger/bm25_zh_news-2020.part3-4
+python build_index_zh.py /data/yechen/bert/news.zh.2020.tokens.txt.part4-4 /data/yechen/bert/drtiger/bm25_zh_news-2020.part4-4
+
+python doc_retriever_zh.py /data/yechen/bert/wiki.zh.section.cln.txt /data/yechen/bert/drtiger/bm25_zh_section /data/yechen/bert/news.zh.2020.cln.txt.part1-4 /data/yechen/bert/drtiger/bm25_zh_news-2020.part1-4 /data/yechen/bert/news.zh.2020.cln.txt.part2-4 /data/yechen/bert/drtiger/bm25_zh_news-2020.part2-4 /data/yechen/bert/news.zh.2020.cln.txt.part3-4 /data/yechen/bert/drtiger/bm25_zh_news-2020.part3-4 /data/yechen/bert/news.zh.2020.cln.txt.part4-4 /data/yechen/bert/drtiger/bm25_zh_news-2020.part4-4
+
+
 python build_index_zh.py /data/yechen/bert/news.zh.2019.tokens.txt /data/yechen/bert/drtiger/bm25_zh_news-2019
 
 python doc_retriever_zh.py /data/yechen/bert/news.zh.2019.txt /data/yechen/bert/drtiger/bm25_zh_news-2019
@@ -2246,7 +2262,18 @@ python doc_tokenize_zh.py /data/yechen/bert/news.zh.2019.txt /data/yechen/bert/n
 python doc_split.py /data/yechen/bert/news.zh.2019.txt
 python doc_split.py /data/yechen/bert/news.zh.2019.tokens.txt
 
-python build_index_zh.py /data/yechen/bert/news.zh.2019.tokens.txt /data/yechen/bert/drtiger/bm25_zh_news-2019
+
+
+cat news.zh.2019.txt.part3-3 | sed 's/[[:blank:]]\+/ /g' ｜ sed 's/\xe2\x80\x8b/ /g' > news.zh.2019.cln.txt.part3-3
+
+
+
+python build_index_zh.py /data/yechen/bert/news.zh.2019.tokens.txt.part1-3 /data/yechen/bert/drtiger/bm25_zh_news-2019.part1-3
+python build_index_zh.py /data/yechen/bert/news.zh.2019.tokens.txt.part2-3 /data/yechen/bert/drtiger/bm25_zh_news-2019.part2-3
+python build_index_zh.py /data/yechen/bert/news.zh.2019.tokens.txt.part3-3 /data/yechen/bert/drtiger/bm25_zh_news-2019.part3-3
+
+
+
 
 python doc_retriever_zh.py /data/yechen/bert/news.zh.2019.txt /data/yechen/bert/drtiger/bm25_zh_news-2019
 
@@ -2275,15 +2302,32 @@ python doc_retriever_zh.py /data/yechen/bert/news.zh.2017.txt /data/yechen/bert/
 python doc_retriever_zh.py /data/yechen/bert/wiki.zh.section.cln.txt /data/yechen/bert/drtiger/bm25_zh_section /data/yechen/bert/news.zh.2017.txt /data/yechen/bert/drtiger/bm25_zh_news-2017 /data/yechen/bert/news.zh.2018.txt /data/yechen/bert/drtiger/bm25_zh_news-2018
 
 
+pre-train
+
+cat news.zh.2020.txt | sed 's/[[:blank:]]\+/ /g' | sed 's/\xe2\x80\x8b/ /g' | sed 's/\xef\xbb\xbf/ /g' | sed 's/^【[0-9]\{8\}，[^【】]\+】//g' | sed 's/[^。！？!?]$/\0\n/g' | sed 's/[。！？!?]/\0\n/g' | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g' | head -n -1  > news.zh.2020.pre.txt
+
+cat news.zh.2019.txt | sed 's/[[:blank:]]\+/ /g' | sed 's/\xe2\x80\x8b/ /g' | sed 's/\xef\xbb\xbf/ /g' | sed 's/^【[0-9]\{8\}，[^【】]\+】//g' | sed 's/[^。！？!?]$/\0\n/g' | sed 's/[。！？!?]/\0\n/g' | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g' | head -n -1  > news.zh.2019.pre.txt
+
+cat news.zh.2018.txt | sed 's/[[:blank:]]\+/ /g' | sed 's/\xe2\x80\x8b/ /g' | sed 's/\xef\xbb\xbf/ /g' | sed 's/^【[0-9]\{8\}，[^【】]\+】//g' | sed 's/[^。！？!?]$/\0\n/g' | sed 's/[。！？!?]/\0\n/g' | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g' | head -n -1  > news.zh.2018.pre.txt
+
+cat news.zh.2017.txt | sed 's/[[:blank:]]\+/ /g' | sed 's/\xe2\x80\x8b/ /g' | sed 's/\xef\xbb\xbf/ /g' | sed 's/^【[0-9]\{8\}，[^【】]\+】//g' | sed 's/[^。！？!?]$/\0\n/g' | sed 's/[。！？!?]/\0\n/g' | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g' | head -n -1 > news.zh.2017.pre.txt
+
+cat wiki.zh.article.txt | sed 's/[[:blank:]]\+/ /g' | sed 's/\xe2\x80\x8b/ /g' | sed 's/\xef\xbb\xbf/ /g' | sed 's/[^。！？!?]$/\0\n/g' | sed 's/[。！？!?]/\0\n/g' | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g' | head -n -1 > wiki.zh.article.pre.txt
 
 
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+DATA_DIR=/data/yechen/bert
 
-
-
-
-
-
-
+python create_pretraining_data.py \
+  --input_file=$DATA_DIR/wiki.zh.article.pre.txt \
+  --output_file=$DATA_DIR/tf_examples_wiki.tfrecord \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --do_lower_case=True \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --masked_lm_prob=0.15 \
+  --random_seed=12345 \
+  --dupe_factor=5
 
 
 

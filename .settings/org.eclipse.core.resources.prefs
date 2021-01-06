@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding/create_pretraining_data.py=utf-8
 encoding/modeling.py=utf-8
 encoding/optimization.py=utf-8
 encoding/run_squad.py=utf-8
