@@ -426,7 +426,7 @@ def main(_):
     tpu_cluster_resolver = tf.distribute.cluster_resolver.TPUClusterResolver(
         FLAGS.tpu_name, zone=FLAGS.tpu_zone, project=FLAGS.gcp_project)
 
-  is_per_host = tf.distribute.tpu.InputPipelineConfig.PER_HOST_V2
+  is_per_host = tf.estimator.tpu.InputPipelineConfig.PER_HOST_V2
   run_config = tf.estimator.tpu.RunConfig(
       cluster=tpu_cluster_resolver,
       master=FLAGS.master,
