@@ -19,7 +19,7 @@ from __future__ import division
 from __future__ import print_function
 
 import os
-import modeling
+import modeling_v2 as modeling
 import optimization
 import tensorflow as tf
 

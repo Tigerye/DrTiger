@@ -2392,8 +2392,8 @@ python create_pretraining_data.py \
   --dupe_factor=5 \
   --do_whole_word_mask=True
   
-python run_pretraining.py \
-  --input_file=$DATA_DIR/tf_examples.tfrecord \
+python run_pretraining_v2.py \
+  --input_file=$DATA_DIR/tf_examples_sample.tfrecord \
   --output_dir=$DATA_DIR/bert_model_sample \
   --do_train=True \
   --do_eval=True \

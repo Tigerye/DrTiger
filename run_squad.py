@@ -23,7 +23,7 @@ import json
 import math
 import os
 import random
-import modeling
+from modeling_v1 import py
 import optimization
 import tokenization
 import six
@@ -564,7 +564,7 @@ def _check_is_max_context(doc_spans, cur_span_index, position):
 def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
                  use_one_hot_embeddings):
   """Creates a classification model."""
-  model = modeling.BertModel(
+  model = py.BertModel(
       config=bert_config,
       is_training=is_training,
       input_ids=input_ids,
@@ -574,7 +574,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   final_hidden = model.get_sequence_output()
 
-  final_hidden_shape = modeling.get_shape_list(final_hidden, expected_rank=3)
+  final_hidden_shape = py.get_shape_list(final_hidden, expected_rank=3)
   batch_size = final_hidden_shape[0]
   seq_length = final_hidden_shape[1]
   hidden_size = final_hidden_shape[2]
@@ -634,7 +634,7 @@ def model_fn_builder(bert_config, init_checkpoint, learning_rate,
     scaffold_fn = None
     if init_checkpoint:
       (assignment_map, initialized_variable_names
-      ) = modeling.get_assignment_map_from_checkpoint(tvars, init_checkpoint)
+      ) = py.get_assignment_map_from_checkpoint(tvars, init_checkpoint)
       if use_tpu:
 
         def tpu_scaffold():
@@ -655,7 +655,7 @@ def model_fn_builder(bert_config, init_checkpoint, learning_rate,
 
     output_spec = None
     if mode == tf.estimator.ModeKeys.TRAIN:
-      seq_length = modeling.get_shape_list(input_ids)[1]
+      seq_length = py.get_shape_list(input_ids)[1]
 
       def compute_loss(logits, positions):
         one_hot_positions = tf.one_hot(
@@ -1144,7 +1144,7 @@ def validate_flags_or_throw(bert_config):
 def main(_):
   tf.logging.set_verbosity(tf.logging.INFO)
 
-  bert_config = modeling.BertConfig.from_json_file(FLAGS.bert_config_file)
+  bert_config = py.BertConfig.from_json_file(FLAGS.bert_config_file)
 
   validate_flags_or_throw(bert_config)
 
