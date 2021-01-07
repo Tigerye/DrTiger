@@ -2378,9 +2378,12 @@ python create_pretraining_data.py \
   --dupe_factor=5 \
   --do_whole_word_mask=True
   
+ 
+ 
+BERT_BASE_DIR=/data/yechen/bert/uncased_L-12_H-768_A-12
+DATA_DIR=/data/yechen/bert
   
-  
-python create_pretraining_data.py \
+python create_pretraining_data_v2.py \
   --input_file=./sample_text.txt \
   --output_file=$DATA_DIR/tf_examples_sample.tfrecord \
   --vocab_file=$BERT_BASE_DIR/vocab.txt \
