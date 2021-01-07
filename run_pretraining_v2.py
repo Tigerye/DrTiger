@@ -20,7 +20,7 @@ from __future__ import print_function
 
 import os
 import modeling_v2 as modeling
-import optimization
+import optimization_v2 as optimization
 import tensorflow as tf
 
 flags = tf.compat.v1.flags
