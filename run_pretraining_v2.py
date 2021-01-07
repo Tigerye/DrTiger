@@ -427,12 +427,12 @@ def main(_):
         FLAGS.tpu_name, zone=FLAGS.tpu_zone, project=FLAGS.gcp_project)
 
   is_per_host = tf.distribute.tpu.InputPipelineConfig.PER_HOST_V2
-  run_config = tf.distribute.tpu.RunConfig(
+  run_config = tf.estimator.tpu.RunConfig(
       cluster=tpu_cluster_resolver,
       master=FLAGS.master,
       model_dir=FLAGS.output_dir,
       save_checkpoints_steps=FLAGS.save_checkpoints_steps,
-      tpu_config=tf.compat.v1.estimator.tpu.TPUConfig(
+      tpu_config=tf.estimator.tpu.TPUConfig(
           iterations_per_loop=FLAGS.iterations_per_loop,
           num_shards=FLAGS.num_tpu_cores,
           per_host_input_for_training=is_per_host))
