@@ -2327,7 +2327,8 @@ python create_pretraining_data.py \
   --max_predictions_per_seq=20 \
   --masked_lm_prob=0.15 \
   --random_seed=12345 \
-  --dupe_factor=5
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
   
 python create_pretraining_data.py \
   --input_file=$DATA_DIR/news.zh.2017.pre.txt \
@@ -2338,7 +2339,8 @@ python create_pretraining_data.py \
   --max_predictions_per_seq=20 \
   --masked_lm_prob=0.15 \
   --random_seed=12345 \
-  --dupe_factor=5
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
   
 python create_pretraining_data.py \
   --input_file=$DATA_DIR/news.zh.2018.pre.txt \
@@ -2349,7 +2351,8 @@ python create_pretraining_data.py \
   --max_predictions_per_seq=20 \
   --masked_lm_prob=0.15 \
   --random_seed=12345 \
-  --dupe_factor=5
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
   
 python create_pretraining_data.py \
   --input_file=$DATA_DIR/news.zh.2019.pre.txt \
@@ -2360,7 +2363,8 @@ python create_pretraining_data.py \
   --max_predictions_per_seq=20 \
   --masked_lm_prob=0.15 \
   --random_seed=12345 \
-  --dupe_factor=5
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
   
 python create_pretraining_data.py \
   --input_file=$DATA_DIR/news.zh.2020.pre.txt \
@@ -2371,7 +2375,8 @@ python create_pretraining_data.py \
   --max_predictions_per_seq=20 \
   --masked_lm_prob=0.15 \
   --random_seed=12345 \
-  --dupe_factor=5
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
 
 
 
