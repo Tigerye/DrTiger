@@ -2377,6 +2377,22 @@ python create_pretraining_data.py \
   --random_seed=12345 \
   --dupe_factor=5 \
   --do_whole_word_mask=True
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+DATA_DIR=/data/yechen/bert
+
+python run_pretraining_v2.py \
+  --input_file=$DATA_DIR/tf_examples_news2017.tfrecord \
+  --output_dir=$BERT_LARGE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --train_batch_size=16 \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --num_train_steps=90000 \
+  --num_warmup_steps=1000 \
+  --learning_rate=2e-5
   
  
  
@@ -2414,7 +2430,7 @@ python run_pretraining_v2.py \
   --do_eval=True \
   --bert_config_file=$BERT_BASE_DIR/bert_config.json \
   --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
-  --train_batch_size=128 \
+  --train_batch_size=64 \
   --max_seq_length=128 \
   --max_predictions_per_seq=20 \
   --num_train_steps=10000 \
