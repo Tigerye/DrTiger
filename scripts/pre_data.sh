@@ -4,6 +4,7 @@ inputfile=$1
 i=0
 p=0
 outputfile="${inputfile}.pre.part${p}"
+rm $outputfile
 echo "writing part $p."
 
 while read line
