@@ -12,9 +12,10 @@ if [ `expr $i % 300000` -eq 0 ]
 then
 	let p++
     outputfile="${inputfile}.pre.part${p}"
-    echo "writing part %p."
+    rm $outputfile
+    echo "writing part $p."
 fi
-echo $line | sed 's/[[:blank:]]\+/ /g' | sed 's/\xe2\x80\x8b/ /g' | sed 's/\xef\xbb\xbf/ /g' | sed 's/^【[0-9]\{8\}，[^【】]\+】//g' | sed 's/[^。！？!?]$/\0\n/g' | sed 's/[。！？!?]/\0\n/g' | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g' > $outputfile
+echo $line | sed 's/[[:blank:]]\+/ /g' | sed 's/\xe2\x80\x8b/ /g' | sed 's/\xef\xbb\xbf/ /g' | sed 's/^【[0-9]\{8\}，[^【】]\+】//g' | sed 's/[^。！？!?]$/\0\n/g' | sed 's/[。！？!?]/\0\n/g' | sed 's/^[[:blank:]]\+//g' | sed 's/[[:blank:]]\+$//g' >> $outputfile
 
 if [ `expr $i % 10000` -eq 0 ]
 then
