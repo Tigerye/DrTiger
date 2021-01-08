@@ -23,3 +23,5 @@ fi
 
 done < $inputfile
 
+echo "done pre data from $inputfile."
+
