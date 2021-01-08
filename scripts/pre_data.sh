@@ -1,5 +1,6 @@
 #!/bin/bash
-inputfile = $1
+
+inputfile=$1
 i=0
 p=0
 outputfile="${inputfile}.pre.part${p}"
