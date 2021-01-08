@@ -21,8 +21,7 @@ if [ `expr $i % 10000` -eq 0 ]
 then
     echo "processed $i input lines."
 fi
-
-done < $inputfile
+done < "$inputfile"
 
 echo "done pre data from $inputfile."
 
