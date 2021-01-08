@@ -2482,6 +2482,49 @@ python run_pretraining.py \
 
 
 
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_base_zh_2data/ \
+  --version_2_with_negative=True
+
+
+#large zh bert
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json $SQUAD_DIR/squad_2.0_base_zh_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_zh_2data/null_odds.json
+
+{
+  "exact": 72.30837394771821,
+  "f1": 72.30929700191994,
+  "total": 72224,
+  "HasAns_exact": 58.24765422239968,
+  "HasAns_f1": 58.24931789445665,
+  "HasAns_total": 40072,
+  "NoAns_exact": 89.83266981836277,
+  "NoAns_f1": 89.83266981836277,
+  "NoAns_total": 32152,
+  "best_exact": 72.30837394771821,
+  "best_exact_thresh": -0.009885787963867188,
+  "best_f1": 72.30929700191994,
+  "best_f1_thresh": -0.009885787963867188
+}
+
 
 
   

@@ -23,7 +23,7 @@ import json
 import math
 import os
 import random
-import modeling
+from modeling_v1 import py
 import optimization
 import tokenization
 import six
@@ -187,9 +187,9 @@ class SquadExample(object):
     s += ", doc_tokens: [%s]" % (" ".join(self.doc_tokens))
     if self.start_position:
       s += ", start_position: %d" % (self.start_position)
-    if self.start_position:
+    if self.end_position:
       s += ", end_position: %d" % (self.end_position)
-    if self.start_position:
+    if self.is_impossible:
       s += ", is_impossible: %r" % (self.is_impossible)
     return s
 
@@ -270,10 +270,24 @@ def read_squad_examples(input_file, is_training):
             answer = qa["answers"][0]
             orig_answer_text = answer["text"]
             answer_offset = answer["answer_start"]
+            
+            #for python encode
+            answer_offset_derive = paragraph_text.find(orig_answer_text)
+            if answer_offset_derive == -1:
+                tf.logging.warning("Could not find answer: '%s' in. '%s'", 
+                                   orig_answer_text, paragraph_text)
+                continue
+            elif answer_offset_derive != answer_offset:
+                answer_offset = answer_offset_derive
+                
             answer_length = len(orig_answer_text)
-            start_position = char_to_word_offset[answer_offset]
-            end_position = char_to_word_offset[answer_offset + answer_length -
-                                               1]
+            try:
+                start_position = char_to_word_offset[answer_offset]
+                end_position = char_to_word_offset[answer_offset + answer_length - 1]
+            except IndexError:
+                tf.logging.warning("Answer index error: [paragraph]: '%s'; [question]: '%s', [answer]: '%s', [answer_start]: '%s'", 
+                                   paragraph_text, question_text, orig_answer_text, str(start_position))
+                continue
             # Only add answers where the text can be exactly recovered from the
             # document. If this CAN'T happen it's likely due to weird Unicode
             # stuff so we will just skip the example.
@@ -285,9 +299,9 @@ def read_squad_examples(input_file, is_training):
             cleaned_answer_text = " ".join(
                 tokenization.whitespace_tokenize(orig_answer_text))
             if actual_text.find(cleaned_answer_text) == -1:
-              tf.logging.warning("Could not find answer: '%s' vs. '%s'",
-                                 actual_text, cleaned_answer_text)
-              continue
+                tf.logging.warning("Could not find answer: '%s' vs. '%s'",
+                                   actual_text, cleaned_answer_text)
+                continue
           else:
             start_position = -1
             end_position = -1
@@ -350,7 +364,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
     # We can have documents that are longer than the maximum sequence length.
     # To deal with this we do a sliding window approach, where we take chunks
     # of the up to our max length with a stride of `doc_stride`.
-    _DocSpan = collections.namedtuple(  # pylint: disable=invalid-name
+    _DocSpan = collections.namedtuple(# pylint: disable=invalid-name
         "DocSpan", ["start", "length"])
     doc_spans = []
     start_offset = 0
@@ -550,7 +564,7 @@ def _check_is_max_context(doc_spans, cur_span_index, position):
 def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
                  use_one_hot_embeddings):
   """Creates a classification model."""
-  model = modeling.BertModel(
+  model = py.BertModel(
       config=bert_config,
       is_training=is_training,
       input_ids=input_ids,
@@ -560,7 +574,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   final_hidden = model.get_sequence_output()
 
-  final_hidden_shape = modeling.get_shape_list(final_hidden, expected_rank=3)
+  final_hidden_shape = py.get_shape_list(final_hidden, expected_rank=3)
   batch_size = final_hidden_shape[0]
   seq_length = final_hidden_shape[1]
   hidden_size = final_hidden_shape[2]
@@ -620,7 +634,7 @@ def model_fn_builder(bert_config, init_checkpoint, learning_rate,
     scaffold_fn = None
     if init_checkpoint:
       (assignment_map, initialized_variable_names
-      ) = modeling.get_assignment_map_from_checkpoint(tvars, init_checkpoint)
+      ) = py.get_assignment_map_from_checkpoint(tvars, init_checkpoint)
       if use_tpu:
 
         def tpu_scaffold():
@@ -641,7 +655,7 @@ def model_fn_builder(bert_config, init_checkpoint, learning_rate,
 
     output_spec = None
     if mode == tf.estimator.ModeKeys.TRAIN:
-      seq_length = modeling.get_shape_list(input_ids)[1]
+      seq_length = py.get_shape_list(input_ids)[1]
 
       def compute_loss(logits, positions):
         one_hot_positions = tf.one_hot(
@@ -753,7 +767,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
   for result in all_results:
     unique_id_to_result[result.unique_id] = result
 
-  _PrelimPrediction = collections.namedtuple(  # pylint: disable=invalid-name
+  _PrelimPrediction = collections.namedtuple(# pylint: disable=invalid-name
       "PrelimPrediction",
       ["feature_index", "start_index", "end_index", "start_logit", "end_logit"])
 
@@ -823,7 +837,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         key=lambda x: (x.start_logit + x.end_logit),
         reverse=True)
 
-    _NbestPrediction = collections.namedtuple(  # pylint: disable=invalid-name
+    _NbestPrediction = collections.namedtuple(# pylint: disable=invalid-name
         "NbestPrediction", ["text", "start_logit", "end_logit"])
 
     seen_predictions = {}
@@ -903,13 +917,17 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
       all_predictions[example.qas_id] = nbest_json[0]["text"]
     else:
       # predict "" iff the null score - the score of best non-null > threshold
-      score_diff = score_null - best_non_null_entry.start_logit - (
-          best_non_null_entry.end_logit)
-      scores_diff_json[example.qas_id] = score_diff
-      if score_diff > FLAGS.null_score_diff_threshold:
-        all_predictions[example.qas_id] = ""
+      if not best_non_null_entry:
+          all_predictions[example.qas_id] = ""
+          scores_diff_json[example.qas_id] = score_null
       else:
-        all_predictions[example.qas_id] = best_non_null_entry.text
+          score_diff = score_null - best_non_null_entry.start_logit - (
+              best_non_null_entry.end_logit)
+          scores_diff_json[example.qas_id] = score_diff
+          if score_diff > FLAGS.null_score_diff_threshold:
+              all_predictions[example.qas_id] = ""
+          else:
+              all_predictions[example.qas_id] = best_non_null_entry.text
 
     all_nbest_json[example.qas_id] = nbest_json
 
@@ -1114,7 +1132,7 @@ def validate_flags_or_throw(bert_config):
   if FLAGS.max_seq_length > bert_config.max_position_embeddings:
     raise ValueError(
         "Cannot use sequence length %d because the BERT model "
-        "was only trained up to sequence length %d" %
+        "was only trained up to sequence length %d" % 
         (FLAGS.max_seq_length, bert_config.max_position_embeddings))
 
   if FLAGS.max_seq_length <= FLAGS.max_query_length + 3:
@@ -1126,7 +1144,7 @@ def validate_flags_or_throw(bert_config):
 def main(_):
   tf.logging.set_verbosity(tf.logging.INFO)
 
-  bert_config = modeling.BertConfig.from_json_file(FLAGS.bert_config_file)
+  bert_config = py.BertConfig.from_json_file(FLAGS.bert_config_file)
 
   validate_flags_or_throw(bert_config)
 
@@ -1187,28 +1205,42 @@ def main(_):
   if FLAGS.do_train:
     # We write to a temporary file to avoid storing very large constant tensors
     # in memory.
-    train_writer = FeatureWriter(
-        filename=os.path.join(FLAGS.output_dir, "train.tf_record"),
-        is_training=True)
-    convert_examples_to_features(
-        examples=train_examples,
-        tokenizer=tokenizer,
-        max_seq_length=FLAGS.max_seq_length,
-        doc_stride=FLAGS.doc_stride,
-        max_query_length=FLAGS.max_query_length,
-        is_training=True,
-        output_fn=train_writer.process_feature)
-    train_writer.close()
+    #not write tmp tf file again if not mannually delete
+    filename = os.path.join(FLAGS.output_dir, "train.tf_record")
+    num_features = 0
+    if os.path.exists(filename):
+        for example in tf.python_io.tf_record_iterator(filename):
+            num_features += 1
+        tf.logging.info("detected tf_record file, with %d examples", num_features)
+    else:
+        train_writer = FeatureWriter(
+            #filename=os.path.join(FLAGS.output_dir, "train.tf_record"),
+            filename=filename,
+            is_training=True)
+        
+        convert_examples_to_features(
+            examples=train_examples,
+            tokenizer=tokenizer,
+            max_seq_length=FLAGS.max_seq_length,
+            doc_stride=FLAGS.doc_stride,
+            max_query_length=FLAGS.max_query_length,
+            is_training=True,
+            output_fn=train_writer.process_feature)
+        
+        train_writer.close()
+        num_features=train_writer.num_features
 
     tf.logging.info("***** Running training *****")
     tf.logging.info("  Num orig examples = %d", len(train_examples))
-    tf.logging.info("  Num split examples = %d", train_writer.num_features)
+    #tf.logging.info("  Num split examples = %d", train_writer.num_features)
+    tf.logging.info("  Num split examples = %d", num_features)
     tf.logging.info("  Batch size = %d", FLAGS.train_batch_size)
     tf.logging.info("  Num steps = %d", num_train_steps)
     del train_examples
 
     train_input_fn = input_fn_builder(
-        input_file=train_writer.filename,
+        #input_file=train_writer.filename,
+        input_file=filename,
         seq_length=FLAGS.max_seq_length,
         is_training=True,
         drop_remainder=True)
@@ -1218,24 +1250,67 @@ def main(_):
     eval_examples = read_squad_examples(
         input_file=FLAGS.predict_file, is_training=False)
 
-    eval_writer = FeatureWriter(
-        filename=os.path.join(FLAGS.output_dir, "eval.tf_record"),
-        is_training=False)
+    eval_filename = os.path.join(FLAGS.output_dir, "eval.tf_record")
     eval_features = []
+    if os.path.exists(eval_filename):
+#         seq_length = FLAGS.max_seq_length
+#         features = {"unique_ids": tf.FixedLenFeature([], tf.int64),
+#                     "example_index": tf.FixedLenFeature([], tf.int64),
+#                     "doc_span_index": tf.FixedLenFeature([], tf.int64),
+#                     "tokens": tf.VarLenFeature(tf.string),
+#                     "token_to_orig_map": tf.VarLenFeature(tf.int64),
+#                     "token_is_max_context": tf.VarLenFeature(tf.int64),
+#                     "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
+#                     "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
+#                     "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
+#                     "start_position": tf.FixedLenFeature([], tf.int64),
+#                     "end_position": tf.FixedLenFeature([], tf.int64),
+#                     "is_impossible": tf.FixedLenFeature([], tf.int64)
+#                     }
 
-    def append_feature(feature):
-      eval_features.append(feature)
-      eval_writer.process_feature(feature)
+#         features = {"unique_ids": tf.FixedLenFeature([1], tf.int64),
+#                     "input_ids": tf.FixedLenFeature([512], tf.int64),
+#                     "input_mask": tf.FixedLenFeature([512], tf.int64),
+#                     "segment_ids": tf.FixedLenFeature([512], tf.int64),
+#                     "start_position": tf.FixedLenFeature([1], tf.int64),
+#                     "end_position": tf.FixedLenFeature([1], tf.int64),
+#                     "is_impossible": tf.FixedLenFeature([1], tf.int64)
+#                     }
 
-    convert_examples_to_features(
-        examples=eval_examples,
-        tokenizer=tokenizer,
-        max_seq_length=FLAGS.max_seq_length,
-        doc_stride=FLAGS.doc_stride,
-        max_query_length=FLAGS.max_query_length,
-        is_training=False,
-        output_fn=append_feature)
-    eval_writer.close()
+        def append_feature_nowrite(feature):
+            eval_features.append(feature)
+        convert_examples_to_features(
+            examples=eval_examples,
+            tokenizer=tokenizer,
+            max_seq_length=FLAGS.max_seq_length,
+            doc_stride=FLAGS.doc_stride,
+            max_query_length=FLAGS.max_query_length,
+            is_training=False,
+            output_fn=append_feature_nowrite)
+        
+#         for example in tf.python_io.tf_record_iterator(eval_filename):
+#             feature = tf.parse_single_example(example, features=features)
+#             eval_features.append(feature)
+        tf.logging.info("detected eval tf_record file, with %d examples", len(eval_features))
+    else:
+        eval_writer = FeatureWriter(
+#             filename=os.path.join(FLAGS.output_dir, "eval.tf_record"),
+            filename=eval_filename,
+            is_training=False)
+        
+        def append_feature(feature):
+            eval_features.append(feature)
+            eval_writer.process_feature(feature)
+      
+        convert_examples_to_features(
+            examples=eval_examples,
+            tokenizer=tokenizer,
+            max_seq_length=FLAGS.max_seq_length,
+            doc_stride=FLAGS.doc_stride,
+            max_query_length=FLAGS.max_query_length,
+            is_training=False,
+            output_fn=append_feature)
+        eval_writer.close()
 
     tf.logging.info("***** Running predictions *****")
     tf.logging.info("  Num orig examples = %d", len(eval_examples))
@@ -1245,7 +1320,8 @@ def main(_):
     all_results = []
 
     predict_input_fn = input_fn_builder(
-        input_file=eval_writer.filename,
+#         input_file=eval_writer.filename,
+        input_file=eval_filename,
         seq_length=FLAGS.max_seq_length,
         is_training=False,
         drop_remainder=False)
