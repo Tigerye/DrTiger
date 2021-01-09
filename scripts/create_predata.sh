@@ -12,7 +12,7 @@ outpart=`echo $infile | sed 's/.*pre\.//g' | sed 's/\.cln//g'`
 echo "create predata from ${infile} to tf_examples_news${year}${outpart}.tfrecord ..."
 
 python /home/yechen/Workspace/DrTiger/create_pretraining_data.py \
-  --input_file=$DATA_DIR/${infile} \
+  --input_file=${infile} \
   --output_file=$DATA_DIR/tf_examples_news${year}${outpart}.tfrecord \
   --vocab_file=$BERT_BASE_DIR/vocab.txt \
   --do_lower_case=True \
