@@ -9,5 +9,6 @@ encoding/run_pretraining.py=utf-8
 encoding/run_pretraining_v2.py=utf-8
 encoding/run_squad.py=utf-8
 encoding/run_squad_v1.py=utf-8
+encoding/run_squad_v2.py=utf-8
 encoding/tokenization.py=utf-8
 encoding/tokenization_v2.py=utf-8

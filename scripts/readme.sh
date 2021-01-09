@@ -2483,22 +2483,22 @@ python run_pretraining.py \
 
 
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
-SQUAD_DIR=/data/yechen/squad/data
+SQUAD_DIR=/data/yechen/squad
 
-python run_squad.py \
+python run_squad_v2.py \
   --vocab_file=$BERT_LARGE_DIR/vocab.txt \
   --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
   --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
   --do_train=True \
-  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --train_file=$SQUAD_DIR/dev-v2.0-zh.json \
   --do_predict=True \
-  --predict_file=$SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json \
+  --predict_file=$SQUAD_DIR/dev-v2.0-zh.json \
   --train_batch_size=8 \
   --learning_rate=3e-5 \
   --num_train_epochs=2.0 \
   --max_seq_length=384 \
   --doc_stride=128 \
-  --output_dir=$SQUAD_DIR/squad_2.0_base_zh_2data/ \
+  --output_dir=$SQUAD_DIR/data/squad_2.0_large_zh_sample/ \
   --version_2_with_negative=True
 
 
