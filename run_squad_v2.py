@@ -270,10 +270,25 @@ def read_squad_examples(input_file, is_training):
             answer = qa["answers"][0]
             orig_answer_text = answer["text"]
             answer_offset = answer["answer_start"]
+            
+            #for python encode
+            answer_offset_derive = paragraph_text.find(orig_answer_text)
+            if answer_offset_derive == -1:
+                tf.compat.v1.logging.warning("Could not find answer: '%s' in. '%s'", 
+                                             orig_answer_text, paragraph_text)
+                continue
+            elif answer_offset_derive != answer_offset:
+                answer_offset = answer_offset_derive
+                
             answer_length = len(orig_answer_text)
-            start_position = char_to_word_offset[answer_offset]
-            end_position = char_to_word_offset[answer_offset + answer_length -
-                                               1]
+            try:
+                start_position = char_to_word_offset[answer_offset]
+                end_position = char_to_word_offset[answer_offset + answer_length - 1]
+            except IndexError:
+                tf.compat.v1.logging.warning("Answer index error: [paragraph]: '%s'; [question]: '%s', [answer]: '%s', [answer_start]: '%s'", 
+                                             paragraph_text, question_text, orig_answer_text, str(start_position))
+                continue
+            
             # Only add answers where the text can be exactly recovered from the
             # document. If this CAN'T happen it's likely due to weird Unicode
             # stuff so we will just skip the example.
@@ -286,7 +301,7 @@ def read_squad_examples(input_file, is_training):
                 tokenization.whitespace_tokenize(orig_answer_text))
             if actual_text.find(cleaned_answer_text) == -1:
               tf.compat.v1.logging.warning("Could not find answer: '%s' vs. '%s'",
-                                 actual_text, cleaned_answer_text)
+                                           actual_text, cleaned_answer_text)
               continue
           else:
             start_position = -1
