@@ -1191,7 +1191,7 @@ def main(_):
     filename = os.path.join(FLAGS.output_dir, "train.tf_record")
     num_features = 0
     if os.path.exists(filename):
-        for example in tf.python_io.tf_record_iterator(filename):
+        for example in tf.compat.v1.python_io.tf_record_iterator(filename):
             num_features += 1
         tf.logging.info("detected tf_record file, with %d examples", num_features)
     else:
