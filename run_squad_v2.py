@@ -1187,22 +1187,35 @@ def main(_):
   if FLAGS.do_train:
     # We write to a temporary file to avoid storing very large constant tensors
     # in memory.
-    train_writer = FeatureWriter(
-        filename=os.path.join(FLAGS.output_dir, "train.tf_record"),
-        is_training=True)
-    convert_examples_to_features(
-        examples=train_examples,
-        tokenizer=tokenizer,
-        max_seq_length=FLAGS.max_seq_length,
-        doc_stride=FLAGS.doc_stride,
-        max_query_length=FLAGS.max_query_length,
-        is_training=True,
-        output_fn=train_writer.process_feature)
-    train_writer.close()
+    #not write tmp tf file again if not mannually delete
+    filename = os.path.join(FLAGS.output_dir, "train.tf_record")
+    num_features = 0
+    if os.path.exists(filename):
+        for example in tf.python_io.tf_record_iterator(filename):
+            num_features += 1
+        tf.logging.info("detected tf_record file, with %d examples", num_features)
+    else:
+        train_writer = FeatureWriter(
+            #filename=os.path.join(FLAGS.output_dir, "train.tf_record"),
+            filename=filename,
+            is_training=True)
+        
+        convert_examples_to_features(
+            examples=train_examples,
+            tokenizer=tokenizer,
+            max_seq_length=FLAGS.max_seq_length,
+            doc_stride=FLAGS.doc_stride,
+            max_query_length=FLAGS.max_query_length,
+            is_training=True,
+            output_fn=train_writer.process_feature)
+        
+        train_writer.close()
+        num_features=train_writer.num_features
 
     tf.compat.v1.logging.info("***** Running training *****")
     tf.compat.v1.logging.info("  Num orig examples = %d", len(train_examples))
-    tf.compat.v1.logging.info("  Num split examples = %d", train_writer.num_features)
+#     tf.compat.v1.logging.info("  Num split examples = %d", train_writer.num_features)
+    tf.compat.v1.logging.info("  Num split examples = %d", num_features)
     tf.compat.v1.logging.info("  Batch size = %d", FLAGS.train_batch_size)
     tf.compat.v1.logging.info("  Num steps = %d", num_train_steps)
     del train_examples
@@ -1217,25 +1230,41 @@ def main(_):
   if FLAGS.do_predict:
     eval_examples = read_squad_examples(
         input_file=FLAGS.predict_file, is_training=False)
-
-    eval_writer = FeatureWriter(
-        filename=os.path.join(FLAGS.output_dir, "eval.tf_record"),
-        is_training=False)
+    
+    eval_filename = os.path.join(FLAGS.output_dir, "eval.tf_record")
     eval_features = []
-
-    def append_feature(feature):
-      eval_features.append(feature)
-      eval_writer.process_feature(feature)
-
-    convert_examples_to_features(
-        examples=eval_examples,
-        tokenizer=tokenizer,
-        max_seq_length=FLAGS.max_seq_length,
-        doc_stride=FLAGS.doc_stride,
-        max_query_length=FLAGS.max_query_length,
-        is_training=False,
-        output_fn=append_feature)
-    eval_writer.close()
+    if os.path.exists(eval_filename):
+        def append_feature_nowrite(feature):
+            eval_features.append(feature)
+        convert_examples_to_features(
+            examples=eval_examples,
+            tokenizer=tokenizer,
+            max_seq_length=FLAGS.max_seq_length,
+            doc_stride=FLAGS.doc_stride,
+            max_query_length=FLAGS.max_query_length,
+            is_training=False,
+            output_fn=append_feature_nowrite)
+        tf.compat.v1.logging.info("detected eval tf_record file, with %d examples", len(eval_features))
+        
+    else:
+        eval_writer = FeatureWriter(
+#             filename=os.path.join(FLAGS.output_dir, "eval.tf_record"),
+            filename=eval_filename,
+            is_training=False)
+        
+        def append_feature(feature):
+            eval_features.append(feature)
+            eval_writer.process_feature(feature)
+      
+        convert_examples_to_features(
+            examples=eval_examples,
+            tokenizer=tokenizer,
+            max_seq_length=FLAGS.max_seq_length,
+            doc_stride=FLAGS.doc_stride,
+            max_query_length=FLAGS.max_query_length,
+            is_training=False,
+            output_fn=append_feature)
+        eval_writer.close()
 
     tf.compat.v1.logging.info("***** Running predictions *****")
     tf.compat.v1.logging.info("  Num orig examples = %d", len(eval_examples))
@@ -1245,7 +1274,8 @@ def main(_):
     all_results = []
 
     predict_input_fn = input_fn_builder(
-        input_file=eval_writer.filename,
+#         input_file=eval_writer.filename,
+        input_file=eval_filename,
         seq_length=FLAGS.max_seq_length,
         is_training=False,
         drop_remainder=False)
