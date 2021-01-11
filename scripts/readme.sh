@@ -2562,6 +2562,24 @@ python run_pretraining_v2.py \
   for i in `ls /data/yechen/bert/news.zh.2018.txt.pre.part*`; do cat $i | head -n -1 > "$i.cln"; echo "done $i.cln"; done
   
   for i in `ls /data/yechen/bert/news.zh.2019.txt.pre.part*`; do cat $i | head -n -1 > "$i.cln"; echo "done $i.cln"; done
+  
+  for i in `ls /data/yechen/bert/news.zh.2020.txt.pre.part*`; do cat $i | head -n -1 > "$i.cln"; echo "done $i.cln"; done
+  
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+DATA_DIR=/data/yechen/bert
+  
+python /home/yechen/Workspace/DrTiger/create_pretraining_data_v2.py \
+  --input_file=/home/yechen/Workspace/DrTiger/sample_text.txt \
+  --output_file=$DATA_DIR/tf_examples_sample.tfrecord \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --do_lower_case=True \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --masked_lm_prob=0.15 \
+  --random_seed=12345 \
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
 
 
 
