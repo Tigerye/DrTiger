@@ -2566,7 +2566,7 @@ python run_pretraining_v2.py \
   for i in `ls /data/yechen/bert/news.zh.2020.txt.pre.part*`; do cat $i | head -n -1 > "$i.cln"; echo "done $i.cln"; done
   
 
-BERT_LARGE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
 DATA_DIR=/data/yechen/bert
   
 python /home/yechen/Workspace/DrTiger/create_pretraining_data_v2.py \
