@@ -2342,6 +2342,33 @@ python create_pretraining_data.py \
   --dupe_factor=5 \
   --do_whole_word_mask=True
   
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+DATA_DIR=/data/yechen/bert
+
+python create_pretraining_data_v2.py \
+  --input_file=$DATA_DIR/wiki.zh.article.pre.txt \
+  --output_file=$DATA_DIR/tf_examples_wiki_seq512.tfrecord \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --do_lower_case=True \
+  --max_seq_length=512 \
+  --max_predictions_per_seq=80 \
+  --masked_lm_prob=0.15 \
+  --random_seed=12345 \
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
+  
+python create_pretraining_data_v2.py \
+  --input_file=$DATA_DIR/news.zh.2017.pre.txt \
+  --output_file=$DATA_DIR/tf_examples_news2017_seq512.tfrecord \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --do_lower_case=True \
+  --max_seq_length=512 \
+  --max_predictions_per_seq=80 \
+  --masked_lm_prob=0.15 \
+  --random_seed=12345 \
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
+  
 python create_pretraining_data.py \
   --input_file=$DATA_DIR/news.zh.2018.pre.txt \
   --output_file=$DATA_DIR/tf_examples_news2018.tfrecord \
@@ -2557,6 +2584,142 @@ python run_pretraining_v2.py \
   --num_warmup_steps=10000 \
   --learning_rate=2e-5
   
+global_step = 1000000
+loss = 1.9305431
+masked_lm_accuracy = 0.6369072
+masked_lm_loss = 1.8329065
+next_sentence_accuracy = 0.96375
+next_sentence_loss = 0.098514594
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/train-v2.0_zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0_zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh/ \
+  --version_2_with_negative=True
+
+
+#large zh bert
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh/null_odds.json
+
+{
+  "exact": 68.33993093573655,
+  "f1": 68.34554591650524,
+  "total": 11873,
+  "HasAns_exact": 17.767042404723565,
+  "HasAns_f1": 17.784934693147253,
+  "HasAns_total": 3726,
+  "NoAns_exact": 91.46925248557751,
+  "NoAns_f1": 91.46925248557751,
+  "NoAns_total": 8147,
+  "best_exact": 69.62014655099806,
+  "best_exact_thresh": -4.252739429473877,
+  "best_f1": 69.62014655099806,
+  "best_f1_thresh": -4.252739429473877
+}
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+DATA_DIR=/data/yechen/bert
+
+python run_pretraining_v2.py \
+  --input_file=$DATA_DIR/tf_examples_wiki_seq512.tfrecord,$DATA_DIR/tf_examples_news2017_seq512.tfrecord \
+  --output_dir=$BERT_LARGE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/model.ckpt-1000000 \
+  --train_batch_size=4 \
+  --max_seq_length=512 \
+  --max_predictions_per_seq=80 \
+  --num_train_steps=1100000 \
+  --num_warmup_steps=1000 \
+  --learning_rate=2e-5
+  
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/train-v2.0_zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0_zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh/null_odds.json
+
+
+{
+  "exact": 69.19902299334625,
+  "f1": 69.19902299334625,
+  "total": 11873,
+  "HasAns_exact": 20.665593129361245,
+  "HasAns_f1": 20.665593129361245,
+  "HasAns_total": 3726,
+  "NoAns_exact": 91.3956057444458,
+  "NoAns_f1": 91.3956057444458,
+  "NoAns_total": 8147,
+  "best_exact": 70.1844521182515,
+  "best_exact_thresh": -2.6207079887390137,
+  "best_f1": 70.1844521182515,
+  "best_f1_thresh": -2.6207079887390137
+}
+
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_2data/ \
+  --version_2_with_negative=True
+  
+  
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json $SQUAD_DIR/squad_2.0_base_zh_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_zh_2data/null_odds.json
+
+  
   
   #trim last empty line
   for i in `ls /data/yechen/bert/news.zh.2018.txt.pre.part*`; do cat $i | head -n -1 > "$i.cln"; echo "done $i.cln"; done
@@ -2580,6 +2743,22 @@ python /home/yechen/Workspace/DrTiger/create_pretraining_data_v2.py \
   --random_seed=12345 \
   --dupe_factor=5 \
   --do_whole_word_mask=True
+  
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+DATA_DIR=/data/yechen/bert
+
+python create_pretraining_data_v2.py \
+  --input_file=$DATA_DIR/news.zh.2020.txt.pre.part4.cln \
+  --output_file=$DATA_DIR/tf_examples_news2020part4.tfrecord \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --do_lower_case=True \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --masked_lm_prob=0.15 \
+  --random_seed=12345 \
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
+  
 
 
 
