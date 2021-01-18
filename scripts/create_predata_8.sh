@@ -11,7 +11,7 @@ do
 outpart=`echo $infile | sed 's/.*pre\.//g' | sed 's/\.cln//g'`
 echo "create predata from ${infile} to tf_examples_news${year}${outpart}_seq512.tfrecord ..."
 
-python /home/yechen/Workspace/DrTiger/create_pretraining_data.py \
+python /home/yechen/Workspace/DrTiger/create_pretraining_data_v2.py \
   --input_file=${infile} \
   --output_file=$DATA_DIR/seq512/tf_examples_news${year}${outpart}_seq512.tfrecord \
   --vocab_file=$BERT_BASE_DIR/vocab.txt \
