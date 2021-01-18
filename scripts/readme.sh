@@ -2713,11 +2713,46 @@ python run_squad_v2.py \
   --output_dir=$SQUAD_DIR/squad_2.0_large_zh_2data/ \
   --version_2_with_negative=True
   
+python run_squad_v2.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_2data/ \
+  --version_2_with_negative=True
   
-BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
 SQUAD_DIR=/data/yechen/squad/data
 
-python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json $SQUAD_DIR/squad_2.0_base_zh_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_base_zh_2data/null_odds.json
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json $SQUAD_DIR/squad_2.0_large_zh_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_2data/null_odds.json
+
+{
+  "exact": 65.9974523704032,
+  "f1": 65.9974523704032,
+  "total": 72224,
+  "HasAns_exact": 46.656019165502094,
+  "HasAns_f1": 46.656019165502094,
+  "HasAns_total": 40072,
+  "NoAns_exact": 90.10325951729286,
+  "NoAns_f1": 90.10325951729286,
+  "NoAns_total": 32152,
+  "best_exact": 66.01406734603457,
+  "best_exact_thresh": -0.03782176971435547,
+  "best_f1": 66.01406734603457,
+  "best_f1_thresh": -0.03782176971435547
+}
+
+python doc_retriever_zh.py /data/yechen/bert/wiki.zh.section.cln.txt /data/yechen/bert/drtiger/bm25_zh_section
+python doc_retriever_zh.py /data/yechen/bert/news.zh.2018.cln.txt /data/yechen/bert/drtiger/bm25_zh_news-2018
 
   
   
@@ -2758,6 +2793,25 @@ python create_pretraining_data_v2.py \
   --random_seed=12345 \
   --dupe_factor=5 \
   --do_whole_word_mask=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+DATA_DIR=/data/yechen/bert
+
+python run_pretraining_v2.py \
+  --input_file=$DATA_DIR/tf_examples_*.tfrecord \
+  --output_dir=$BERT_LARGE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --train_batch_size=16 \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --num_train_steps=10000000 \
+  --num_warmup_steps=100000 \
+  --learning_rate=2e-5
+  
+
+  
   
 
 
