@@ -2754,6 +2754,8 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-2d
 python doc_retriever_zh.py /data/yechen/bert/wiki.zh.section.cln.txt /data/yechen/bert/drtiger/bm25_zh_section
 python doc_retriever_zh.py /data/yechen/bert/news.zh.2018.cln.txt /data/yechen/bert/drtiger/bm25_zh_news-2018
 
+python doc_retriever_zh.py /data/yechen/bert/news.zh.2018.cln.txt /data/yechen/bert/drtiger/bm25_zh_news-2018 /data/yechen/bert/wiki.zh.section.cln.txt /data/yechen/bert/drtiger/bm25_zh_section
+
   
   
   #trim last empty line
