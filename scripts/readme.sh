@@ -2812,6 +2812,23 @@ python run_pretraining_v2.py \
   --num_warmup_steps=100000 \
   --learning_rate=2e-5
   
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_3M_1M
+DATA_DIR=/data/yechen/bert
+
+python run_pretraining_v2_gpu3.py \
+  --input_file=$DATA_DIR/tf_examples_wiki_seq512.tfrecord,$DATA_DIR/tf_examples_news2017_seq512.tfrecord \
+  --output_dir=$BERT_LARGE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/model.ckpt-3425000 \
+  --train_batch_size=4 \
+  --max_seq_length=512 \
+  --max_predictions_per_seq=80 \
+  --num_train_steps=4000000 \
+  --num_warmup_steps=10000 \
+  --learning_rate=2e-5
+  
 
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
 SQUAD_DIR=/data/yechen/squad/data
