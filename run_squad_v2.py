@@ -29,6 +29,8 @@ import tokenization_v2 as tokenization
 import six
 import tensorflow as tf
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+
 flags = tf.compat.v1.flags
 
 FLAGS = flags.FLAGS
