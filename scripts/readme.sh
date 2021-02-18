@@ -2816,16 +2816,16 @@ BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_3M_1M
 DATA_DIR=/data/yechen/bert
 
 python run_pretraining_v2_gpu3.py \
-  --input_file=$DATA_DIR/tf_examples_wiki_seq512.tfrecord,$DATA_DIR/tf_examples_news2017_seq512.tfrecord \
+  --input_file=$DATA_DIR/seq512/tf_examples_*.tfrecord \
   --output_dir=$BERT_LARGE_DIR \
   --do_train=True \
   --do_eval=True \
   --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
-  --init_checkpoint=$BERT_LARGE_DIR/model.ckpt-3425000 \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
   --train_batch_size=4 \
   --max_seq_length=512 \
   --max_predictions_per_seq=80 \
-  --num_train_steps=4000000 \
+  --num_train_steps=1000000 \
   --num_warmup_steps=10000 \
   --learning_rate=2e-5
   
@@ -2852,13 +2852,201 @@ python run_squad_v2.py \
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
 SQUAD_DIR=/data/yechen/squad/data
 
-python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh/null_odds.json
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_3.4M/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_3.4M/null_odds.json
 
+{
+  "exact": 68.5841825991746,
+  "f1": 68.5841825991746,
+  "total": 11873,
+  "HasAns_exact": 18.706387546967257,
+  "HasAns_f1": 18.706387546967257,
+  "HasAns_total": 3726,
+  "NoAns_exact": 91.3956057444458,
+  "NoAns_f1": 91.3956057444458,
+  "NoAns_total": 8147,
+  "best_exact": 69.92335551250737,
+  "best_exact_thresh": -6.405576229095459,
+  "best_f1": 69.92335551250737,
+  "best_f1_thresh": -6.405576229095459
+}
   
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_3M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/train-v2.0_zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0_zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_3M_1M/ \
+  --version_2_with_negative=True
   
-
-
-
-
+python run_squad_v2.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/train-v2.0_zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0_zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_3M_1M/ \
+  --version_2_with_negative=True
   
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_3M_1M/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_3M_1M/null_odds.json
+
+{
+  "exact": 69.9991577528847,
+  "f1": 70.01038771442208,
+  "total": 11873,
+  "HasAns_exact": 28.5829307568438,
+  "HasAns_f1": 28.618715333691178,
+  "HasAns_total": 3726,
+  "NoAns_exact": 88.94071437338897,
+  "NoAns_f1": 88.94071437338897,
+  "NoAns_total": 8147,
+  "best_exact": 71.03512170470816,
+  "best_exact_thresh": -4.038878679275513,
+  "best_f1": 71.03512170470816,
+  "best_f1_thresh": -4.038878679275513
+}
+
+
+#python -m wikiextractor.WikiExtractor /data/yechen/bert/zhwiki-20201101-pages-articles-multistream.xml.bz2 --output /data/yechen/bert/zhwiki-extract/ --json
+python -m wikiextractor.WikiExtractor /data/yechen/bert/zhwiki-20210201-pages-articles.xml.bz2 --output /data/yechen/bert/wiki-zh/ --json
+
+#python scripts/retriever/build_db.py /data/yechen/bert/zhwiki-extract /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_wikipedia_zh.py --num-workers 32 
+python scripts/retriever/build_db.py /data/yechen/bert/wiki-zh /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_wikipedia_zh.py --num-workers 32 
+
+python ./scripts/retriever/split_ownthink.py /data/yechen/bert/ownthink_v2.txt /data/yechen/bert/wiki-ownthink/
+python scripts/retriever/build_db.py /data/yechen/bert/wiki-ownthink /home/yechen/Workspace/DrQA/data/wikipedia/docs-ownthink-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_wikipedia_ownthink.py --num-workers 32 
+
+
+#python scripts/retriever/build_tfidf.py /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db /home/yechen/Workspace/DrQA/data/wikipedia/ --tokenizer 'jieba' --num-workers 32
+python scripts/retriever/build_tfidf.py /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db /home/yechen/Workspace/DrQA/data/wikipedia/ --tokenizer 'spacyzh' --num-workers 32
+#python scripts/retriever/build_tfidf.py /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db /home/yechen/Workspace/DrQA/data/wikipedia/ --tokenizer 'corenlpzh' --num-workers 32
+
+python scripts/retriever/build_tfidf.py /home/yechen/Workspace/DrQA/data/wikipedia/docs-ownthink-zh.db /home/yechen/Workspace/DrQA/data/wikipedia/ --tokenizer 'spacyzh' --num-workers 32
+
+#python scripts/retriever/interactive.py --model /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh-tfidf-ngram=2-hash=16777216-tokenizer=jieba.npz
+python scripts/retriever/interactive.py --model /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh-tfidf-ngram=2-hash=16777216-tokenizer=spacyzh.npz --data /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db
+#python scripts/retriever/interactive.py --model /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh-tfidf-ngram=2-hash=16777216-tokenizer=corenlpzh.npz
+
+#python scripts/retriever/interactive.py --model /home/yechen/Workspace/DrQA/data/wikipedia/docs-tfidf-ngram=2-hash=16777216-tokenizer=corenlp.npz
+
+python scripts/retriever/interactive.py --model /home/yechen/Workspace/DrQA/data/wikipedia/docs-ownthink-zh-tfidf-ngram=2-hash=16777216-tokenizer=spacyzh.npz --data /home/yechen/Workspace/DrQA/data/wikipedia/docs-ownthink-zh.db
+
+python scripts/retriever/squad_2.0_to_1.1.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-train-zh.json /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-train-zh.json
+python scripts/retriever/squad_2.0_to_1.1.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-zh.json /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-dev-zh.json
+
+python scripts/retriever/process_evaldata.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-dev-zh.json /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-dev-zh.txt
+python scripts/retriever/process_evaldata.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-train-zh.json /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-train-zh.txt
+
+python scripts/retriever/process_evaldata.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-zh.json /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-zh.txt
+python scripts/retriever/process_evaldata.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-train-zh.json /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-train-zh.txt
+
+python scripts/retriever/eval.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-dev.txt \
+	--model /home/yechen/Workspace/DrQA/data//wikipedia/docs-tfidf-ngram=2-hash=16777216-tokenizer=simple.npz \
+	--doc-db /home/yechen/Workspace/DrQA/data//wikipedia/docs.db \
+	--tokenizer 'simple' \
+	--n-docs 5 \
+	--num-workers 32 \
+	--match 'string' 
+	
+--------------------------------------------------
+SQuAD-v1.1-dev.txt
+Examples:			10570
+Matches in top 5:		8249
+Match % in top 5:		78.04
+Total time:			179.3955 (s)
+
+python scripts/retriever/eval.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-dev.txt \
+	--model /home/yechen/Workspace/DrQA/data//wikipedia/docs-tfidf-ngram=2-hash=16777216-tokenizer=corenlp.npz \
+	--doc-db /home/yechen/Workspace/DrQA/data//wikipedia/docs.db \
+	--tokenizer 'corenlp' \
+	--n-docs 5 \
+	--num-workers 32 \
+	--match 'string'
+	
+	
+
+python scripts/retriever/eval.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-dev-zh.txt \
+	--model /home/yechen/Workspace/DrQA/data//wikipedia/docs-zh-tfidf-ngram=2-hash=16777216-tokenizer=spacyzh.npz \
+	--doc-db /home/yechen/Workspace/DrQA/data//wikipedia/docs-zh.db \
+	--tokenizer 'spacyzh' \
+	--n-docs 5 \
+	--num-workers 32 \
+	--match 'string' 
+	
+--------------------------------------------------
+SQuAD-v1.1-dev-zh.txt
+Examples:			3726
+Matches in top 5:		1553
+Match % in top 5:		41.68
+Total time:			885.2451 (s)
+
+--------------------------------------------------
+SQuAD-v1.1-dev-zh.txt
+Examples:			3726
+Matches in top 5:		1552
+Match % in top 5:		41.65
+Total time:			909.3811 (s)
+
+--------------------------------------------------
+SQuAD-v1.1-dev-zh.txt
+Examples:			3726
+Matches in top 5:		1560
+Match % in top 5:		41.87
+Total time:			953.0387 (s)
+
+--------------------------------------------------
+SQuAD-v1.1-dev-zh.txt
+Examples:			3726
+Matches in top 5:		1560
+Match % in top 5:		41.87
+Total time:			914.3088 (s)
+
+python scripts/retriever/eval.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v1.1-train-zh.txt \
+	--model /home/yechen/Workspace/DrQA/data//wikipedia/docs-zh-tfidf-ngram=2-hash=16777216-tokenizer=spacyzh.npz \
+	--doc-db /home/yechen/Workspace/DrQA/data//wikipedia/docs-zh.db \
+	--tokenizer 'spacyzh' \
+	--n-docs 5 \
+	--num-workers 32 \
+	--match 'string' 
+
+--------------------------------------------------
+SQuAD-v1.1-train-zh.txt
+Examples:			44846
+Matches in top 5:		16022
+Match % in top 5:		35.73
+Total time:			10232.2341 (s)
+
+--------------------------------------------------
+SQuAD-v1.1-train-zh.txt
+Examples:			44846
+Matches in top 5:		16088
+Match % in top 5:		35.87
+Total time:			10477.1859 (s)
+
+
+python scripts/reader/preprocess.py data/datasets data/datasets --split SQuAD-v2.0-train-zh --tokenizer 'spacyzh' --workers 32
+python scripts/reader/preprocess.py data/datasets data/datasets --split SQuAD-v2.0-dev-zh --tokenizer 'spacyzh' --workers 32
+
+#python scripts/reader/preprocess.py data/datasets data/datasets --split SQuAD-v2.0-dev-zh --tokenizer 'jieba' --workers 32
+
   
