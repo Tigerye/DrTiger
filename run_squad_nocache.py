@@ -879,8 +879,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
               text=final_text,
               start_logit=pred.start_logit,
               end_logit=pred.end_logit,
-              start_pos=orig_doc_start,
-              end_pos=orig_doc_end
+              start_pos=pred.start_index,
+              end_pos=pred.end_index
               ))
 
     # if we didn't inlude the empty option in the n-best, inlcude it
