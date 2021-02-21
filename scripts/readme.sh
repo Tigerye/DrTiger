@@ -2889,7 +2889,7 @@ python run_squad_v2.py \
   --output_dir=$SQUAD_DIR/squad_2.0_large_zh_3M_1M/ \
   --version_2_with_negative=True
   
-python run_squad_v2.py \
+python run_squad_nocache.py \
   --vocab_file=$BERT_LARGE_DIR/vocab.txt \
   --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
   --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
