@@ -378,7 +378,8 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
             print(sub_token_detok)
             tok_to_origchar_index.append(example.word_to_char_offset[i])
         else:
-            tok_to_origchar_index.append([subtoken_char_offset,subtoken_char_offset+len(sub_token_detok)-1])
+            tok_to_origchar_index.append([example.word_to_char_offset[i][0]+subtoken_char_offset,
+                                          example.word_to_char_offset[i][0]+subtoken_char_offset+len(sub_token_detok)-1])
             token_char_offset += len(sub_token_detok)
         
     #debug
