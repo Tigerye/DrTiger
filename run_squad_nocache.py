@@ -343,7 +343,7 @@ def read_squad_examples(input_file, is_training):
 
 def convert_examples_to_features(examples, tokenizer, max_seq_length,
                                  doc_stride, max_query_length, is_training,
-                                 output_fn):
+                                 output_fn, do_lower_case):
   """Loads a data file into a list of `InputBatch`s."""
 
   unique_id = 1000000000
@@ -370,7 +370,10 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
         
         #char-leval cursor
         sub_token_detok = sub_token.replace(" ##", "").replace("##", "")
-        subtoken_char_offset = token.find(sub_token_detok,token_char_offset)
+        if do_lower_case:
+            subtoken_char_offset = token.lower().find(sub_token_detok,token_char_offset)
+        else:
+            subtoken_char_offset = token.find(sub_token_detok,token_char_offset)
         if subtoken_char_offset==-1:
             tok_to_origchar_index.append(example.word_to_char_offset[i])
         else:
@@ -1295,7 +1298,9 @@ def main(_):
             doc_stride=FLAGS.doc_stride,
             max_query_length=FLAGS.max_query_length,
             is_training=True,
-            output_fn=train_writer.process_feature)
+            output_fn=train_writer.process_feature,
+            do_lower_case=FLAGS.do_lower_case
+            )
         
         train_writer.close()
         num_features=train_writer.num_features
@@ -1339,7 +1344,8 @@ def main(_):
         doc_stride=FLAGS.doc_stride,
         max_query_length=FLAGS.max_query_length,
         is_training=False,
-        output_fn=append_feature)
+        output_fn=append_feature,
+        do_lower_case=FLAGS.do_lower_case)
     eval_writer.close()
 
     tf.compat.v1.logging.info("***** Running predictions *****")
