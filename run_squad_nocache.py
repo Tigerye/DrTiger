@@ -256,6 +256,7 @@ def read_squad_examples(input_file, is_training):
         char_to_word_offset.append(len(doc_tokens) - 1)
         
       #debug
+      print(len(char_to_word_offset))
       print(char_to_word_offset)
       sys.exit()
 
