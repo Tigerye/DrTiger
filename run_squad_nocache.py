@@ -874,6 +874,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         
         #debug
         print(feature.tokens)
+        print(feature.tokens[42:53])
         print(''.join(feature.tokens))
         print(pred.start_index,pred.end_index)
         print(feature.token_to_orig_map)
