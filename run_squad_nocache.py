@@ -254,6 +254,9 @@ def read_squad_examples(input_file, is_training):
             doc_tokens[-1] += c
           prev_is_whitespace = False
         char_to_word_offset.append(len(doc_tokens) - 1)
+        
+      #debug
+      print(char_to_word_offset)
 
       for qa in paragraph["qas"]:
         qas_id = qa["id"]
