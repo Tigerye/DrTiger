@@ -355,22 +355,34 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
       query_tokens = query_tokens[0:max_query_length]
 
     tok_to_orig_index = []
+    tok_to_wordchar_index = []
     tok_to_origchar_index = []
     orig_to_tok_index = []
     all_doc_tokens = []
     for (i, token) in enumerate(example.doc_tokens):
       orig_to_tok_index.append(len(all_doc_tokens))
       sub_tokens = tokenizer.tokenize(token)
+      token_char_offset = example.word_to_char_offset[i][0]
       for sub_token in sub_tokens:
         tok_to_orig_index.append(i)
-        tok_to_origchar_index.append(example.word_to_char_offset[i])
+        tok_to_wordchar_index.append(example.word_to_char_offset[i])
         all_doc_tokens.append(sub_token)
+        
+        #char-leval cursor
+        sub_token_detok = sub_token.replace(" ##", "").replace("##", "")
+        subtoken_char_offset = token.find(sub_token_detok,token_char_offset)
+        if subtoken_char_offset==-1:
+            tok_to_origchar_index.append(example.word_to_char_offset[i])
+        else:
+            tok_to_origchar_index.append([subtoken_char_offset,subtoken_char_offset+len(sub_token_detok)-1])
+            token_char_offset += len(sub_token_detok)
         
     #debug
     print(example.doc_tokens)
     print(example.word_to_char_offset)
     print(all_doc_tokens)
     print(tok_to_orig_index)
+    print(tok_to_wordchar_index)
     print(tok_to_origchar_index)
     sys.exit()
 
