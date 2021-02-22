@@ -892,11 +892,13 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         break
       feature = features[pred.feature_index]
       if pred.start_index > 0:  # this is a non-null prediction
+        #debug
+        print(feature.token_to_origchar_map)
         tok_tokens = feature.tokens[pred.start_index:(pred.end_index + 1)]
         orig_doc_start = feature.token_to_orig_map[pred.start_index]
         orig_doc_end = feature.token_to_orig_map[pred.end_index]
-        orig_doc_char_start = (feature.token_to_origchar_map[pred.start_index])[0]
-        orig_doc_char_end = (feature.token_to_origchar_map[pred.end_index])[1]
+        orig_doc_char_start = feature.token_to_origchar_map[pred.start_index][0]
+        orig_doc_char_end = feature.token_to_origchar_map[pred.end_index][1]
         orig_tokens = example.doc_tokens[orig_doc_start:(orig_doc_end + 1)]
         tok_text = " ".join(tok_tokens)
         
