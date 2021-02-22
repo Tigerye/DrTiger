@@ -208,6 +208,7 @@ class InputFeatures(object):
                doc_span_index,
                tokens,
                token_to_orig_map,
+               token_to_origchar_map,
                token_is_max_context,
                input_ids,
                input_mask,
@@ -219,7 +220,8 @@ class InputFeatures(object):
     self.example_index = example_index
     self.doc_span_index = doc_span_index
     self.tokens = tokens
-    self.token_to_orig_map = token_to_orig_map
+    self.token_to_orig_map = token_to_origchar_map
+    self.token_to_origchar_map = token_to_orig_map
     self.token_is_max_context = token_is_max_context
     self.input_ids = input_ids
     self.input_mask = input_mask
@@ -381,19 +383,6 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
             tok_to_origchar_index.append([example.word_to_char_offset[i][0]+subtoken_char_offset,
                                           example.word_to_char_offset[i][0]+subtoken_char_offset+len(sub_token_detok)-1])
             token_char_offset += len(sub_token_detok)
-        
-    #debug
-    print(example.doc_tokens)
-    print(example.word_to_char_offset)
-    print(len(all_doc_tokens))
-    print(all_doc_tokens)
-    print(len(tok_to_orig_index))
-    print(tok_to_orig_index)
-    print(len(tok_to_wordchar_index))
-    print(tok_to_wordchar_index)
-    print(len(tok_to_origchar_index))
-    print(tok_to_origchar_index)
-    sys.exit()
 
     tok_start_position = None
     tok_end_position = None
@@ -432,6 +421,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
     for (doc_span_index, doc_span) in enumerate(doc_spans):
       tokens = []
       token_to_orig_map = {}
+      token_to_origchar_map = {}
       token_is_max_context = {}
       segment_ids = []
       tokens.append("[CLS]")
@@ -445,6 +435,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
       for i in range(doc_span.length):
         split_token_index = doc_span.start + i
         token_to_orig_map[len(tokens)] = tok_to_orig_index[split_token_index]
+        token_to_origchar_map[len(tokens)] = tok_to_origchar_index[split_token_index]
 
         is_max_context = _check_is_max_context(doc_spans, doc_span_index,
                                                split_token_index)
@@ -502,6 +493,8 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
             [tokenization.printable_text(x) for x in tokens]))
         tf.compat.v1.logging.info("token_to_orig_map: %s" % " ".join(
             ["%d:%d" % (x, y) for (x, y) in six.iteritems(token_to_orig_map)]))
+        tf.compat.v1.logging.info("token_to_origchar_map: %s" % " ".join(
+            ["%d:[%d,%d]" % (x, y[0], y[1]) for (x, y) in six.iteritems(token_to_origchar_map)]))
         tf.compat.v1.logging.info("token_is_max_context: %s" % " ".join([
             "%d:%s" % (x, y) for (x, y) in six.iteritems(token_is_max_context)
         ]))
@@ -525,6 +518,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
           doc_span_index=doc_span_index,
           tokens=tokens,
           token_to_orig_map=token_to_orig_map,
+          token_to_origchar_map=token_to_origchar_map,
           token_is_max_context=token_is_max_context,
           input_ids=input_ids,
           input_mask=input_mask,
@@ -537,6 +531,9 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
       output_fn(feature)
 
       unique_id += 1
+      
+      #debug
+      sys.exit()
 
 
 def _improve_answer_span(doc_tokens, input_start, input_end, tokenizer,
