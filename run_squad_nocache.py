@@ -243,21 +243,29 @@ def read_squad_examples(input_file, is_training):
       paragraph_text = paragraph["context"]
       doc_tokens = []
       char_to_word_offset = []
+      word_to_char_offset = []
       prev_is_whitespace = True
-      for c in paragraph_text:
+      for (i,c) in enumerate(paragraph_text):
         if is_whitespace(c):
           prev_is_whitespace = True
         else:
           if prev_is_whitespace:
+            if len(doc_tokens)>0:
+                word_to_char_offset[-1][-1]=len(doc_tokens[-1]-1)
+            word_to_char_offset.append([i,-1])
             doc_tokens.append(c)
           else:
             doc_tokens[-1] += c
           prev_is_whitespace = False
         char_to_word_offset.append(len(doc_tokens) - 1)
+        word_to_char_offset[-1][-1]=len(doc_tokens[-1]-1)
         
       #debug
       print(len(char_to_word_offset))
       print(char_to_word_offset)
+      print(len(word_to_char_offset))
+      print(word_to_char_offset)
+      print(len(doc_tokens))
       print(doc_tokens)
       sys.exit()
 
