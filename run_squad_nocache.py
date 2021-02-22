@@ -531,10 +531,6 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
       output_fn(feature)
 
       unique_id += 1
-      
-      #debug
-      sys.exit()
-
 
 def _improve_answer_span(doc_tokens, input_start, input_end, tokenizer,
                          orig_answer_text):
@@ -899,6 +895,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         tok_tokens = feature.tokens[pred.start_index:(pred.end_index + 1)]
         orig_doc_start = feature.token_to_orig_map[pred.start_index]
         orig_doc_end = feature.token_to_orig_map[pred.end_index]
+        orig_doc_char_start = feature.token_to_origchar_map[pred.start_index][0]
+        orig_doc_char_end = feature.token_to_origchar_map[pred.end_index][1]
         orig_tokens = example.doc_tokens[orig_doc_start:(orig_doc_end + 1)]
         tok_text = " ".join(tok_tokens)
         
@@ -917,22 +915,6 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
         seen_predictions[final_text] = True
         
-        #debug
-        print(len(example.doc_tokens))
-        print(example.doc_tokens)
-        print(tok_text)
-        print(orig_text)
-        print(final_text)
-        print(feature.tokens)
-        print(feature.tokens[42:53])
-        print(feature.tokens[70:75])
-        print(''.join(feature.tokens))
-        print(pred.start_index,pred.end_index)
-        print(feature.token_to_orig_map)
-        print(''.join(tok_tokens))
-        print(''.join(orig_tokens))
-        sys.exit()
-        
       else:
         final_text = ""
         seen_predictions[final_text] = True
@@ -944,8 +926,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
               text=final_text,
               start_logit=pred.start_logit,
               end_logit=pred.end_logit,
-              start_pos=orig_doc_start,
-              end_pos=orig_doc_end
+              start_pos=orig_doc_char_start,
+              end_pos=orig_doc_char_end
               ))
 
     # if we didn't inlude the empty option in the n-best, inlcude it
