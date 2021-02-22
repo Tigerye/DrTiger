@@ -28,6 +28,7 @@ import optimization_v2 as optimization
 import tokenization_v2 as tokenization
 import six
 import tensorflow as tf
+import sys
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "7"
 
@@ -855,7 +856,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         orig_doc_end = feature.token_to_orig_map[pred.end_index]
         orig_tokens = example.doc_tokens[orig_doc_start:(orig_doc_end + 1)]
         tok_text = " ".join(tok_tokens)
-
+        
         # De-tokenize WordPieces that have been split off.
         tok_text = tok_text.replace(" ##", "")
         tok_text = tok_text.replace("##", "")
@@ -870,6 +871,14 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
           continue
 
         seen_predictions[final_text] = True
+        
+        #debug
+        print(feature.token_to_orig_map)
+        print(final_text)
+        print(' '.join(tok_tokens))
+        print(' '.join(orig_tokens))
+        sys.exit()
+        
       else:
         final_text = ""
         seen_predictions[final_text] = True
