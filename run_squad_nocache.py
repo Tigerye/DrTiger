@@ -251,14 +251,14 @@ def read_squad_examples(input_file, is_training):
         else:
           if prev_is_whitespace:
             if len(doc_tokens)>0:
-                word_to_char_offset[-1][-1]=len(doc_tokens[-1])-1
+                word_to_char_offset[-1][-1]=i-2
             word_to_char_offset.append([i,-1])
             doc_tokens.append(c)
           else:
             doc_tokens[-1] += c
           prev_is_whitespace = False
         char_to_word_offset.append(len(doc_tokens) - 1)
-        word_to_char_offset[-1][-1]=len(doc_tokens[-1])-1
+        word_to_char_offset[-1][-1]=i
         
       #debug
       print(len(char_to_word_offset))
