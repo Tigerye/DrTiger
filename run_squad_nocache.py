@@ -362,7 +362,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
     for (i, token) in enumerate(example.doc_tokens):
       orig_to_tok_index.append(len(all_doc_tokens))
       sub_tokens = tokenizer.tokenize(token)
-      token_char_offset = example.word_to_char_offset[i][0]
+      token_char_offset = 0
       for sub_token in sub_tokens:
         tok_to_orig_index.append(i)
         tok_to_wordchar_index.append(example.word_to_char_offset[i])
