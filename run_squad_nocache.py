@@ -220,8 +220,8 @@ class InputFeatures(object):
     self.example_index = example_index
     self.doc_span_index = doc_span_index
     self.tokens = tokens
-    self.token_to_orig_map = token_to_origchar_map
-    self.token_to_origchar_map = token_to_orig_map
+    self.token_to_orig_map = token_to_orig_map
+    self.token_to_origchar_map = token_to_origchar_map
     self.token_is_max_context = token_is_max_context
     self.input_ids = input_ids
     self.input_mask = input_mask
@@ -892,8 +892,6 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         break
       feature = features[pred.feature_index]
       if pred.start_index > 0:  # this is a non-null prediction
-        #debug
-        print(feature.token_to_origchar_map)
         tok_tokens = feature.tokens[pred.start_index:(pred.end_index + 1)]
         orig_doc_start = feature.token_to_orig_map[pred.start_index]
         orig_doc_end = feature.token_to_orig_map[pred.end_index]
