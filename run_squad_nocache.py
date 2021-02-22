@@ -257,6 +257,7 @@ def read_squad_examples(input_file, is_training):
         
       #debug
       print(char_to_word_offset)
+      sys.exit()
 
       for qa in paragraph["qas"]:
         qas_id = qa["id"]
