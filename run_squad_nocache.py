@@ -385,9 +385,13 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
     #debug
     print(example.doc_tokens)
     print(example.word_to_char_offset)
+    print(len(all_doc_tokens))
     print(all_doc_tokens)
+    print(len(tok_to_orig_index))
     print(tok_to_orig_index)
+    print(len(tok_to_wordchar_index))
     print(tok_to_wordchar_index)
+    print(len(tok_to_origchar_index))
     print(tok_to_origchar_index)
     sys.exit()
 
