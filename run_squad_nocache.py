@@ -170,7 +170,8 @@ class SquadExample(object):
                orig_answer_text=None,
                start_position=None,
                end_position=None,
-               is_impossible=False):
+               is_impossible=False,
+               word_to_char_offset=None):
     self.qas_id = qas_id
     self.question_text = question_text
     self.doc_tokens = doc_tokens
@@ -178,6 +179,7 @@ class SquadExample(object):
     self.start_position = start_position
     self.end_position = end_position
     self.is_impossible = is_impossible
+    self.word_to_char_offset=word_to_char_offset
 
   def __str__(self):
     return self.__repr__()
@@ -267,7 +269,7 @@ def read_squad_examples(input_file, is_training):
       print(word_to_char_offset)
       print(len(doc_tokens))
       print(doc_tokens)
-      sys.exit()
+#       sys.exit()
 
       for qa in paragraph["qas"]:
         qas_id = qa["id"]
@@ -332,7 +334,8 @@ def read_squad_examples(input_file, is_training):
             orig_answer_text=orig_answer_text,
             start_position=start_position,
             end_position=end_position,
-            is_impossible=is_impossible)
+            is_impossible=is_impossible,
+            word_to_char_offset=word_to_char_offset)
         examples.append(example)
 
   return examples
@@ -352,6 +355,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
       query_tokens = query_tokens[0:max_query_length]
 
     tok_to_orig_index = []
+    tok_to_origchar_index = []
     orig_to_tok_index = []
     all_doc_tokens = []
     for (i, token) in enumerate(example.doc_tokens):
@@ -359,7 +363,13 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
       sub_tokens = tokenizer.tokenize(token)
       for sub_token in sub_tokens:
         tok_to_orig_index.append(i)
+        tok_to_origchar_index.append(example.word_to_char_offset(i))
         all_doc_tokens.append(sub_token)
+        
+    #debug
+    print(tok_to_orig_index)
+    print(tok_to_origchar_index)
+    sys.exit()
 
     tok_start_position = None
     tok_end_position = None
