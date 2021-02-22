@@ -2812,7 +2812,40 @@ python run_pretraining_v2.py \
   --num_warmup_steps=100000 \
   --learning_rate=2e-5
   
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
+DATA_DIR=/data/yechen/bert
+
+python run_pretraining_v2.py \
+  --input_file=$DATA_DIR/tf_examples_*.tfrecord \
+  --output_dir=$BERT_LARGE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --train_batch_size=16 \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --num_train_steps=20000000 \
+  --num_warmup_steps=100000 \
+  --learning_rate=2e-5
+  
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_3M_1M
+DATA_DIR=/data/yechen/bert
+
+python run_pretraining_v2_gpu3.py \
+  --input_file=$DATA_DIR/seq512/tf_examples_*.tfrecord \
+  --output_dir=$BERT_LARGE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --train_batch_size=4 \
+  --max_seq_length=512 \
+  --max_predictions_per_seq=80 \
+  --num_train_steps=1000000 \
+  --num_warmup_steps=10000 \
+  --learning_rate=2e-5
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
 DATA_DIR=/data/yechen/bert
 
 python run_pretraining_v2_gpu3.py \

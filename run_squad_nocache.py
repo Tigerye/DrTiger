@@ -368,6 +368,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
         
     #debug
     print(example.doc_tokens)
+    print(example.word_to_char_offset)
     print(all_doc_tokens)
     print(tok_to_orig_index)
     print(tok_to_origchar_index)
