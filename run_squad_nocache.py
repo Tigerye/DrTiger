@@ -873,6 +873,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         seen_predictions[final_text] = True
         
         #debug
+        print(len(example.doc_tokens))
         print(example.doc_tokens)
         print(tok_text)
         print(orig_text)
