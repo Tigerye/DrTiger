@@ -348,10 +348,15 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
       sub_tokens = tokenizer.tokenize(token)
       #debug
       print(sub_tokens)
-      sys.exit()
+
       for sub_token in sub_tokens:
         tok_to_orig_index.append(i)
         all_doc_tokens.append(sub_token)
+        
+      #debug
+      print(tok_to_orig_index)
+      print(all_doc_tokens)
+      sys.exit()
 
     tok_start_position = None
     tok_end_position = None
