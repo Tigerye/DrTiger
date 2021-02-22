@@ -262,13 +262,13 @@ def read_squad_examples(input_file, is_training):
         char_to_word_offset.append(len(doc_tokens) - 1)
         word_to_char_offset[-1][-1]=i
         
-      #debug
-      print(len(char_to_word_offset))
-      print(char_to_word_offset)
-      print(len(word_to_char_offset))
-      print(word_to_char_offset)
-      print(len(doc_tokens))
-      print(doc_tokens)
+#       #debug
+#       print(len(char_to_word_offset))
+#       print(char_to_word_offset)
+#       print(len(word_to_char_offset))
+#       print(word_to_char_offset)
+#       print(len(doc_tokens))
+#       print(doc_tokens)
 #       sys.exit()
 
       for qa in paragraph["qas"]:
@@ -367,6 +367,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
         all_doc_tokens.append(sub_token)
         
     #debug
+    print(example.doc_tokens)
     print(tok_to_orig_index)
     print(tok_to_origchar_index)
     sys.exit()
