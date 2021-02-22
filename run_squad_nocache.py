@@ -873,6 +873,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         seen_predictions[final_text] = True
         
         #debug
+        print(feature.tokens)
         print(''.join(feature.tokens))
         print(pred.start_index,pred.end_index)
         print(feature.token_to_orig_map)
