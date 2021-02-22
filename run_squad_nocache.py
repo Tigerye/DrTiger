@@ -873,13 +873,15 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         seen_predictions[final_text] = True
         
         #debug
+        print(tok_text)
+        print(orig_text)
+        print(final_text)
         print(feature.tokens)
         print(feature.tokens[42:53])
         print(feature.tokens[70:75])
         print(''.join(feature.tokens))
         print(pred.start_index,pred.end_index)
         print(feature.token_to_orig_map)
-        print(final_text)
         print(''.join(tok_tokens))
         print(''.join(orig_tokens))
         sys.exit()
