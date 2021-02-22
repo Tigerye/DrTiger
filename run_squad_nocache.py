@@ -375,6 +375,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
         else:
             subtoken_char_offset = token.find(sub_token_detok,token_char_offset)
         if subtoken_char_offset==-1:
+            print(sub_token_detok)
             tok_to_origchar_index.append(example.word_to_char_offset[i])
         else:
             tok_to_origchar_index.append([subtoken_char_offset,subtoken_char_offset+len(sub_token_detok)-1])
