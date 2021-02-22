@@ -873,6 +873,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
       else:
         final_text = ""
         seen_predictions[final_text] = True
+        orig_doc_start=-1
+        orig_doc_end=-1
 
       nbest.append(
           _NbestPrediction(
