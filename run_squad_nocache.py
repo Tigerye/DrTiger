@@ -258,6 +258,7 @@ def read_squad_examples(input_file, is_training):
       #debug
       print(len(char_to_word_offset))
       print(char_to_word_offset)
+      print(doc_tokens)
       sys.exit()
 
       for qa in paragraph["qas"]:
