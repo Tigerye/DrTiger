@@ -2815,7 +2815,7 @@ python run_pretraining_v2.py \
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
 DATA_DIR=/data/yechen/bert
 
-python run_pretraining_v2.py \
+python run_pretraining_v2_gpu4.py \
   --input_file=$DATA_DIR/tf_examples_*.tfrecord \
   --output_dir=$BERT_LARGE_DIR \
   --do_train=True \

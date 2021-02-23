@@ -8,6 +8,7 @@ encoding/optimization_v2.py=utf-8
 encoding/run_pretraining.py=utf-8
 encoding/run_pretraining_v2.py=utf-8
 encoding/run_pretraining_v2_gpu3.py=utf-8
+encoding/run_pretraining_v2_gpu4.py=utf-8
 encoding/run_squad.py=utf-8
 encoding/run_squad_nocache.py=utf-8
 encoding/run_squad_v1.py=utf-8
