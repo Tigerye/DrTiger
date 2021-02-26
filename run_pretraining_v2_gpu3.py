@@ -23,7 +23,7 @@ import modeling_v2 as modeling
 import optimization_v2 as optimization
 import tensorflow as tf
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 flags = tf.compat.v1.flags
 
