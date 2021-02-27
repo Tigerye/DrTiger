@@ -2815,7 +2815,7 @@ python run_pretraining_v2.py \
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
 DATA_DIR=/data/yechen/bert
 
-python run_pretraining_v2_gpu4.py \
+python run_pretraining_v2_gpu3.py \
   --input_file=$DATA_DIR/tf_examples_*.tfrecord \
   --output_dir=$BERT_LARGE_DIR \
   --do_train=True \
@@ -2848,7 +2848,7 @@ python run_pretraining_v2_gpu3.py \
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
 DATA_DIR=/data/yechen/bert
 
-python run_pretraining_v2_gpu3.py \
+python run_pretraining_v2_gpu4.py \
   --input_file=$DATA_DIR/seq512/tf_examples_*.tfrecord \
   --output_dir=$BERT_LARGE_DIR \
   --do_train=True \
@@ -2861,6 +2861,43 @@ python run_pretraining_v2_gpu3.py \
   --num_train_steps=1000000 \
   --num_warmup_steps=10000 \
   --learning_rate=2e-5
+
+10M eval:
+--------
+global_step = 10000000
+loss = 0.9034405
+masked_lm_accuracy = 0.8053705
+masked_lm_loss = 0.84002936
+next_sentence_accuracy = 0.97875
+next_sentence_loss = 0.06403377
+
+10M-3M eval:
+------------
+global_step = 1000000
+loss = 0.7196562
+masked_lm_accuracy = 0.83847976
+masked_lm_loss = 0.68368185
+next_sentence_accuracy = 0.985
+next_sentence_loss = 0.037160043
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v5.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_2data/ \
+  --version_2_with_negative=True
   
 
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
@@ -2879,7 +2916,7 @@ python run_squad_v2.py \
   --num_train_epochs=2.0 \
   --max_seq_length=384 \
   --doc_stride=128 \
-  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_3.4M/ \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_2data/ \
   --version_2_with_negative=True
   
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
@@ -3137,13 +3174,18 @@ python /home/yechen/Workspace/DrQA/drqa/bert/run_squad_nocache.py \
   --output_dir=/home/yechen/Workspace/DrQA/data/squad/squad_2.0_large_zh_3M_1M/ \
   --version_2_with_negative=True
   
-  python drqa/bert/run_squad_nocache.py
-  GUNICORN_CMD_ARGS="--bind=0.0.0.0:8000 --timeout=300" gunicorn index_zh:app
+python drqa/bert/run_squad_nocache.py
+GUNICORN_CMD_ARGS="--bind=0.0.0.0:8000 --timeout=300" gunicorn index_zh:app
+
+nohup python drqa/bert/predict.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-pos-zh.txt > log-pred.txt &
+nohup python drqa/bert/predict.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-zh.txt > log-pred.txt &
   
   
-  python scripts/convert/squad.py data/datasets/SQuAD-v2.0-dev-zh.json data/datasets/SQuAD-v2.0-dev-zh.txt
-  python scripts/convert/squad.py data/datasets/SQuAD-v2.0-train-zh.json data/datasets/SQuAD-v2.0-train-zh.txt
-  
-  python drqa/bert/predict.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-zh.txt --out-dir /home/yechen/Workspace/DrQA/data/datasets
+python scripts/convert/squad.py data/datasets/SQuAD-v2.0-dev-zh.json data/datasets/SQuAD-v2.0-dev-zh.txt
+python scripts/convert/squad.py data/datasets/SQuAD-v2.0-train-zh.json data/datasets/SQuAD-v2.0-train-zh.txt
+
+
+python scripts/retriever/process_evaldata.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-zh.json /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-pos-zh.txt
+python scripts/retriever/process_evaldata.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-train-zh.json /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-train-pos-zh.txt
 
   
