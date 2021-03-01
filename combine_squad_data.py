@@ -86,7 +86,7 @@ infiles = {data_dir+'webqa_squad_train.json',
            data_dir+'mctest_to_squad_mc160.train_zh.json'
            }
      
-outfile = data_dir+'combined-squad-train-v2.0-2data_zh.json'
+outfile = data_dir+'combined-squad-train-v2.0-7data_zh.json'
 
 
 # infiles = {'/data/yechen/squad/WebQA.v1.0/webqa_squad_eval.json',

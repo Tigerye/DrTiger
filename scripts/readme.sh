@@ -3085,10 +3085,39 @@ python run_squad_v2_gpu5.py \
   --doc_stride=128 \
   --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/ \
   --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu6.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/combined-squad-train-v1.1-7data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v1.1-7data-zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/ \
+  --version_2_with_negative=True
 
 
 #python -m wikiextractor.WikiExtractor /data/yechen/bert/zhwiki-20201101-pages-articles-multistream.xml.bz2 --output /data/yechen/bert/zhwiki-extract/ --json
 python -m wikiextractor.WikiExtractor /data/yechen/bert/zhwiki-20210201-pages-articles.xml.bz2 --output /data/yechen/bert/wiki-zh/ --json
+
+python clean_doc.py /mnt/nfs/yechen/data/news.2017.zh.txt /mnt/nfs/yechen/data/news.2017.zh.txt.cln
+python clean_doc.py /mnt/nfs/yechen/data/news.2018.zh.txt /mnt/nfs/yechen/data/news.2018.zh.txt.cln
+python clean_doc.py /mnt/nfs/yechen/data/news.2019.zh.txt /mnt/nfs/yechen/data/news.2019.zh.txt.cln
+python clean_doc.py /mnt/nfs/yechen/data/news.2020.zh.txt /mnt/nfs/yechen/data/news.2020.zh.txt.cln
+
+python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2017.zh.txt.cln /mnt/nfs/yechen/data/db-input/
+python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2018.zh.txt.cln /mnt/nfs/yechen/data/db-input/
+python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2019.zh.txt.cln /mnt/nfs/yechen/data/db-input/
+python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2020.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 
 python scripts/retriever/split_wiki.py /mnt/nfs/yechen/data/wiki.zh.txt /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2017.zh.txt /mnt/nfs/yechen/data/db-input/
