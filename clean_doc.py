@@ -31,4 +31,4 @@ if __name__ == '__main__':
             if (i % 10000 == 0):
                 logging.info("cleaned "+str(i)+" lines, with "+str(j)+" bad.")
             
-    logging.info("Finished clean "+str(i)+ " lines, with "+str(len(docs))+" clean, and "+str(j)+" bad.")
+    logging.info("Finished clean "+str(i)+ " lines, with "+str(j)+" bad.")
