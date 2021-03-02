@@ -25,7 +25,7 @@ if __name__ == '__main__':
                 j+=1
                 print("bad line:", line)
             else:
-                fout.write(line)
+                fout.write(line_cln)
                 fout.write('\n')
             
             if (i % 10000 == 0):

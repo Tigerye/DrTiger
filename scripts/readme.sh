@@ -3114,16 +3114,11 @@ python clean_doc.py /mnt/nfs/yechen/data/news.2018.zh.txt /mnt/nfs/yechen/data/n
 python clean_doc.py /mnt/nfs/yechen/data/news.2019.zh.txt /mnt/nfs/yechen/data/news.2019.zh.txt.cln
 python clean_doc.py /mnt/nfs/yechen/data/news.2020.zh.txt /mnt/nfs/yechen/data/news.2020.zh.txt.cln
 
+python scripts/retriever/split_wiki.py /mnt/nfs/yechen/data/wiki.zh.txt /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2017.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2018.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2019.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2020.zh.txt.cln /mnt/nfs/yechen/data/db-input/
-
-python scripts/retriever/split_wiki.py /mnt/nfs/yechen/data/wiki.zh.txt /mnt/nfs/yechen/data/db-input/
-python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2017.zh.txt /mnt/nfs/yechen/data/db-input/
-python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2018.zh.txt /mnt/nfs/yechen/data/db-input/
-python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2019.zh.txt /mnt/nfs/yechen/data/db-input/
-python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2020.zh.txt /mnt/nfs/yechen/data/db-input/
 
 #python scripts/retriever/build_db.py /data/yechen/bert/zhwiki-extract /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_wikipedia_zh.py --num-workers 32 
 python scripts/retriever/build_db.py /data/yechen/bert/wiki-zh /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_wikipedia_zh.py --num-workers 32 
