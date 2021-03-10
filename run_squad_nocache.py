@@ -237,7 +237,7 @@ def read_squad_examples(input_file, is_training):
     input_data = json.load(reader)["data"]
 
   def is_whitespace(c):
-    if c == " " or c == "\t" or c == "\r" or c == "\n" or ord(c) == 0x202F:
+    if c == " " or c == "\t" or c == "\r" or c == "\n" or ord(c) == 0x202F or ord(c) == 0x3000:
       return True
     return False
 
