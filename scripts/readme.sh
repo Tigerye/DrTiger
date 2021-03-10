@@ -3356,6 +3356,9 @@ python scripts/retriever/build_db.py /mnt/nfs/yechen/data/db-input /mnt/nfs/yech
 python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/db/docs-wiki-news-zh.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
 python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/db/docs-wiki-news-zh.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
 
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/db-input /mnt/nfs/yechen/data/db/docs-lang=zh-source=wiki-news.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
+
+
 python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/db/docs-wiki-news-zh1.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
 
 python scripts/retriever/build_db.py /mnt/nfs/yechen/data/db-input-test /mnt/nfs/yechen/data/db/docs-test.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
