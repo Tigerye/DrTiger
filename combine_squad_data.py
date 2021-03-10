@@ -88,12 +88,12 @@ data_dir = '/data/yechen/squad/data/'
 #      
 # outfile = data_dir+'combined-squad-train-v2.0-7data_zh.json'
 
-infiles = {data_dir+'combined-squad-dev-v2.0-2data-zh.json',
-           data_dir+'du_squad_search_dev.json',
-           data_dir+'du_squad_zhidao_dev.json',
+infiles = {data_dir+'combined-squad-train-v2.0-2data-zh.json',
+           data_dir+'du_squad_search_train.json',
+           data_dir+'du_squad_zhidao_train.json',
            }
      
-outfile = data_dir+'combined-squad-dev-v2.0-3data_zh.json'
+outfile = data_dir+'combined-squad-train-v2.0-3data_zh.json'
 
 
 # infiles = {'/data/yechen/squad/WebQA.v1.0/webqa_squad_eval.json',
