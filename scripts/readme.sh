@@ -3089,6 +3089,142 @@ python run_squad_v2_gpu5.py \
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
 SQUAD_DIR=/data/yechen/squad/data
 
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-7data-zh.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/null_odds.json
+{
+  "exact": 65.89111760066505,
+  "f1": 65.89182813576905,
+  "total": 93826,
+  "HasAns_exact": 43.853427895981085,
+  "HasAns_f1": 43.85478655471319,
+  "HasAns_total": 49068,
+  "NoAns_exact": 90.05094061396845,
+  "NoAns_f1": 90.05094061396845,
+  "NoAns_total": 44758,
+  "best_exact": 65.89324920597703,
+  "best_exact_thresh": -0.0029783248901367188,
+  "best_f1": 65.893959741081,
+  "best_f1_thresh": -0.0029783248901367188
+}
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu5.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-7data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0_zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/null_odds.json
+{
+  "exact": 68.56733765686853,
+  "f1": 68.56733765686853,
+  "total": 11873,
+  "HasAns_exact": 18.92109500805153,
+  "HasAns_f1": 18.92109500805153,
+  "HasAns_total": 3726,
+  "NoAns_exact": 91.27286117589297,
+  "NoAns_f1": 91.27286117589297,
+  "NoAns_total": 8147,
+  "best_exact": 69.7212162048345,
+  "best_exact_thresh": -4.601675987243652,
+  "best_f1": 69.7212162048345,
+  "best_f1_thresh": -4.601675987243652
+}
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu5.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-7data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/webqa_squad_dev.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/webqa_squad_dev.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/null_odds.json
+{
+  "exact": 64.97986777352487,
+  "f1": 64.97986777352487,
+  "total": 60351,
+  "HasAns_exact": 49.40571177020855,
+  "HasAns_f1": 49.40571177020855,
+  "HasAns_total": 36346,
+  "NoAns_exact": 88.56071651739221,
+  "NoAns_f1": 88.56071651739221,
+  "NoAns_total": 24005,
+  "best_exact": 64.98152474689732,
+  "best_exact_thresh": -0.0029783248901367188,
+  "best_f1": 64.98152474689732,
+  "best_f1_thresh": -0.0029783248901367188
+}
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu5.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v1.1-7data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/webqa_squad_dev_v1.1.json \
+  --train_batch_size=8 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v1.1.py $SQUAD_DIR/webqa_squad_dev_v1.1.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/predictions.json
+{"exact_match": 74.70973422109724, "f1": 74.70973422109724}
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/webqa_squad_dev_v1.1.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/null_odds.json
+{
+  "exact": 51.24635448192373,
+  "f1": 51.24635448192373,
+  "total": 36346,
+  "HasAns_exact": 51.24635448192373,
+  "HasAns_f1": 51.24635448192373,
+  "HasAns_total": 36346,
+  "best_exact": 74.70973422109724,
+  "best_exact_thresh": 25.59836196899414,
+  "best_f1": 74.70973422109724,
+  "best_f1_thresh": 25.59836196899414
+}
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
 python run_squad_v2_gpu6.py \
   --vocab_file=$BERT_LARGE_DIR/vocab.txt \
   --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
@@ -3104,27 +3240,142 @@ python run_squad_v2_gpu6.py \
   --doc_stride=128 \
   --output_dir=$SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/ \
   --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
 
+python /data/yechen/squad/evaluate-v1.1.py $SQUAD_DIR/combined-squad-dev-v1.1-7data-zh.json $SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/predictions.json
+{"exact_match": 69.30646960059806, "f1": 69.3397137032932}
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v1.1-7data-zh.json $SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/predictions.json --na-prob-file $SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/null_odds.json
+{
+  "exact": 71.54405500188227,
+  "f1": 71.57388354085464,
+  "total": 50471,
+  "HasAns_exact": 71.54405500188227,
+  "HasAns_f1": 71.57388354085464,
+  "HasAns_total": 50471,
+  "best_exact": 71.54405500188227,
+  "best_exact_thresh": -0.03686404228210449,
+  "best_f1": 71.57388354085468,
+  "best_f1_thresh": -0.03686404228210449
+}
+
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu6.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v1.1-7data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0_zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/predictions.json --na-prob-file $SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/null_odds.json
+{
+  "exact": 18.360987113619135,
+  "f1": 18.39102726073163,
+  "total": 11873,
+  "HasAns_exact": 53.86473429951691,
+  "HasAns_f1": 53.960458042583646,
+  "HasAns_total": 3726,
+  "NoAns_exact": 2.1234810359641587,
+  "NoAns_f1": 2.1234810359641587,
+  "NoAns_total": 8147,
+  "best_exact": 68.68525225301103,
+  "best_exact_thresh": -37.42303943634033,
+  "best_f1": 68.68525225301103,
+  "best_f1_thresh": -37.42303943634033
+}
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu6.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v1.1-7data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v1.1_zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/ \
+  --version_2_with_negative=True
+
+python /data/yechen/squad/evaluate-v1.1.py $SQUAD_DIR/dev-v1.1_zh.json $SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/predictions.json
+{"exact_match": 53.86473429951691, "f1": 53.960458042583646}
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v1.1_zh.json $SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/predictions.json --na-prob-file $SQUAD_DIR/squad_1.1_large_zh_10M_1M_7data/null_odds.json
+{
+  "exact": 53.86473429951691,
+  "f1": 53.960458042583646,
+  "total": 3726,
+  "HasAns_exact": 53.86473429951691,
+  "HasAns_f1": 53.960458042583646,
+  "HasAns_total": 3726,
+  "best_exact": 53.86473429951691,
+  "best_exact_thresh": -0.03686404228210449,
+  "best_f1": 53.96045804258366,
+  "best_f1_thresh": -0.03686404228210449
+}
 
 #python -m wikiextractor.WikiExtractor /data/yechen/bert/zhwiki-20201101-pages-articles-multistream.xml.bz2 --output /data/yechen/bert/zhwiki-extract/ --json
 python -m wikiextractor.WikiExtractor /data/yechen/bert/zhwiki-20210201-pages-articles.xml.bz2 --output /data/yechen/bert/wiki-zh/ --json
 
+python clean_doc.py /mnt/nfs/yechen/data/wiki.zh.txt /mnt/nfs/yechen/data/wiki.zh.txt.cln
 python clean_doc.py /mnt/nfs/yechen/data/news.2017.zh.txt /mnt/nfs/yechen/data/news.2017.zh.txt.cln
 python clean_doc.py /mnt/nfs/yechen/data/news.2018.zh.txt /mnt/nfs/yechen/data/news.2018.zh.txt.cln
 python clean_doc.py /mnt/nfs/yechen/data/news.2019.zh.txt /mnt/nfs/yechen/data/news.2019.zh.txt.cln
 python clean_doc.py /mnt/nfs/yechen/data/news.2020.zh.txt /mnt/nfs/yechen/data/news.2020.zh.txt.cln
 
-python scripts/retriever/split_wiki.py /mnt/nfs/yechen/data/wiki.zh.txt /mnt/nfs/yechen/data/db-input/
+python scripts/retriever/split_wiki.py /mnt/nfs/yechen/data/wiki.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2017.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2018.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2019.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2020.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/db-input /mnt/nfs/yechen/data/db/docs-wiki-news-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/db/docs-wiki-news-zh.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/db/docs-wiki-news-zh.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/db/docs-wiki-news-zh1.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/db-input-test /mnt/nfs/yechen/data/db/docs-test.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/db/docs-test.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/db/docs-test.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+
+
+python scripts/convert/du_squad.py /data/yechen/bert/search.dev.json /data/yechen/bert/du_squad_search_dev.json
+
 #python scripts/retriever/build_db.py /data/yechen/bert/zhwiki-extract /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_wikipedia_zh.py --num-workers 32 
 python scripts/retriever/build_db.py /data/yechen/bert/wiki-zh /home/yechen/Workspace/DrQA/data/wikipedia/docs-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_wikipedia_zh.py --num-workers 32 
 
-python ./scripts/retriever/split_ownthink.py /data/yechen/bert/ownthink_v2.txt /data/yechen/bert/wiki-ownthink/
-python scripts/retriever/build_db.py /data/yechen/bert/wiki-ownthink /home/yechen/Workspace/DrQA/data/wikipedia/docs-ownthink-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_wikipedia_ownthink.py --num-workers 32 
+python ./scripts/retriever/split_wiki.py /mnt/nfs/yechen/data/wikizh/wiki.zh.txt.cln /mnt/nfs/yechen/data/wikizh/db-input/
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/wikizh/db-input /mnt/nfs/yechen/data/wikizh/db/docs-zh-wiki.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32 
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/wikizh/db/docs-zh-wiki.db /mnt/nfs/yechen/data/wikizh/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+
+python ./scripts/retriever/split_ownthink.py /mnt/nfs/yechen/data/ownthink/ownthink_v2.txt /mnt/nfs/yechen/data/ownthink/db-input/
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/ownthink/db-input /mnt/nfs/yechen/data/ownthink/db/docs-zh-ownthink.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32 
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/ownthink/db/docs-zh-ownthink.db /mnt/nfs/yechen/data/ownthink/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+
 
 python ./scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2017-2020.zh.txt  /mnt/nfs/yechen/data/wiki-news/
 python scripts/retriever/build_db.py /mnt/nfs/yechen/data/wiki-news /mnt/nfs/yechen/data/docs-news-zh.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_wikipedia_ownthink.py --num-workers 32 
@@ -3304,6 +3555,7 @@ nohup python drqa/bert/predict.py /home/yechen/Workspace/DrQA/data/datasets/SQuA
 nohup python drqa/bert/predict.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-zh.txt > log-pred.txt &
 
 python drqa/bert/predict.py /home/yechen/Workspace/DrQA/data/datasets/eval-small-zh.txt
+python scripts/pipeline/eval.py /home/yechen/Workspace/DrQA/data/datasets/eval-small-zh.txt /home/yechen/Workspace/DrQA/data/datasets/eval-small-zh-asktiger.preds
 
 python scripts/pipeline/eval.py /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-pos-zh.txt /home/yechen/Workspace/DrQA/data/datasets/SQuAD-v2.0-dev-pos-zh-asktiger.preds
 
@@ -3322,5 +3574,9 @@ python scripts/retriever/process_evaldata.py /home/yechen/Workspace/DrQA/data/da
 
 
 python scripts/distant/generate_zh.py /home/yechen/Workspace/DrQA/data/datasets SQuAD-v2.0-dev-pos-zh.txt /home/yechen/Workspace/DrQA/data/datasets
+
+python scripts/distant/generate_zh.py /home/yechen/Workspace/DrQA/data/datasets eval-small-zh.txt /home/yechen/Workspace/DrQA/data/datasets
+
+python scripts/distant/generate_zh.py /mnt/nfs/yechen/data/ownthink ownthink_qa_v2_andylau.txt /mnt/nfs/yechen/data/ownthink
 
   
