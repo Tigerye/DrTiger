@@ -29,6 +29,7 @@ import tokenization_v2 as tokenization
 import six
 import tensorflow as tf
 import unicodedata
+import sys
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 
@@ -281,7 +282,11 @@ def read_squad_examples(input_file, is_training):
                   doc_tokens[-1] += c
           prev_is_whitespace = False
         char_to_word_offset.append(len(doc_tokens) - 1)
-        word_to_char_offset[-1][-1]=i
+        try:
+            word_to_char_offset[-1][-1]=i
+        except:
+            print(paragraph_text)
+            sys.exit()
         prev_is_chinese = is_chinese
         prev_is_punc = is_punctuation
         prev_is_accents = is_accents
