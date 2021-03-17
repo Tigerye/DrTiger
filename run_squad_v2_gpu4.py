@@ -275,15 +275,16 @@ def read_squad_examples(input_file, is_training):
                     word_to_char_offset[-1][-1]=i-2
                 else:
                     word_to_char_offset[-1][-1]=i-1
-            word_to_char_offset.append([i,-1])
             if not is_accents:
+                word_to_char_offset.append([i,-1])
                 doc_tokens.append(c)
           else:
               if not is_accents:
                   doc_tokens[-1] += c
           prev_is_whitespace = False
         char_to_word_offset.append(len(doc_tokens) - 1)
-        prev_is_chinese = is_chinese
+        if not is_accents:
+            prev_is_chinese = is_chinese
         prev_is_punc = is_punctuation
         prev_is_accents = is_accents
       if prev_is_whitespace or prev_is_accents:
