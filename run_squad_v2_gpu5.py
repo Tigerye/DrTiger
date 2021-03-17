@@ -231,11 +231,10 @@ class InputFeatures(object):
     self.end_position = end_position
     self.is_impossible = is_impossible
 
-def read_squad_examples(input_file, is_training):
+def read_squad_examples(input_json, is_training):
   """Read a SQuAD json file into a list of SquadExample."""
-  with tf.io.gfile.GFile(input_file, "r") as reader:
-    input_data = json.load(reader)["data"]
-
+  input_data = input_json["data"]
+  
   def _is_accents_char(char):
     """Strips accents from a piece of text."""
     cat = unicodedata.category(char)
@@ -264,31 +263,32 @@ def read_squad_examples(input_file, is_training):
       prev_is_chinese = True
       prev_is_punc = True
       prev_is_accents = True
+      offset_accent = 0
       for (i,c) in enumerate(paragraph_text):
         is_chinese = tokenizer_basic._is_chinese_char(ord(c))
         is_accents = _is_accents_char(c)
         is_punctuation = tokenization._is_punctuation(c)
-        if tokenization._is_whitespace(c):
-          prev_is_whitespace = True
-        else:
-          if prev_is_whitespace or prev_is_chinese or prev_is_punc or is_chinese or is_punctuation:
+        is_whitespace = tokenization._is_whitespace(c)
+        if not is_whitespace and not is_accents:
+          if prev_is_whitespace or prev_is_chinese or is_chinese or prev_is_punc or is_punctuation:
             if len(doc_tokens)>0:
-                if prev_is_whitespace or prev_is_accents:
-                    word_to_char_offset[-1][-1]=i-2
+                if prev_is_whitespace:
+                    word_to_char_offset[-1][-1]=i-2 - offset_accent
                 else:
-                    word_to_char_offset[-1][-1]=i-1
-            if not is_accents:
-                doc_tokens.append(c)
-                word_to_char_offset.append([i,-1])
+                    word_to_char_offset[-1][-1]=i-1 - offset_accent
+            doc_tokens.append(c)
+            word_to_char_offset.append([i,-1])
           else:
-              if not is_accents:
-                  doc_tokens[-1] += c
-          prev_is_whitespace = False
-        char_to_word_offset.append(len(doc_tokens) - 1)
+              doc_tokens[-1] += c
         if not is_accents:
             prev_is_chinese = is_chinese
-        prev_is_punc = is_punctuation
-        prev_is_accents = is_accents
+            prev_is_punc = is_punctuation
+            prev_is_accents = is_accents
+            prev_is_whitespace = is_whitespace
+            offset_accent = 0
+        else:
+            offset_accent += 1
+        char_to_word_offset.append(max(0,len(doc_tokens) - 1))   
       if word_to_char_offset:
           if prev_is_whitespace or prev_is_accents:
               word_to_char_offset[-1][-1]=i-1

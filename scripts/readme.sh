@@ -3083,7 +3083,7 @@ python run_squad_v2_gpu5.py \
   --num_train_epochs=2.0 \
   --max_seq_length=384 \
   --doc_stride=128 \
-  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/ \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data_tok/ \
   --version_2_with_negative=True
   
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
