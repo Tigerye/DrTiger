@@ -170,7 +170,8 @@ class SquadExample(object):
                orig_answer_text=None,
                start_position=None,
                end_position=None,
-               is_impossible=False):
+               is_impossible=False,
+               word_to_char_offset=None):
     self.qas_id = qas_id
     self.question_text = question_text
     self.doc_tokens = doc_tokens
@@ -178,6 +179,7 @@ class SquadExample(object):
     self.start_position = start_position
     self.end_position = end_position
     self.is_impossible = is_impossible
+    self.word_to_char_offset=word_to_char_offset
 
   def __str__(self):
     return self.__repr__()
@@ -206,6 +208,7 @@ class InputFeatures(object):
                doc_span_index,
                tokens,
                token_to_orig_map,
+               token_to_origchar_map,
                token_is_max_context,
                input_ids,
                input_mask,
@@ -218,6 +221,7 @@ class InputFeatures(object):
     self.doc_span_index = doc_span_index
     self.tokens = tokens
     self.token_to_orig_map = token_to_orig_map
+    self.token_to_origchar_map = token_to_origchar_map
     self.token_is_max_context = token_is_max_context
     self.input_ids = input_ids
     self.input_mask = input_mask
@@ -225,7 +229,6 @@ class InputFeatures(object):
     self.start_position = start_position
     self.end_position = end_position
     self.is_impossible = is_impossible
-
 
 def read_squad_examples(input_file, is_training):
   """Read a SQuAD json file into a list of SquadExample."""
