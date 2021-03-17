@@ -231,9 +231,10 @@ class InputFeatures(object):
     self.end_position = end_position
     self.is_impossible = is_impossible
 
-def read_squad_examples(input_json, is_training):
+def read_squad_examples(input_file, is_training):
   """Read a SQuAD json file into a list of SquadExample."""
-  input_data = input_json["data"]
+  with tf.io.gfile.GFile(input_file, "r") as reader:
+    input_data = json.load(reader)["data"]
   
   def _is_accents_char(char):
     """Strips accents from a piece of text."""
