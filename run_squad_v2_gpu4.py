@@ -253,6 +253,7 @@ def read_squad_examples(input_file, is_training):
       #clean orig
       paragraph_text = tokenization.convert_to_unicode(paragraph_text)
       paragraph_text = tokenizer_basic._clean_text(paragraph_text)
+      paragraph_text = unicodedata.normalize("NFD", paragraph_text)
 #       paragraph_text = unicodedata.normalize("NFKD", paragraph_text)
       doc_tokens = []
       char_to_word_offset = []
