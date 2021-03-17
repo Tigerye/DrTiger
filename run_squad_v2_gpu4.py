@@ -282,17 +282,17 @@ def read_squad_examples(input_file, is_training):
                   doc_tokens[-1] += c
           prev_is_whitespace = False
         char_to_word_offset.append(len(doc_tokens) - 1)
-        try:
-            word_to_char_offset[-1][-1]=i
-        except:
-            print(paragraph_text)
-            sys.exit()
         prev_is_chinese = is_chinese
         prev_is_punc = is_punctuation
         prev_is_accents = is_accents
-        if FLAGS.do_lower_case:
-            for i, token in enumerate(doc_tokens):
-                doc_tokens[i] = token.lower()
+      if prev_is_whitespace or prev_is_accents:
+          word_to_char_offset[-1][-1]=i-1
+      else:
+          word_to_char_offset[-1][-1]=i
+        
+      if FLAGS.do_lower_case:
+        for i, token in enumerate(doc_tokens):
+            doc_tokens[i] = token.lower()
 
       for qa in paragraph["qas"]:
         qas_id = qa["id"]
