@@ -254,6 +254,8 @@ def read_squad_examples(input_file, is_training):
       paragraph_text = tokenization.convert_to_unicode(paragraph_text)
       paragraph_text = tokenizer_basic._clean_text(paragraph_text)
       paragraph_text = unicodedata.normalize("NFD", paragraph_text)
+      if (not paragraph_text) or (not paragraph_text.strip()):
+          continue
 #       paragraph_text = unicodedata.normalize("NFKD", paragraph_text)
       doc_tokens = []
       char_to_word_offset = []
@@ -276,8 +278,8 @@ def read_squad_examples(input_file, is_training):
                 else:
                     word_to_char_offset[-1][-1]=i-1
             if not is_accents:
-                word_to_char_offset.append([i,-1])
                 doc_tokens.append(c)
+                word_to_char_offset.append([i,-1])
           else:
               if not is_accents:
                   doc_tokens[-1] += c
@@ -287,10 +289,11 @@ def read_squad_examples(input_file, is_training):
             prev_is_chinese = is_chinese
         prev_is_punc = is_punctuation
         prev_is_accents = is_accents
-      if prev_is_whitespace or prev_is_accents:
-          word_to_char_offset[-1][-1]=i-1
-      else:
-          word_to_char_offset[-1][-1]=i
+      if word_to_char_offset:
+          if prev_is_whitespace or prev_is_accents:
+              word_to_char_offset[-1][-1]=i-1
+          else:
+              word_to_char_offset[-1][-1]=i
         
       if FLAGS.do_lower_case:
         for i, token in enumerate(doc_tokens):
