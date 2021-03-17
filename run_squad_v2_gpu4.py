@@ -305,7 +305,7 @@ def read_squad_examples(input_file, is_training):
             orig_answer_text = answer["text"]
             #clean orig
             orig_answer_text = tokenization.convert_to_unicode(orig_answer_text)
-            orig_answer_text = clean_text(orig_answer_text)
+            orig_answer_text = tokenizer_basic._clean_text(orig_answer_text)
             answer_offset = answer["answer_start"]
             
             #for python encode
