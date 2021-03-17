@@ -28,6 +28,8 @@ import optimization_v2 as optimization
 import tokenization_v2 as tokenization
 import six
 import tensorflow as tf
+import unicodedata
+import sys
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "5"
 
@@ -169,7 +171,8 @@ class SquadExample(object):
                orig_answer_text=None,
                start_position=None,
                end_position=None,
-               is_impossible=False):
+               is_impossible=False,
+               word_to_char_offset=None):
     self.qas_id = qas_id
     self.question_text = question_text
     self.doc_tokens = doc_tokens
@@ -177,6 +180,7 @@ class SquadExample(object):
     self.start_position = start_position
     self.end_position = end_position
     self.is_impossible = is_impossible
+    self.word_to_char_offset=word_to_char_offset
 
   def __str__(self):
     return self.__repr__()
@@ -205,6 +209,7 @@ class InputFeatures(object):
                doc_span_index,
                tokens,
                token_to_orig_map,
+               token_to_origchar_map,
                token_is_max_context,
                input_ids,
                input_mask,
@@ -217,6 +222,7 @@ class InputFeatures(object):
     self.doc_span_index = doc_span_index
     self.tokens = tokens
     self.token_to_orig_map = token_to_orig_map
+    self.token_to_origchar_map = token_to_origchar_map
     self.token_is_max_context = token_is_max_context
     self.input_ids = input_ids
     self.input_mask = input_mask
@@ -225,34 +231,73 @@ class InputFeatures(object):
     self.end_position = end_position
     self.is_impossible = is_impossible
 
-
 def read_squad_examples(input_file, is_training):
   """Read a SQuAD json file into a list of SquadExample."""
   with tf.io.gfile.GFile(input_file, "r") as reader:
     input_data = json.load(reader)["data"]
 
-  def is_whitespace(c):
-    if c == " " or c == "\t" or c == "\r" or c == "\n" or ord(c) == 0x202F or ord(c) == 0x3000:
-      return True
-    return False
+  def _is_accents_char(char):
+    """Strips accents from a piece of text."""
+    cat = unicodedata.category(char)
+    if cat == "Mn":
+        return True
+    else:
+        return False
 
+  #basic tokenizer except lower
+  tokenizer_basic = tokenization.BasicTokenizer(do_lower_case=FLAGS.do_lower_case)
   examples = []
   for entry in input_data:
     for paragraph in entry["paragraphs"]:
       paragraph_text = paragraph["context"]
+      #clean orig
+      paragraph_text = tokenization.convert_to_unicode(paragraph_text)
+      paragraph_text = tokenizer_basic._clean_text(paragraph_text)
+      paragraph_text = unicodedata.normalize("NFD", paragraph_text)
+      if (not paragraph_text) or (not paragraph_text.strip()):
+          continue
+#       paragraph_text = unicodedata.normalize("NFKD", paragraph_text)
       doc_tokens = []
       char_to_word_offset = []
+      word_to_char_offset = []
       prev_is_whitespace = True
-      for c in paragraph_text:
-        if is_whitespace(c):
+      prev_is_chinese = True
+      prev_is_punc = True
+      prev_is_accents = True
+      for (i,c) in enumerate(paragraph_text):
+        is_chinese = tokenizer_basic._is_chinese_char(ord(c))
+        is_accents = _is_accents_char(c)
+        is_punctuation = tokenization._is_punctuation(c)
+        if tokenization._is_whitespace(c):
           prev_is_whitespace = True
         else:
-          if prev_is_whitespace:
-            doc_tokens.append(c)
+          if prev_is_whitespace or prev_is_chinese or prev_is_punc or is_chinese or is_punctuation:
+            if len(doc_tokens)>0:
+                if prev_is_whitespace or prev_is_accents:
+                    word_to_char_offset[-1][-1]=i-2
+                else:
+                    word_to_char_offset[-1][-1]=i-1
+            if not is_accents:
+                doc_tokens.append(c)
+                word_to_char_offset.append([i,-1])
           else:
-            doc_tokens[-1] += c
+              if not is_accents:
+                  doc_tokens[-1] += c
           prev_is_whitespace = False
         char_to_word_offset.append(len(doc_tokens) - 1)
+        if not is_accents:
+            prev_is_chinese = is_chinese
+        prev_is_punc = is_punctuation
+        prev_is_accents = is_accents
+      if word_to_char_offset:
+          if prev_is_whitespace or prev_is_accents:
+              word_to_char_offset[-1][-1]=i-1
+          else:
+              word_to_char_offset[-1][-1]=i
+        
+      if FLAGS.do_lower_case:
+        for i, token in enumerate(doc_tokens):
+            doc_tokens[i] = token.lower()
 
       for qa in paragraph["qas"]:
         qas_id = qa["id"]
@@ -271,6 +316,10 @@ def read_squad_examples(input_file, is_training):
           if not is_impossible:
             answer = qa["answers"][0]
             orig_answer_text = answer["text"]
+            #clean orig
+            orig_answer_text = tokenization.convert_to_unicode(orig_answer_text)
+            orig_answer_text = tokenizer_basic._clean_text(orig_answer_text)
+            orig_answer_text = unicodedata.normalize("NFD", orig_answer_text)
             answer_offset = answer["answer_start"]
             
             #for python encode
@@ -300,7 +349,8 @@ def read_squad_examples(input_file, is_training):
             actual_text = " ".join(
                 doc_tokens[start_position:(end_position + 1)])
             cleaned_answer_text = " ".join(
-                tokenization.whitespace_tokenize(orig_answer_text))
+#                 tokenization.whitespace_tokenize(orig_answer_text))
+                tokenizer_basic.tokenize(orig_answer_text))
             if actual_text.find(cleaned_answer_text) == -1:
               tf.compat.v1.logging.warning("Could not find answer: '%s' vs. '%s'",
                                            actual_text, cleaned_answer_text)
@@ -317,7 +367,8 @@ def read_squad_examples(input_file, is_training):
             orig_answer_text=orig_answer_text,
             start_position=start_position,
             end_position=end_position,
-            is_impossible=is_impossible)
+            is_impossible=is_impossible,
+            word_to_char_offset=word_to_char_offset)
         examples.append(example)
 
   return examples
@@ -325,7 +376,7 @@ def read_squad_examples(input_file, is_training):
 
 def convert_examples_to_features(examples, tokenizer, max_seq_length,
                                  doc_stride, max_query_length, is_training,
-                                 output_fn):
+                                 output_fn, do_lower_case):
   """Loads a data file into a list of `InputBatch`s."""
 
   unique_id = 1000000000
@@ -337,14 +388,32 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
       query_tokens = query_tokens[0:max_query_length]
 
     tok_to_orig_index = []
+    tok_to_wordchar_index = []
+    tok_to_origchar_index = []
     orig_to_tok_index = []
     all_doc_tokens = []
     for (i, token) in enumerate(example.doc_tokens):
       orig_to_tok_index.append(len(all_doc_tokens))
       sub_tokens = tokenizer.tokenize(token)
+      token_char_offset = 0
       for sub_token in sub_tokens:
         tok_to_orig_index.append(i)
+        tok_to_wordchar_index.append(example.word_to_char_offset[i])
         all_doc_tokens.append(sub_token)
+        
+        #char-leval cursor
+        sub_token_detok = sub_token.replace(" ##", "").replace("##", "")
+        if do_lower_case:
+            subtoken_char_offset = token.lower().find(sub_token_detok,token_char_offset)
+        else:
+            subtoken_char_offset = token.find(sub_token_detok,token_char_offset)
+        if subtoken_char_offset==-1:
+#             print(sub_token_detok)
+            tok_to_origchar_index.append(example.word_to_char_offset[i])
+        else:
+            tok_to_origchar_index.append([example.word_to_char_offset[i][0]+subtoken_char_offset,
+                                          example.word_to_char_offset[i][0]+subtoken_char_offset+len(sub_token_detok)-1])
+            token_char_offset += len(sub_token_detok)
 
     tok_start_position = None
     tok_end_position = None
@@ -383,6 +452,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
     for (doc_span_index, doc_span) in enumerate(doc_spans):
       tokens = []
       token_to_orig_map = {}
+      token_to_origchar_map = {}
       token_is_max_context = {}
       segment_ids = []
       tokens.append("[CLS]")
@@ -396,6 +466,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
       for i in range(doc_span.length):
         split_token_index = doc_span.start + i
         token_to_orig_map[len(tokens)] = tok_to_orig_index[split_token_index]
+        token_to_origchar_map[len(tokens)] = tok_to_origchar_index[split_token_index]
 
         is_max_context = _check_is_max_context(doc_spans, doc_span_index,
                                                split_token_index)
@@ -453,6 +524,8 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
             [tokenization.printable_text(x) for x in tokens]))
         tf.compat.v1.logging.info("token_to_orig_map: %s" % " ".join(
             ["%d:%d" % (x, y) for (x, y) in six.iteritems(token_to_orig_map)]))
+        tf.compat.v1.logging.info("token_to_origchar_map: %s" % " ".join(
+            ["%d:[%d,%d]" % (x, y[0], y[1]) for (x, y) in six.iteritems(token_to_origchar_map)]))
         tf.compat.v1.logging.info("token_is_max_context: %s" % " ".join([
             "%d:%s" % (x, y) for (x, y) in six.iteritems(token_is_max_context)
         ]))
@@ -476,6 +549,7 @@ def convert_examples_to_features(examples, tokenizer, max_seq_length,
           doc_span_index=doc_span_index,
           tokens=tokens,
           token_to_orig_map=token_to_orig_map,
+          token_to_origchar_map=token_to_origchar_map,
           token_is_max_context=token_is_max_context,
           input_ids=input_ids,
           input_mask=input_mask,
@@ -780,7 +854,10 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
   for (example_index, example) in enumerate(all_examples):
     features = example_index_to_features[example_index]
-
+    
+    if len(features)==0:
+        continue
+    
     prelim_predictions = []
     # keep track of the minimum score of null start+end of position 0
     score_null = 1000000  # large and positive
@@ -841,7 +918,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         reverse=True)
 
     _NbestPrediction = collections.namedtuple(  # pylint: disable=invalid-name
-        "NbestPrediction", ["text", "start_logit", "end_logit"])
+        "NbestPrediction", ["text", "start_logit", "end_logit","start_pos", "end_pos"])
 
     seen_predictions = {}
     nbest = []
@@ -853,9 +930,11 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         tok_tokens = feature.tokens[pred.start_index:(pred.end_index + 1)]
         orig_doc_start = feature.token_to_orig_map[pred.start_index]
         orig_doc_end = feature.token_to_orig_map[pred.end_index]
+        orig_doc_char_start = feature.token_to_origchar_map[pred.start_index][0]
+        orig_doc_char_end = feature.token_to_origchar_map[pred.end_index][1]
         orig_tokens = example.doc_tokens[orig_doc_start:(orig_doc_end + 1)]
         tok_text = " ".join(tok_tokens)
-
+        
         # De-tokenize WordPieces that have been split off.
         tok_text = tok_text.replace(" ##", "")
         tok_text = tok_text.replace("##", "")
@@ -870,28 +949,37 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
           continue
 
         seen_predictions[final_text] = True
+        
       else:
         final_text = ""
         seen_predictions[final_text] = True
+        orig_doc_char_start=-1
+        orig_doc_char_end=-1
 
       nbest.append(
           _NbestPrediction(
               text=final_text,
               start_logit=pred.start_logit,
-              end_logit=pred.end_logit))
+              end_logit=pred.end_logit,
+              start_pos=orig_doc_char_start,
+              end_pos=orig_doc_char_end
+              ))
 
     # if we didn't inlude the empty option in the n-best, inlcude it
     if FLAGS.version_2_with_negative:
       if "" not in seen_predictions:
         nbest.append(
             _NbestPrediction(
-                text="", start_logit=null_start_logit,
-                end_logit=null_end_logit))
+                text="",
+                start_logit=null_start_logit,
+                end_logit=null_end_logit,
+                start_pos=-1,
+                end_pos=-1))
     # In very rare edge cases we could have no valid predictions. So we
     # just create a nonce prediction in this case to avoid failure.
     if not nbest:
       nbest.append(
-          _NbestPrediction(text="empty", start_logit=0.0, end_logit=0.0))
+          _NbestPrediction(text="empty", start_logit=0.0, end_logit=0.0,start_pos=-1, end_pos=-1))
 
     assert len(nbest) >= 1
 
@@ -912,6 +1000,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
       output["probability"] = probs[i]
       output["start_logit"] = entry.start_logit
       output["end_logit"] = entry.end_logit
+      output["start_pos"] = entry.start_pos
+      output["end_pos"] = entry.end_pos
       nbest_json.append(output)
 
     assert len(nbest_json) >= 1
@@ -1228,7 +1318,8 @@ def main(_):
             doc_stride=FLAGS.doc_stride,
             max_query_length=FLAGS.max_query_length,
             is_training=True,
-            output_fn=train_writer.process_feature)
+            output_fn=train_writer.process_feature,
+            do_lower_case=FLAGS.do_lower_case)
         
         train_writer.close()
         num_features=train_writer.num_features
@@ -1265,7 +1356,8 @@ def main(_):
             doc_stride=FLAGS.doc_stride,
             max_query_length=FLAGS.max_query_length,
             is_training=False,
-            output_fn=append_feature_nowrite)
+            output_fn=append_feature_nowrite,
+            do_lower_case=FLAGS.do_lower_case)
         tf.compat.v1.logging.info("detected eval tf_record file, with %d examples", len(eval_features))
         
     else:
@@ -1285,7 +1377,8 @@ def main(_):
             doc_stride=FLAGS.doc_stride,
             max_query_length=FLAGS.max_query_length,
             is_training=False,
-            output_fn=append_feature)
+            output_fn=append_feature,
+            do_lower_case=FLAGS.do_lower_case)
         eval_writer.close()
 
     tf.compat.v1.logging.info("***** Running predictions *****")
