@@ -353,7 +353,7 @@ def read_squad_examples(input_file, is_training):
             orig_answer_text=orig_answer_text,
             start_position=start_position,
             end_position=end_position,
-            is_impossible=is_impossible)
+            is_impossible=is_impossible,
             word_to_char_offset=word_to_char_offset)
         examples.append(example)
 

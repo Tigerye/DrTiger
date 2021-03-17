@@ -2697,7 +2697,7 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DI
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
 SQUAD_DIR=/data/yechen/squad/data
 
-python run_squad_v2.py \
+python run_squad_v2_gpu4.py \
   --vocab_file=$BERT_LARGE_DIR/vocab.txt \
   --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
   --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
@@ -2710,7 +2710,7 @@ python run_squad_v2.py \
   --num_train_epochs=2.0 \
   --max_seq_length=384 \
   --doc_stride=128 \
-  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_2data/ \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_2data_tok/ \
   --version_2_with_negative=True
   
 python run_squad_v2.py \
