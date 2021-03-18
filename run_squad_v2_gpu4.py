@@ -291,10 +291,10 @@ def read_squad_examples(input_file, is_training):
             offset_accent += 1
         char_to_word_offset.append(max(0,len(doc_tokens) - 1))   
       if word_to_char_offset:
-          if prev_is_whitespace or prev_is_accents:
-              word_to_char_offset[-1][-1]=i-1
+          if prev_is_whitespace:
+              word_to_char_offset[-1][-1]=i-1- offset_accent
           else:
-              word_to_char_offset[-1][-1]=i
+              word_to_char_offset[-1][-1]=i - offset_accent
         
       if FLAGS.do_lower_case:
         for i, token in enumerate(doc_tokens):
