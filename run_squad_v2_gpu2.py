@@ -838,7 +838,7 @@ def token_to_text(tokens, token_origchar):
         if gap == 1:
             text+=tokens
         else:
-            text+=' '+tokens
+            text+=' '*(gap-1)+tokens
     return text
     
     
@@ -948,7 +948,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         orig_doc_char_start = feature.token_to_origchar_map[pred.start_index][0]
         orig_doc_char_end = feature.token_to_origchar_map[pred.end_index][1]
         orig_tokens = example.doc_tokens[orig_doc_start:(orig_doc_end + 1)]
-        orig_tokens_origchar = [feature.token_to_origchar_map[i] for i in range(orig_doc_start,(orig_doc_end + 1))]
+        orig_tokens_origchar = example.word_to_char_offset[orig_doc_start:(orig_doc_end + 1)]
         
         tok_text = token_to_text(tok_tokens, tok_tokens_origchar)
 #         tok_text = " ".join(tok_tokens)
