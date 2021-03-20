@@ -829,7 +829,20 @@ def input_fn_builder(input_file, seq_length, is_training, drop_remainder):
 RawResult = collections.namedtuple("RawResult",
                                    ["unique_id", "start_logits", "end_logits"])
 
-
+def token_to_text(tokens, token_origchar):
+    text = ''
+    gap = 1
+    for i, tok in enumerate(tokens):
+        if i>0:
+            gap = token_origchar[i][0]-token_origchar[i-1][1]
+        if gap == 1:
+            text+=tok
+        else:
+            text+=' '*(gap-1)+tok
+    return text
+    
+    
+    
 def write_predictions(all_examples, all_features, all_results, n_best_size,
                       max_answer_length, do_lower_case, output_prediction_file,
                       output_nbest_file, output_null_log_odds_file):
@@ -929,12 +942,16 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
       feature = features[pred.feature_index]
       if pred.start_index > 0:  # this is a non-null prediction
         tok_tokens = feature.tokens[pred.start_index:(pred.end_index + 1)]
+        tok_tokens_origchar = [feature.token_to_origchar_map[i] for i in range(pred.start_index,(pred.end_index + 1))]
         orig_doc_start = feature.token_to_orig_map[pred.start_index]
         orig_doc_end = feature.token_to_orig_map[pred.end_index]
         orig_doc_char_start = feature.token_to_origchar_map[pred.start_index][0]
         orig_doc_char_end = feature.token_to_origchar_map[pred.end_index][1]
         orig_tokens = example.doc_tokens[orig_doc_start:(orig_doc_end + 1)]
-        tok_text = " ".join(tok_tokens)
+        orig_tokens_origchar = example.word_to_char_offset[orig_doc_start:(orig_doc_end + 1)]
+        
+        tok_text = token_to_text(tok_tokens, tok_tokens_origchar)
+#         tok_text = " ".join(tok_tokens)
         
         # De-tokenize WordPieces that have been split off.
         tok_text = tok_text.replace(" ##", "")
@@ -943,7 +960,9 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         # Clean whitespace
         tok_text = tok_text.strip()
         tok_text = " ".join(tok_text.split())
-        orig_text = " ".join(orig_tokens)
+        
+        orig_text = token_to_text(orig_tokens, orig_tokens_origchar)
+#         orig_text = " ".join(orig_tokens)
 
         final_text = get_final_text(tok_text, orig_text, do_lower_case)
         if final_text in seen_predictions:

@@ -3087,19 +3087,19 @@ python run_squad_v2_gpu2.py \
   
 python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_2data_tok/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_2data_tok/null_odds.json
 {
-  "exact": 66.97549060894467,
-  "f1": 67.09087846374126,
+  "exact": 70.42028131053651,
+  "f1": 70.42028131053651,
   "total": 11873,
-  "HasAns_exact": 8.400429414922169,
-  "HasAns_f1": 8.768115942028983,
+  "HasAns_exact": 19.37734836285561,
+  "HasAns_f1": 19.37734836285561,
   "HasAns_total": 3726,
   "NoAns_exact": 93.76457591751566,
   "NoAns_f1": 93.76457591751566,
   "NoAns_total": 8147,
-  "best_exact": 69.19902299334625,
-  "best_exact_thresh": -6.1689581871032715,
-  "best_f1": 69.2377663606502,
-  "best_f1_thresh": -6.1689581871032715
+  "best_exact": 70.73191274319885,
+  "best_exact_thresh": -2.404099941253662,
+  "best_f1": 70.73191274319885,
+  "best_f1_thresh": -2.404099941253662
 }
 
 

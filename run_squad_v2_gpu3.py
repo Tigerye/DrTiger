@@ -31,7 +31,7 @@ import tensorflow as tf
 import unicodedata
 import sys
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "5"
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 flags = tf.compat.v1.flags
 
