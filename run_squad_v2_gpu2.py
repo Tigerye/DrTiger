@@ -836,9 +836,9 @@ def token_to_text(tokens, token_origchar):
         if i>0:
             gap = token_origchar[i][0]-token_origchar[i-1][1]
         if gap == 1:
-            text+=tokens
+            text+=tok
         else:
-            text+=' '*(gap-1)+tokens
+            text+=' '*(gap-1)+tok
     return text
     
     
