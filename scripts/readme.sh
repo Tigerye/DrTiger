@@ -2756,19 +2756,19 @@ python run_squad_v2_gpu4.py \
 python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_2data_tok/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_2data_tok/null_odds.json
 
 {
-  "exact": 65.26572896487829,
-  "f1": 65.35670532617387,
+  "exact": 68.53364777225639,
+  "f1": 68.53364777225639,
   "total": 11873,
-  "HasAns_exact": 7.219538378958669,
-  "HasAns_f1": 7.509437020306586,
+  "HasAns_exact": 17.632850241545892,
+  "HasAns_f1": 17.632850241545892,
   "HasAns_total": 3726,
   "NoAns_exact": 91.81293727752546,
   "NoAns_f1": 91.81293727752546,
   "NoAns_total": 8147,
-  "best_exact": 68.9547713299082,
-  "best_exact_thresh": -9.594681739807129,
-  "best_f1": 68.96993177798365,
-  "best_f1_thresh": -9.248458862304688
+  "best_exact": 69.48538701254948,
+  "best_exact_thresh": -8.373079299926758,
+  "best_f1": 69.48538701254948,
+  "best_f1_thresh": -8.373079299926758
 }
   
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
@@ -2888,7 +2888,23 @@ python run_pretraining_v2.py \
   --num_train_steps=10000000 \
   --num_warmup_steps=100000 \
   --learning_rate=2e-5
-  
+
+DATA_DIR=/data/yechen/bert
+
+python run_pretraining_v2_gpu3.py \
+  --input_file=$DATA_DIR/tf_examples_*.tfrecord \
+  --output_dir=$BERT_LARGE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --train_batch_size=16 \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --num_train_steps=40000000 \
+  --num_warmup_steps=100000 \
+  --learning_rate=2e-5
+
+
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
 DATA_DIR=/data/yechen/bert
 
@@ -2901,9 +2917,35 @@ python run_pretraining_v2_gpu3.py \
   --train_batch_size=16 \
   --max_seq_length=128 \
   --max_predictions_per_seq=20 \
-  --num_train_steps=20000000 \
+  --num_train_steps=40000000 \
   --num_warmup_steps=100000 \
   --learning_rate=2e-5
+ 
+20M eval:
+------------
+global_step = 20000000
+loss = 0.84524953
+masked_lm_accuracy = 0.8159867
+masked_lm_loss = 0.7893619
+next_sentence_accuracy = 0.97875
+next_sentence_loss = 0.056075573
+
+
+20M-2M eval:
+------------
+global_step = 2000000
+loss = 0.6881863
+masked_lm_accuracy = 0.8433879
+masked_lm_loss = 0.66328424
+next_sentence_accuracy = 0.99125
+next_sentence_loss = 0.026102342
+
+global_step = 10000000
+loss = 0.9034405
+masked_lm_accuracy = 0.8053705
+masked_lm_loss = 0.84002936
+next_sentence_accuracy = 0.97875
+next_sentence_loss = 0.06403377
   
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_3M_1M
 DATA_DIR=/data/yechen/bert
@@ -2948,7 +2990,7 @@ masked_lm_loss = 0.84002936
 next_sentence_accuracy = 0.97875
 next_sentence_loss = 0.06403377
 
-10M-3M eval:
+10M-1M eval:
 ------------
 global_step = 1000000
 loss = 0.7196562
@@ -2956,6 +2998,23 @@ masked_lm_accuracy = 0.83847976
 masked_lm_loss = 0.68368185
 next_sentence_accuracy = 0.985
 next_sentence_loss = 0.037160043
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_20M_2M
+DATA_DIR=/data/yechen/bert
+
+python run_pretraining_v2_gpu4.py \
+  --input_file=$DATA_DIR/seq512/tf_examples_*.tfrecord \
+  --output_dir=$BERT_LARGE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --train_batch_size=4 \
+  --max_seq_length=512 \
+  --max_predictions_per_seq=80 \
+  --num_train_steps=5000000 \
+  --num_warmup_steps=10000 \
+  --learning_rate=2e-5
 
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
 SQUAD_DIR=/data/yechen/squad/data
@@ -3029,6 +3088,85 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DI
   "best_exact_thresh": -2.29640793800354,
   "best_f1": 71.22041607007496,
   "best_f1_thresh": -2.29640793800354
+}
+
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_20M_2M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu5.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_20M_2M_2data/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_20M_2M
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json $SQUAD_DIR/squad_2.0_large_zh_20M_2M_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_20M_2M_2data/null_odds.json
+{
+  "exact": 69.56136464333186,
+  "f1": 69.56321075173534,
+  "total": 72224,
+  "HasAns_exact": 53.01207825913356,
+  "HasAns_f1": 53.015405603247494,
+  "HasAns_total": 40072,
+  "NoAns_exact": 90.18723563075392,
+  "NoAns_f1": 90.18723563075392,
+  "NoAns_total": 32152,
+  "best_exact": 69.56136464333186,
+  "best_exact_thresh": -0.030223846435546875,
+  "best_f1": 69.56321075173534,
+  "best_f1_thresh": -0.030223846435546875
+}
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_20M_2M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu5.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0_zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_20M_2M_2data/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_20M_2M
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_20M_2M_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_20M_2M_2data/null_odds.json
+{
+  "exact": 70.63926556051545,
+  "f1": 70.65049552205284,
+  "total": 11873,
+  "HasAns_exact": 24.530327428878152,
+  "HasAns_f1": 24.566112005725532,
+  "HasAns_total": 3726,
+  "NoAns_exact": 91.72701607953849,
+  "NoAns_f1": 91.72701607953849,
+  "NoAns_total": 8147,
+  "best_exact": 71.16145877200371,
+  "best_exact_thresh": -5.925867557525635,
+  "best_f1": 71.16145877200371,
+  "best_f1_thresh": -5.925867557525635
 }
 
 
@@ -3108,7 +3246,7 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DI
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
 SQUAD_DIR=/data/yechen/squad/data
 
-python run_squad_v2_gpu6.py \
+python run_squad_v2_gpu2.py \
   --vocab_file=$BERT_LARGE_DIR/vocab.txt \
   --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
   --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
@@ -3121,13 +3259,13 @@ python run_squad_v2_gpu6.py \
   --num_train_epochs=2.0 \
   --max_seq_length=384 \
   --doc_stride=128 \
-  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M/ \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_tok/ \
   --version_2_with_negative=True
   
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
 SQUAD_DIR=/data/yechen/squad/data
 
-python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M/null_odds.json
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_tok/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_tok/null_odds.json
 
 {
   "exact": 70.1844521182515,
@@ -3159,6 +3297,22 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DI
   "best_exact_thresh": -6.405576229095459,
   "best_f1": 69.92335551250737,
   "best_f1_thresh": -6.405576229095459
+}
+
+{
+  "exact": 70.21814200286364,
+  "f1": 70.21814200286364,
+  "total": 11873,
+  "HasAns_exact": 27.026301663982824,
+  "HasAns_f1": 27.026301663982824,
+  "HasAns_total": 3726,
+  "NoAns_exact": 89.97176874923285,
+  "NoAns_f1": 89.97176874923285,
+  "NoAns_total": 8147,
+  "best_exact": 71.20357112776888,
+  "best_exact_thresh": -4.266630411148071,
+  "best_f1": 71.20357112776888,
+  "best_f1_thresh": -4.266630411148071
 }
   
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_3M_1M
@@ -3239,21 +3393,21 @@ python run_squad_v2_gpu5.py \
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
 SQUAD_DIR=/data/yechen/squad/data
 
-python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-7data-zh.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/null_odds.json
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-7data-zh.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data_tok/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data_tok/null_odds.json
 {
-  "exact": 65.89111760066505,
-  "f1": 65.89182813576905,
+  "exact": 44.34591691002494,
+  "f1": 44.53143255042529,
   "total": 93826,
-  "HasAns_exact": 43.853427895981085,
-  "HasAns_f1": 43.85478655471319,
+  "HasAns_exact": 2.7451699682073856,
+  "HasAns_f1": 3.0999060584533824,
   "HasAns_total": 49068,
-  "NoAns_exact": 90.05094061396845,
-  "NoAns_f1": 90.05094061396845,
+  "NoAns_exact": 89.95263416595915,
+  "NoAns_f1": 89.95263416595915,
   "NoAns_total": 44758,
-  "best_exact": 65.89324920597703,
-  "best_exact_thresh": -0.0029783248901367188,
-  "best_f1": 65.893959741081,
-  "best_f1_thresh": -0.0029783248901367188
+  "best_exact": 47.73303775073008,
+  "best_exact_thresh": -13.192042618989944,
+  "best_f1": 47.73559567710442,
+  "best_f1_thresh": -13.1581449508667
 }
 
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
@@ -3272,27 +3426,27 @@ python run_squad_v2_gpu5.py \
   --num_train_epochs=2.0 \
   --max_seq_length=384 \
   --doc_stride=128 \
-  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/ \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data_tok/ \
   --version_2_with_negative=True
   
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
 SQUAD_DIR=/data/yechen/squad/data
 
-python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data/null_odds.json
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data_tok/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_10M_1M_7data_tok/null_odds.json
 {
-  "exact": 68.56733765686853,
-  "f1": 68.56733765686853,
+  "exact": 67.59875347426934,
+  "f1": 67.59875347426934,
   "total": 11873,
-  "HasAns_exact": 18.92109500805153,
-  "HasAns_f1": 18.92109500805153,
+  "HasAns_exact": 18.59903381642512,
+  "HasAns_f1": 18.59903381642512,
   "HasAns_total": 3726,
-  "NoAns_exact": 91.27286117589297,
-  "NoAns_f1": 91.27286117589297,
+  "NoAns_exact": 90.00859211979869,
+  "NoAns_f1": 90.00859211979869,
   "NoAns_total": 8147,
-  "best_exact": 69.7212162048345,
-  "best_exact_thresh": -4.601675987243652,
-  "best_f1": 69.7212162048345,
-  "best_f1_thresh": -4.601675987243652
+  "best_exact": 69.4432746567843,
+  "best_exact_thresh": -5.584088325500488,
+  "best_f1": 69.4432746567843,
+  "best_f1_thresh": -5.584088325500488
 }
 
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_10M_1M
@@ -3503,12 +3657,46 @@ python clean_doc.py /mnt/nfs/yechen/data/news/news2021/news.2021.zh.txt /mnt/nfs
 python ./scripts/retriever/split_doc.py /mnt/nfs/yechen/data/news/news2021/news2021.txt /mnt/nfs/yechen/data/news/news2021/db-input/
 python scripts/retriever/build_db.py /mnt/nfs/yechen/data/news/news2021/db-input /mnt/nfs/yechen/data/news/news2021/db/docs-zh-news2021.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
 python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/news/news2021/db/docs-zh-news2021.db /mnt/nfs/yechen/data/news/news2021/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/news/news2021/db/docs-zh-news2021.db /mnt/nfs/yechen/data/news/news2021/tfidf/ --tokenizer 'jieba' --num-workers 32
 
-cat 2021-0* > news2021/news.2021.zh.txt
-python clean_doc.py /mnt/nfs/yechen/data/newsv1/news2021/news.2021.zh.txt /mnt/nfs/yechen/data/newsv1/news2021/news2021.txt
-python scripts/retriever/split_doc.py /mnt/nfs/yechen/data/newsv1/news2021/news2021.txt /mnt/nfs/yechen/data/newsv1/news2021/db-input/
-python scripts/retriever/build_db.py /mnt/nfs/yechen/data/newsv1/news2021/db-input /mnt/nfs/yechen/data/newsv1/news2021/db/docs-zh-news2021.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
-python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/newsv1/news2021/db/docs-zh-news2021.db /mnt/nfs/yechen/data/newsv1/news2021/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/newsv1/news2021/db/docs-zh-news2021.db /mnt/nfs/yechen/data/newsv1/news2021/tfidf/ --tokenizer 'jieba' --num-workers 32
+
+
+
+cat 2020-* > news2020/news.2020.zh.txt
+python clean_doc.py /mnt/nfs/yechen/data/newsv1/news2020/news.2020.zh.txt /mnt/nfs/yechen/data/newsv1/news2020/news2020.txt
+python scripts/retriever/split_doc.py /mnt/nfs/yechen/data/newsv1/news2020/news2020.txt /mnt/nfs/yechen/data/newsv1/news2020/db-input/
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/newsv1/news2020/db-input /mnt/nfs/yechen/data/newsv1/news2020/db/docs-zh-news2020.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/newsv1/news2020/db/docs-zh-news2020.db /mnt/nfs/yechen/data/newsv1/news2020/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/newsv1/news2020/db/docs-zh-news2020.db /mnt/nfs/yechen/data/newsv1/news2020/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/newsv1/news2020/db/docs-zh-news2020.db /mnt/nfs/yechen/data/newsv1/news2020/tfidf/ --tokenizer 'jieba' --num-workers 32
+
+cat 2018-* > news2018/news.2018.zh.txt
+python clean_doc.py /mnt/nfs/yechen/data/newsv1/news2018/news.2018.zh.txt /mnt/nfs/yechen/data/newsv1/news2018/news2018.txt
+python scripts/retriever/split_doc.py /mnt/nfs/yechen/data/newsv1/news2018/news2018.txt /mnt/nfs/yechen/data/newsv1/news2018/db-input/
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/newsv1/news2018/db-input /mnt/nfs/yechen/data/newsv1/news2018/db/docs-zh-news2018.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/newsv1/news2018/db/docs-zh-news2018.db /mnt/nfs/yechen/data/newsv1/news2018/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/newsv1/news2018/db/docs-zh-news2018.db /mnt/nfs/yechen/data/newsv1/news2018/tfidf/ --tokenizer 'jieba' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/newsv1/news2020/db/docs-zh-news2020.db /mnt/nfs/yechen/data/newsv1/news2020/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/newsv1/news2020/db/docs-zh-news2020.db /mnt/nfs/yechen/data/newsv1/news2020/tfidf/ --tokenizer 'jieba' --num-workers 32
+
+cat 2019-* > news2019/news.2019.zh.txt
+python clean_doc.py /mnt/nfs/yechen/data/newsv1/news2019/news.2019.zh.txt /mnt/nfs/yechen/data/newsv1/news2019/news2019.txt
+python scripts/retriever/split_doc.py /mnt/nfs/yechen/data/newsv1/news2019/news2019.txt /mnt/nfs/yechen/data/newsv1/news2019/db-input/
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/newsv1/news2019/db-input /mnt/nfs/yechen/data/newsv1/news2019/db/docs-zh-news2019.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/newsv1/news2019/db/docs-zh-news2019.db /mnt/nfs/yechen/data/newsv1/news2019/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/newsv1/news2019/db/docs-zh-news2019.db /mnt/nfs/yechen/data/newsv1/news2019/tfidf/ --tokenizer 'jieba' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/newsv1/news2019/db/docs-zh-news2019.db /mnt/nfs/yechen/data/newsv1/news2019/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/newsv1/news2019/db/docs-zh-news2019.db /mnt/nfs/yechen/data/newsv1/news2019/tfidf/ --tokenizer 'jieba' --num-workers 32
+
+
+python clean_doc.py /mnt/nfs/yechen/data/baike/all.txt /mnt/nfs/yechen/data/baike/baike.txt
+python scripts/retriever/split_doc.py /mnt/nfs/yechen/data/baike/baike.txt /mnt/nfs/yechen/data/baike/db-input/
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/baike/db-input /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'jieba' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'jieba' --num-workers 32
 
 
 python scripts/retriever/split_wiki.py /mnt/nfs/yechen/data/wiki.zh.txt.cln /mnt/nfs/yechen/data/db-input/
@@ -3531,6 +3719,8 @@ python scripts/retriever/build_db.py /mnt/nfs/yechen/data/db-input-test /mnt/nfs
 python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/db/docs-test.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
 python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/db/docs-test.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'spacyzh' --num-workers 32
 
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/db/docs-test.db /mnt/nfs/yechen/data/tfidf/ --tokenizer 'jieba' --num-workers 32
+
 
 python scripts/convert/du_squad.py /data/yechen/bert/search.dev.json /data/yechen/bert/du_squad_search_dev.json
 
@@ -3540,18 +3730,22 @@ python scripts/retriever/build_db.py /data/yechen/bert/wiki-zh /home/yechen/Work
 python ./scripts/retriever/split_wiki.py /mnt/nfs/yechen/data/wikizh/wiki.zh.txt.cln /mnt/nfs/yechen/data/wikizh/db-input/
 python scripts/retriever/build_db.py /mnt/nfs/yechen/data/wikizh/db-input /mnt/nfs/yechen/data/wikizh/db/docs-zh-wiki.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32 
 python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/wikizh/db/docs-zh-wiki.db /mnt/nfs/yechen/data/wikizh/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/wikizh/db/docs-zh-wiki.db /mnt/nfs/yechen/data/wikizh/tfidf/ --tokenizer 'jieba' --num-workers 32
 
 python ./scripts/retriever/split_ownthink.py /mnt/nfs/yechen/data/ownthink/ownthink_v2.txt /mnt/nfs/yechen/data/ownthink/db-input/
 python scripts/retriever/build_db.py /mnt/nfs/yechen/data/ownthink/db-input /mnt/nfs/yechen/data/ownthink/db/docs-zh-ownthink.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32 
 python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/ownthink/db/docs-zh-ownthink.db /mnt/nfs/yechen/data/ownthink/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/ownthink/db/docs-zh-ownthink.db /mnt/nfs/yechen/data/ownthink/tfidf/ --tokenizer 'jieba' --num-workers 32
 
 python ./scripts/retriever/split_doc.py /mnt/nfs/yechen/data/xiaohe/xiaohe.txt /mnt/nfs/yechen/data/xiaohe/db-input/
 python scripts/retriever/build_db.py /mnt/nfs/yechen/data/xiaohe/db-input /mnt/nfs/yechen/data/xiaohe/db/docs-zh-xiaohe.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32 
 python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/xiaohe/db/docs-zh-xiaohe.db /mnt/nfs/yechen/data/xiaohe/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/xiaohe/db/docs-zh-xiaohe.db /mnt/nfs/yechen/data/xiaohe/tfidf/ --tokenizer 'jieba' --num-workers 32
 
 python ./scripts/retriever/split_doc.py /mnt/nfs/yechen/data/baikemy/baikemy.txt /mnt/nfs/yechen/data/baikemy/db-input/
 python scripts/retriever/build_db.py /mnt/nfs/yechen/data/baikemy/db-input /mnt/nfs/yechen/data/baikemy/db/docs-zh-baikemy.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32 
 python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/baikemy/db/docs-zh-baikemy.db /mnt/nfs/yechen/data/baikemy/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/baikemy/db/docs-zh-baikemy.db /mnt/nfs/yechen/data/baikemy/tfidf/ --tokenizer 'jieba' --num-workers 32
 
 
 
@@ -3905,6 +4099,22 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DI
   "total": 11873,
   "HasAns_exact": 18.411164787976382,
   "HasAns_f1": 18.411164787976382,
+  "HasAns_total": 3726,
+  "NoAns_exact": 89.84902418068,
+  "NoAns_f1": 89.84902418068,
+  "NoAns_total": 8147,
+  "best_exact": 69.31693758948876,
+  "best_exact_thresh": -4.998210430145264,
+  "best_f1": 69.31693758948876,
+  "best_f1_thresh": -4.998210430145264
+}
+
+{
+  "exact": 67.42188158005558,
+  "f1": 67.42188158005558,
+  "total": 11873,
+  "HasAns_exact": 18.38432635534085,
+  "HasAns_f1": 18.38432635534085,
   "HasAns_total": 3726,
   "NoAns_exact": 89.84902418068,
   "NoAns_f1": 89.84902418068,
