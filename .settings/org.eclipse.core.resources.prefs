@@ -7,6 +7,7 @@ encoding/optimization.py=utf-8
 encoding/optimization_v2.py=utf-8
 encoding/run_pretraining.py=utf-8
 encoding/run_pretraining_v2.py=utf-8
+encoding/run_pretraining_v2_gpu2.py=utf-8
 encoding/run_pretraining_v2_gpu3.py=utf-8
 encoding/run_pretraining_v2_gpu4.py=utf-8
 encoding/run_pretraining_v2_gpu5.py=utf-8

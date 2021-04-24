@@ -2404,6 +2404,67 @@ python create_pretraining_data.py \
   --random_seed=12345 \
   --dupe_factor=5 \
   --do_whole_word_mask=True
+  
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+DATA_DIR=/mnt/nfs/yechen/data/jinyong
+
+python create_pretraining_data_v2.py \
+  --input_file=$DATA_DIR/all_pre.txt \
+  --output_file=$DATA_DIR/jinyong.tfrecord \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --do_lower_case=True \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --masked_lm_prob=0.15 \
+  --random_seed=12345 \
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
+
+
+BERT_BASE_DIR=/data/yechen/bert/chinese_L-12_H-768_A-12
+DATA_DIR=/mnt/nfs/yechen/data/jinyong
+
+python create_pretraining_data_v2.py \
+  --input_file=$DATA_DIR/all_pre.txt \
+  --output_file=$DATA_DIR/jinyong_seq512.tfrecord \
+  --vocab_file=$BERT_BASE_DIR/vocab.txt \
+  --do_lower_case=True \
+  --max_seq_length=512 \
+  --max_predictions_per_seq=80 \
+  --masked_lm_prob=0.15 \
+  --random_seed=12345 \
+  --dupe_factor=5 \
+  --do_whole_word_mask=True
+  
+BERT_BASE_DIR=/data/yechen/bert/bert_base_chinese_jinyong
+DATA_DIR=/mnt/nfs/yechen/data/jinyong
+
+python run_pretraining_v2_gpu5.py \
+  --input_file=$DATA_DIR/jinyong.tfrecord \
+  --output_dir=$BERT_BASE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --train_batch_size=16 \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --num_train_steps=90000 \
+  --num_warmup_steps=1000 \
+  --learning_rate=2e-5
+  
+python run_pretraining_v2_gpu5.py \
+  --input_file=$DATA_DIR/jinyong_seq512.tfrecord \
+  --output_dir=$BERT_BASE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --train_batch_size=16 \
+  --max_seq_length=512 \
+  --max_predictions_per_seq=80 \
+  --num_train_steps=100000 \
+  --num_warmup_steps=1000 \
+  --learning_rate=2e-5
+
 
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
 DATA_DIR=/data/yechen/bert
@@ -2889,9 +2950,10 @@ python run_pretraining_v2.py \
   --num_warmup_steps=100000 \
   --learning_rate=2e-5
 
+BERT_LARGE_DIR=/data/yechen/bert/bert-large-chinese
 DATA_DIR=/data/yechen/bert
 
-python run_pretraining_v2_gpu3.py \
+python run_pretraining_v2_gpu5.py \
   --input_file=$DATA_DIR/tf_examples_*.tfrecord \
   --output_dir=$BERT_LARGE_DIR \
   --do_train=True \
@@ -2900,8 +2962,8 @@ python run_pretraining_v2_gpu3.py \
   --train_batch_size=16 \
   --max_seq_length=128 \
   --max_predictions_per_seq=20 \
-  --num_train_steps=40000000 \
-  --num_warmup_steps=100000 \
+  --num_train_steps=200 \
+  --num_warmup_steps=100 \
   --learning_rate=2e-5
 
 
