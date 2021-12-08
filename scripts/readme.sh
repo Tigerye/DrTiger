@@ -2452,18 +2452,77 @@ python run_pretraining_v2_gpu5.py \
   --num_warmup_steps=1000 \
   --learning_rate=2e-5
   
+global_step = 90000
+loss = 3.1818664
+masked_lm_accuracy = 0.42818066
+masked_lm_loss = 3.1491094
+next_sentence_accuracy = 0.9925
+next_sentence_loss = 0.033014607
+  
 python run_pretraining_v2_gpu5.py \
   --input_file=$DATA_DIR/jinyong_seq512.tfrecord \
   --output_dir=$BERT_BASE_DIR \
   --do_train=True \
   --do_eval=True \
   --bert_config_file=$BERT_BASE_DIR/bert_config.json \
-  --train_batch_size=16 \
+  --train_batch_size=8 \
   --max_seq_length=512 \
   --max_predictions_per_seq=80 \
   --num_train_steps=100000 \
   --num_warmup_steps=1000 \
   --learning_rate=2e-5
+  
+global_step = 100000
+loss = 5.00282
+masked_lm_accuracy = 0.22413172
+masked_lm_loss = 4.8775053
+next_sentence_accuracy = 0.95625
+next_sentence_loss = 0.124984734
+
+
+BERT_BASE_DIR=/data/yechen/bert/bert_base_chinese_louis
+DATA_DIR=/mnt/nfs/yechen/data/jinyong
+
+python run_pretraining_v2_gpu2.py \
+  --input_file=$DATA_DIR/jinyong.tfrecord \
+  --output_dir=$BERT_BASE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_BASE_DIR/bert_model.ckpt \
+  --train_batch_size=16 \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --num_train_steps=90000 \
+  --num_warmup_steps=1000 \
+  --learning_rate=2e-5
+  
+global_step = 90000
+loss = 0.6862419
+masked_lm_accuracy = 0.83067584
+masked_lm_loss = 0.6823708
+next_sentence_accuracy = 0.99875
+next_sentence_loss = 0.00455861
+  
+python run_pretraining_v2_gpu2.py \
+  --input_file=$DATA_DIR/jinyong_seq512.tfrecord \
+  --output_dir=$BERT_BASE_DIR \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=$BERT_BASE_DIR/bert_config.json \
+  --train_batch_size=8 \
+  --max_seq_length=512 \
+  --max_predictions_per_seq=80 \
+  --num_train_steps=100000 \
+  --num_warmup_steps=1000 \
+  --learning_rate=2e-5
+  
+global_step = 100000
+loss = 1.1133891
+masked_lm_accuracy = 0.74475753
+masked_lm_loss = 1.0872824
+next_sentence_accuracy = 0.9925
+next_sentence_loss = 0.025918115
 
 
 BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16
@@ -3002,6 +3061,16 @@ masked_lm_loss = 0.66328424
 next_sentence_accuracy = 0.99125
 next_sentence_loss = 0.026102342
 
+20M-5M eval:
+------------
+global_step = 5000000
+loss = 0.6877621
+masked_lm_accuracy = 0.84552187
+masked_lm_loss = 0.65735674
+next_sentence_accuracy = 0.98875
+next_sentence_loss = 0.031118037
+
+
 global_step = 10000000
 loss = 0.9034405
 masked_lm_accuracy = 0.8053705
@@ -3229,6 +3298,84 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DI
   "best_exact_thresh": -5.925867557525635,
   "best_f1": 71.16145877200371,
   "best_f1_thresh": -5.925867557525635
+}
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_20M_5M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu5.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=True \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_20M_5M_2data/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_20M_5M
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/combined-squad-dev-v2.0-2data-zh.json $SQUAD_DIR/squad_2.0_large_zh_20M_5M_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_20M_5M_2data/null_odds.json
+{
+  "exact": 69.58905626938414,
+  "f1": 69.58997932358588,
+  "total": 72224,
+  "HasAns_exact": 53.156817728089436,
+  "HasAns_f1": 53.158481400146414,
+  "HasAns_total": 40072,
+  "NoAns_exact": 90.06904702662354,
+  "NoAns_f1": 90.06904702662354,
+  "NoAns_total": 32152,
+  "best_exact": 69.59044085068675,
+  "best_exact_thresh": -0.017197608947753906,
+  "best_f1": 69.59136390488848,
+  "best_f1_thresh": -0.017197608947753906
+}
+
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_20M_5M
+SQUAD_DIR=/data/yechen/squad/data
+
+python run_squad_v2_gpu5.py \
+  --vocab_file=$BERT_LARGE_DIR/vocab.txt \
+  --bert_config_file=$BERT_LARGE_DIR/bert_config.json \
+  --init_checkpoint=$BERT_LARGE_DIR/bert_model.ckpt \
+  --do_train=False \
+  --train_file=$SQUAD_DIR/combined-squad-train-v2.0-2data-zh.json \
+  --do_predict=True \
+  --predict_file=$SQUAD_DIR/dev-v2.0_zh.json \
+  --train_batch_size=4 \
+  --learning_rate=3e-5 \
+  --num_train_epochs=2.0 \
+  --max_seq_length=384 \
+  --doc_stride=128 \
+  --output_dir=$SQUAD_DIR/squad_2.0_large_zh_20M_5M_2data/ \
+  --version_2_with_negative=True
+  
+BERT_LARGE_DIR=/data/yechen/bert/chinese_L-24_H-1024_A-16_20M_5M
+SQUAD_DIR=/data/yechen/squad/data
+
+python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DIR/squad_2.0_large_zh_20M_5M_2data/predictions.json --na-prob-file $SQUAD_DIR/squad_2.0_large_zh_20M_5M_2data/null_odds.json
+{
+  "exact": 70.3697464836183,
+  "f1": 70.375361464387,
+  "total": 11873,
+  "HasAns_exact": 25.013419216317768,
+  "HasAns_f1": 25.031311504741453,
+  "HasAns_total": 3726,
+  "NoAns_exact": 91.11329323677427,
+  "NoAns_f1": 91.11329323677427,
+  "NoAns_total": 8147,
+  "best_exact": 71.17830371430978,
+  "best_exact_thresh": -4.348006725311279,
+  "best_f1": 71.18391869507846,
+  "best_f1_thresh": -4.348006725311279
 }
 
 
@@ -3760,6 +3907,13 @@ python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/baike/db/docs-zh-ba
 python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'spacyzh' --num-workers 32
 python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'jieba' --num-workers 32
 
+python clean_doc.py /mnt/nfs/yechen/data/earning/all.txt /mnt/nfs/yechen/data/earning/earning.txt
+python scripts/retriever/split_doc.py /mnt/nfs/yechen/data/earning/earning.txt /mnt/nfs/yechen/data/earning/db-input/
+python scripts/retriever/build_db.py /mnt/nfs/yechen/data/earning/db-input /mnt/nfs/yechen/data/earning/db/docs-zh-earning.db --preprocess /home/yechen/Workspace/DrQA/scripts/retriever/prep_title_id.py --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'jieba' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'spacyzh' --num-workers 32
+python scripts/retriever/build_tfidf_batch.py /mnt/nfs/yechen/data/baike/db/docs-zh-baike.db /mnt/nfs/yechen/data/baike/tfidf/ --tokenizer 'jieba' --num-workers 32
 
 python scripts/retriever/split_wiki.py /mnt/nfs/yechen/data/wiki.zh.txt.cln /mnt/nfs/yechen/data/db-input/
 python scripts/retriever/split_news.py /mnt/nfs/yechen/data/news.2017.zh.txt.cln /mnt/nfs/yechen/data/db-input/
@@ -3983,6 +4137,7 @@ python /home/yechen/Workspace/DrQA/drqa/bert/run_squad_nocache.py \
   --version_2_with_negative=True
   
 python drqa/bert/run_squad_nocache.py
+
 GUNICORN_CMD_ARGS="--bind=0.0.0.0:8000 --timeout=300" gunicorn index_zh:app
 GUNICORN_CMD_ARGS="--bind=0.0.0.0:8000 --timeout=30000" gunicorn index_zh:app
 
@@ -4186,5 +4341,6 @@ python /data/yechen/squad/evaluate-v2.0.py $SQUAD_DIR/dev-v2.0_zh.json $SQUAD_DI
   "best_f1": 69.31693758948876,
   "best_f1_thresh": -4.998210430145264
 }
+
 
   
